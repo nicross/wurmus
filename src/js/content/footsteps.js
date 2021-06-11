@@ -1,0 +1,36 @@
+content.footsteps = (() => {
+  const bus = engine.audio.mixer.createBus()
+
+  const footstepper = content.utility.footstepper.create({
+    parameters: {
+      destination: bus,
+    },
+  })
+
+  return {
+    import: function () {
+      footstepper.reset({
+        position: engine.position.getVector(),
+      })
+
+      return this
+    },
+    update: function () {
+      footstepper.update({
+        position: engine.position.getVector(),
+      })
+
+      return this
+    },
+  }
+})()
+
+engine.state.on('import', content.footsteps.import())
+
+engine.loop.on('frame', ({paused}) => {
+  if (paused) {
+    return
+  }
+
+  content.footsteps.update()
+})
