@@ -1,0 +1,22 @@
+.a-gameOver {}
+  .a-gameOver--highscore {
+    margin-top: 1em;
+  }
+  .a-gameOver--restart {
+    margin-top: 3rem;
+  }
+  .a-gameOver--success {
+    font-family: RobotoBold, serif;
+    font-size: 0.75em;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .a-gameOver--score {
+    font-size: 1.5em;
+    margin-top: 2rem;
+  }
+  .a-gameOver--title {
+    font-family: ComicSharkRegular, fantasy;
+    font-size: 6em;
+    line-height: 1;
+  }

@@ -1,0 +1,22 @@
+.c-button {
+  background-color: #000000;
+  border-bottom: 0.5em solid #FFAEBC;
+  border-left: 0.5em solid #FFAEBC;
+  border-radius: 0.2em;
+  border-right: 0.5em solid #B4F8C8;
+  border-top: 0.5em solid #B4F8C8;
+  font-size: 1.25em;
+  padding: 0.5em 1.5em;
+  transition: all 0.25s ease;
+  transition-property: background-color, border-color;
+}
+
+.c-button:active,
+.c-button:focus,
+.c-button:hover {
+  background-color: #111111;
+  border-bottom-color: #A0E7E5;
+  border-left-color: #A0E7E5;
+  border-right-color: #FBE7C6;
+  border-top-color: #FBE7C6;
+}
