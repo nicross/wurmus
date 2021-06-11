@@ -18,7 +18,7 @@ app.state.screen = engine.utility.machine.create({
     },
     splash: {
       start: function () {
-        if (app.storage.getHighscore() < 1000) {
+        if (app.storage.getHighscore() < 60) {
           this.change('tutorial')
         } else {
           this.change('game')

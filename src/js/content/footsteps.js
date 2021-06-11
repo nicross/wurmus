@@ -25,8 +25,6 @@ content.footsteps = (() => {
   }
 })()
 
-engine.state.on('import', content.footsteps.import())
-
 engine.loop.on('frame', ({paused}) => {
   if (paused) {
     return
@@ -34,3 +32,5 @@ engine.loop.on('frame', ({paused}) => {
 
   content.footsteps.update()
 })
+
+engine.state.on('import', content.footsteps.import())
