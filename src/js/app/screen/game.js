@@ -10,7 +10,7 @@ app.screen.game = (() => {
   })
 
   function checkGameOver() {
-    return false
+    return !content.train.length()
   }
 
   function handleGameOver() {
