@@ -23,6 +23,7 @@
     display: flex;
     font-family: FiraMonoRegular, monospace;
     justify-content: space-between;
+    padding: 0 1em;
   }
   .a-splash--title {
     font-family: ComicSharkRegular, fantasy, fantasy;

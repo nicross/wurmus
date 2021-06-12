@@ -1,5 +1,5 @@
-# syngen-template
-A template for creating accessible audio games and experiences with [syngen](https://github.com/nicross/syngen).
+# Wurmus
+An endless snake-like game of tag developed for [GMTK Jam 2021](https://itch.io/jam/gmtk-2021). Developed with [syngen](https://github.com/nicross/syngen).
 
 ## Getting started
 To get started, please  use [npm](https://nodejs.org) to install the required dependencies:
