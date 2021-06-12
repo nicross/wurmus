@@ -1,6 +1,9 @@
 content.prop.actor = engine.prop.base.invent({
   name: 'actor',
+  invincibility: 0,
+  isTrain: false,
   radius: 0.5,
+  running: 0,
   onConstruct: function ({
     difficulty = 0,
   } = {}) {
@@ -119,7 +122,7 @@ content.prop.actor = engine.prop.base.invent({
       return this
     }
 
-    const closest = content.train.quadree.find(this, this.radius),
+    const closest = content.train.quadtree().find(this, this.radius),
       position = engine.position.getVector(),
       vector = this.vector()
 
@@ -131,7 +134,7 @@ content.prop.actor = engine.prop.base.invent({
         ? opposite(position)
         : opposite(closest)
     } else {
-      destination = vector.distance(position) < vector.distance(closest)
+      destination = vector.distance(position) < (vector.distance(closest) * 4)
         ? opposite(position)
         : closest
     }
