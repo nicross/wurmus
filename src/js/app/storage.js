@@ -9,7 +9,7 @@ app.storage = (() => {
         setItem: function (key) {this.data[key] = value},
       }
 
-  const highscoreKey = 'untitled_highscore'
+  const highscoreKey = 'wurmus_highscore'
 
   function get(key) {
     return storage.getItem(key)
