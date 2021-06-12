@@ -44,7 +44,7 @@ app.screen.gameOver = (() => {
 
   function updateScores() {
     const highscore = app.storage.getHighscore(),
-      score = Math.round(content.time.get())
+      score = Math.round(content.score.get())
 
     const isHighscore = score > highscore
 

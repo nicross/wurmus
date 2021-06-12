@@ -1,14 +1,14 @@
-content.time = (() => {
-  let time = 0
+content.score = (() => {
+  let score = 0
 
   return {
-    get: () => time,
+    get: () => score,
     increment: function (value = 0) {
-      time += value
+      score += value
       return this
     },
     reset: function () {
-      time = 0
+      score = 0
       return this
     },
   }
@@ -19,7 +19,7 @@ engine.loop.on('frame', ({delta, paused}) => {
     return
   }
 
-  content.time.increment(delta)
+  content.score.increment(delta)
 })
 
-engine.state.on('reset', () => content.time.reset())
+engine.state.on('reset', () => content.score.reset())
