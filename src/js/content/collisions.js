@@ -12,12 +12,13 @@ content.collisions = (() => {
           continue
         }
 
-        if (!engine.utility.round(prop.distance, 1)) {
-          if (prop.isTrain) {
-            content.train.remove(prop)
-          } else {
-            content.train.add(prop)
-          }
+        if (prop.distance < 1 && !prop.isTrain) {
+          content.train.add(prop)
+          continue
+        }
+
+        if (prop.distance == 0 && prop.isTrain) {
+          content.train.remove(prop)
           continue
         }
 
