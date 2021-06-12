@@ -167,10 +167,6 @@ content.prop.actor = engine.prop.base.invent({
     return this
   },
   needsSynth: function () {
-    if (this.invincibility) {
-      return false
-    }
-
     const angle = Math.atan2(this.relative.y, this.relative.x)
     return engine.utility.between(angle, -Math.PI/2, Math.PI/2)
   },
@@ -194,11 +190,12 @@ content.prop.actor = engine.prop.base.invent({
     const angle = Math.atan2(this.relative.y, this.relative.x),
       strength = engine.utility.scale(Math.abs(angle), 0, Math.PI/2, 1, 0)
 
-    const amodDepth = this.isTrain ? 1/2 : 0
+    const amodDepth = this.isTrain ? 1/2 : 0,
+      gain = (strength ** 2) * (this.invincibility ? engine.utility.clamp(1 - this.invincibility, 0, 1) : 1)
 
     engine.audio.ramp.set(this.synth.param.carrierGain, 1 - amodDepth)
     engine.audio.ramp.set(this.synth.param.frequency, this.frequency)
-    engine.audio.ramp.set(this.synth.param.gain, strength ** 2)
+    engine.audio.ramp.set(this.synth.param.gain, gain)
     engine.audio.ramp.set(this.synth.param.mod.depth, amodDepth)
 
     return this
