@@ -1,7 +1,11 @@
 app.controls.mouse = (() => {
-  const sensitivity = 10
+  const sensitivity = 20
 
-  let gameScreen
+  let gameScreen,
+    rotate = 0
+
+  // XXX: syngen hack
+  let previousMoveX = 0
 
   engine.ready(() => {
     gameScreen = document.querySelector('.a-game')
@@ -26,13 +30,27 @@ app.controls.mouse = (() => {
   }
 
   function onEnterGame() {
-    requestPointerLock()
+    if (app.isElectron()) {
+      if (app.utility.escape.is()) {
+        // XXX: Eventually Chrome seems to ignore pointerlock requests if player cancels it 2 times without clicking mouse
+        // TODO: Look into better solution
+        app.utility.escape.once('up', requestPointerLock)
+      } else {
+        requestPointerLock()
+      }
+    }
   }
 
   function onExitGame() {
     if (isPointerLock()) {
       exitPointerLock()
     }
+
+    rotate = 0
+
+    // XXX: syngen hack
+    engine.input.mouse.reset()
+    previousMoveX = 0
   }
 
   function requestPointerLock() {
@@ -48,13 +66,28 @@ app.controls.mouse = (() => {
       const mouse = engine.input.mouse.get(),
         state = {}
 
-      if (mouse.button[0]) {
-        state.attack = true
+      if (mouse.button[0] && !mouse.button[2]) {
+        state.y = 1
+      }
+
+      if (mouse.button[2] && !mouse.button[0]) {
+        state.y = -1
       }
 
       if (mouse.moveX) {
-        const screenRatio = window.innerWidth / 1080
-        state.rotate = engine.utility.scale(mouse.moveX, -window.innerWidth, window.innerWidth, screenRatio, -screenRatio) * sensitivity
+        // XXX: syngen hack
+        const deltaMoveX = mouse.moveX - previousMoveX
+        previousMoveX = mouse.moveX
+
+        // Accelerate and clamp rotation
+        rotate += engine.utility.scale(deltaMoveX, -window.innerWidth, window.innerWidth, 1, -1) * sensitivity
+        rotate = engine.utility.clamp(rotate, -1, 1)
+      }
+
+      if (rotate) {
+        // Apply and decelerate rotation to zero
+        state.rotate = rotate
+        rotate = content.utility.accelerate.value(rotate, 0, 32)
       }
 
       return state
@@ -64,3 +97,7 @@ app.controls.mouse = (() => {
     },
   }
 })()
+
+// XXX: Hack to prevent race condition with setTimeout() call within syngen.input.mouse.update()
+// TODO: Fix in syngen
+engine.input.mouse.update = () => {}
