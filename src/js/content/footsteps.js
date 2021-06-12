@@ -33,4 +33,4 @@ engine.loop.on('frame', ({paused}) => {
   content.footsteps.update()
 })
 
-engine.state.on('import', content.footsteps.import())
+engine.state.on('import', () => content.footsteps.import())
