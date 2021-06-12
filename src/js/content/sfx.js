@@ -10,6 +10,7 @@ content.sfx.footstep = function ({
   velocity = 1,
 } = {}) {
   const synth = engine.audio.synth.createSimple({
+    detune: engine.utility.random.float(-10, 10),
     frequency,
     type: 'square',
   }).filtered({
@@ -22,6 +23,8 @@ content.sfx.footstep = function ({
 
   synth.param.gain.exponentialRampToValueAtTime(gain, now + 1/32)
   synth.param.gain.exponentialRampToValueAtTime(engine.const.zeroGain, now + duration)
+
+  synth.param.detune.linearRampToValueAtTime(1200, now + duration/2)
 
   synth.stop(now + duration)
 }

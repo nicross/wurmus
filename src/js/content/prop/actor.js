@@ -29,7 +29,7 @@ content.prop.actor = engine.prop.base.invent({
     }
 
     this.frequency = this.calculateFrequency()
-    this.footstepper.parameters.color = this.isTrain ? 1/2 : 4
+    this.footstepper.parameters.color = this.isTrain ? 1/4 : 4
     this.footstepper.parameters.frequency = this.frequency
 
     this.footstepper.update({
@@ -95,8 +95,11 @@ content.prop.actor = engine.prop.base.invent({
   },
   createSynth: function () {
     this.synth = engine.audio.synth.createAm({
-      frequency: this.frequency,
-      modFrequency: engine.utility.random.float(9, 11),
+      carrierFrequency: this.frequency,
+      carrierType: this.isTrain ? 'sawtooth' : 'square',
+      modFrequency: engine.utility.random.float(7, 9),
+    }).filtered({
+      frequency: this.frequency / 2,
     }).connect(this.output)
 
     return this
@@ -169,7 +172,7 @@ content.prop.actor = engine.prop.base.invent({
     }
 
     const angle = Math.atan2(this.relative.y, this.relative.x)
-    return engine.utility.between(angle, -Math.PI/4, Math.PI/4)
+    return engine.utility.between(angle, -Math.PI/2, Math.PI/2)
   },
   onTrainAdd: function () {
     delete this.frequency
@@ -189,13 +192,13 @@ content.prop.actor = engine.prop.base.invent({
   },
   updateSynth: function () {
     const angle = Math.atan2(this.relative.y, this.relative.x),
-      strength = engine.utility.scale(Math.abs(angle), 0, Math.PI/4, 1, 0)
+      strength = engine.utility.scale(Math.abs(angle), 0, Math.PI/2, 1, 0)
 
     const amodDepth = this.isTrain ? 1/2 : 0
 
     engine.audio.ramp.set(this.synth.param.carrierGain, 1 - amodDepth)
     engine.audio.ramp.set(this.synth.param.frequency, this.frequency)
-    engine.audio.ramp.set(this.synth.param.gain, strength)
+    engine.audio.ramp.set(this.synth.param.gain, strength ** 2)
     engine.audio.ramp.set(this.synth.param.mod.depth, amodDepth)
 
     return this

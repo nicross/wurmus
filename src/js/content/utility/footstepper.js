@@ -6,7 +6,7 @@ content.utility.footstepper.create = function (...args) {
 
 content.utility.footstepper.prototype = {
   construct: function ({
-    distance = 1,
+    distance = 0.5,
     parameters = {},
     position = {},
   } = {}) {
