@@ -8,7 +8,9 @@ content.collisions = (() => {
         radius = content.prop.actor.radius
 
       for (const prop of props) {
-        // TODO: Continue if invincible
+        if (prop.invincibility) {
+          continue
+        }
 
         if (!engine.utility.round(prop.distance, 1)) {
           if (prop.isTrain) {

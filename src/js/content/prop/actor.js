@@ -33,6 +33,14 @@ content.prop.actor = engine.prop.base.invent({
       position: this.vector(),
     })
 
+    if (this.invincibility) {
+      this.invincibility = content.utility.accelerate.value(this.invincibility, 0, 1)
+    }
+
+    if (this.running) {
+      this.running = content.utility.accelerate.value(this.running, 0, 1)
+    }
+
     if (this.needsSynth()) {
       if (!this.synth) {
         this.createSynth()
@@ -100,6 +108,10 @@ content.prop.actor = engine.prop.base.invent({
 
     return this
   },
+  invincible: function () {
+    this.invincibility = 1
+    return this
+  },
   moveTag: function () {
     const chance = engine.utility.lerp(1/12, 1/3, this.difficulty)
 
@@ -113,7 +125,7 @@ content.prop.actor = engine.prop.base.invent({
     let destination = vector.clone()
     let opposite = () => vector.subtract(position).normalize().add(vector)
 
-    if (this.isRunning) {
+    if (this.running) {
       destination = opposite()
     } else {
       const closest = content.train.quadree.find(this, this.radius)
@@ -153,12 +165,18 @@ content.prop.actor = engine.prop.base.invent({
   },
   onTrainAdd: function () {
     delete this.frequency
+    this.invincible()
     this.isTrain = true
     return this
   },
   onTrainRemove: function () {
     delete this.frequency
+    this.invincible().run()
     this.isTrain = false
+    return this
+  },
+  run: function () {
+    this.running = 1
     return this
   },
   updateSynth: function () {
