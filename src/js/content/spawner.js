@@ -1,8 +1,4 @@
 content.spawner = (() => {
-  function generateOptions() {
-    return {}
-  }
-
   function initializeGame() {
     const count = 1,
       distance = content.prop.actor.radius * 2,
@@ -10,7 +6,6 @@ content.spawner = (() => {
 
     for (let i = 0; i < count; i += 1) {
       const prop = engine.props.create(content.prop.actor, {
-        ...generateOptions(),
         ...position.add({x: -(i + 1) * distance}),
       })
 

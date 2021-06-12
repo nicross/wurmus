@@ -1,7 +1,11 @@
 content.prop.actor = engine.prop.base.invent({
   name: 'actor',
   radius: 0.5,
-  onConstruct: function () {
+  onConstruct: function ({
+    difficulty = 0,
+  } = {}) {
+    this.difficulty = difficulty
+
     this.footstepper = content.utility.footstepper.create({
       parameters: {
         destination: this.output,
@@ -97,23 +101,42 @@ content.prop.actor = engine.prop.base.invent({
     return this
   },
   moveTag: function () {
-    // Roll whether to update based on difficulty
-    // Calculate desired position
-      // If running away, or closest is player, opposite direction from player
-      // Otherwise closest train actor
-    // Accelerate toward it
+    const chance = engine.utility.lerp(1/12, 1/3, this.difficulty)
+
+    if (Math.random() > chance) {
+      return this
+    }
+
+    const position = engine.position.getVector(),
+      vector = this.vector()
+
+    let destination = vector.clone()
+    let opposite = () => vector.subtract(position).normalize().add(vector)
+
+    if (this.isRunning) {
+      destination = opposite()
+    } else {
+      const closest = content.train.quadree.find(this, this.radius)
+
+      destination = vector.distance(position) < vector.distance(closest)
+        ? opposite()
+        : closest
+    }
+
+    const velocity = destination.subtract(this).normalize().scale(4) // max velocity
+    this.velocity = content.utility.accelerate.vector(this.velocity, velocity, 4) // accelerate
 
     return this
   },
   moveTrain: function () {
     const index = content.train.indexOf(this)
 
-    const ahead = index > 0
+    const destination = index > 0
       ? content.train.get(index - 1).vector()
       : engine.position.getVector()
 
-    const velocity = ahead.distance(this) > this.calculateStoppingDistance()
-      ? ahead.subtract(this).normalize().scale(4) // max velocity
+    const velocity = destination.distance(this) > this.calculateStoppingDistance()
+      ? destination.subtract(this).normalize().scale(4) // max velocity
       : engine.utility.vector3d.create() // zero
 
     const rate = this.velocity.distance() > velocity.distance()
