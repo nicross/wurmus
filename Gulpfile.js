@@ -14,7 +14,6 @@ const serve = require('gulp-serve')
 const uglify = require('gulp-uglify-es').default
 const zip = require('gulp-zip')
 
-
 const argv = require('yargs').argv,
   isDebug = argv.debug === true
 
@@ -78,7 +77,19 @@ gulp.task('dist-electron', async () => {
 
   // XXX: Archives have no root directory
   paths.forEach((path) => {
-    gulp.src(path + '/**/*').pipe(
+    const build = gulp.src(path + '/**/*')
+
+    const manual = gulp.src([
+      'public/favicon.png',
+      'public/font/*',
+      'public/manual.html'
+    ], {base: 'public'}).pipe(
+      rename((path) => {
+        path.dirname = '/documentation/' + path.dirname
+      })
+    )
+
+    merge(build, manual).pipe(
       zip(path.replace('dist\\', '') + '.zip')
     ).pipe(
       gulp.dest('dist')
@@ -90,7 +101,9 @@ gulp.task('dist-html5', () => {
   // XXX: Archive has no root directory
   return gulp.src([
     'public/favicon.png',
+    'public/font/*',
     'public/index.html',
+    'public/manual.html',
     'public/scripts.min.js',
     'public/styles.min.css',
   ], {base: 'public'}).pipe(
