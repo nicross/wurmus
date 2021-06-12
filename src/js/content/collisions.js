@@ -12,7 +12,7 @@ content.collisions = (() => {
           continue
         }
 
-        if (prop.distance < 1 && !prop.isTrain) {
+        if (prop.distance < 0.5 && !prop.isTrain) {
           content.train.add(prop)
           continue
         }

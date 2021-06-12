@@ -119,13 +119,13 @@ content.prop.actor = engine.prop.base.invent({
     return this
   },
   moveTag: function () {
-    const chance = engine.utility.lerp(1/12, 1/3, this.difficulty)
+    const chance = engine.utility.lerp(1/12, 1/2, this.difficulty)
 
     if (Math.random() > chance) {
       return this
     }
 
-    const closest = content.train.quadtree().find(this, this.radius),
+    const closest = content.train.quadtree().find(this),
       position = engine.position.getVector(),
       vector = this.vector()
 
