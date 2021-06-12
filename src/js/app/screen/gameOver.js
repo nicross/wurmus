@@ -19,6 +19,7 @@ app.screen.gameOver = (() => {
     engine.loop.on('frame', onFrame)
 
     updateScores()
+    engine.state.reset()
   }
 
   function onExit() {
