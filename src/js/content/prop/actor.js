@@ -34,7 +34,7 @@ content.prop.actor = engine.prop.base.invent({
   calculateStoppingDistance: function () {
     const deceleration = 8,
       delta = engine.loop.delta(),
-      minimum = this.radius * 2,
+      minimum = this.radius * 4,
       velocity = this.velocity.distance()
 
     return minimum + (velocity * delta) + ((velocity ** 2) / (2 * deceleration))

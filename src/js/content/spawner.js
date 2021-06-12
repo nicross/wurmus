@@ -11,7 +11,7 @@ content.spawner = (() => {
     for (let i = 0; i < count; i += 1) {
       const prop = engine.props.create(content.prop.actor, {
         ...generateOptions(),
-        ...position.add({x: -i * distance}),
+        ...position.add({x: -(i + 1) * distance}),
       })
 
       content.train.add(prop)
