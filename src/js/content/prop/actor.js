@@ -22,6 +22,7 @@ content.prop.actor = engine.prop.base.invent({
     }
 
     this.frequency = this.calculateFrequency()
+    this.footstepper.parameters.color = this.isTrain ? 0.5 : 2
     this.footstepper.parameters.frequency = this.frequency
 
     this.footstepper.update({
