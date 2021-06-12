@@ -28,8 +28,8 @@ content.collisions = (() => {
         const nearest = quadtreeTrain.find(prop, radius)
 
         if (nearest) {
-          // TODO: Make both invincible and run away
           content.train.remove(nearest)
+          prop.run()
         }
       }
 

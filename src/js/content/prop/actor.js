@@ -108,8 +108,8 @@ content.prop.actor = engine.prop.base.invent({
 
     return this
   },
-  invincible: function () {
-    this.invincibility = 1
+  invincible: function (time = 1) {
+    this.invincibility = time
     return this
   },
   moveTag: function () {
@@ -119,19 +119,20 @@ content.prop.actor = engine.prop.base.invent({
       return this
     }
 
-    const position = engine.position.getVector(),
+    const closest = content.train.quadree.find(this, this.radius),
+      position = engine.position.getVector(),
       vector = this.vector()
 
     let destination = vector.clone()
-    let opposite = () => vector.subtract(position).normalize().add(vector)
+    let opposite = (from) => vector.subtract(from).normalize().add(vector)
 
     if (this.running) {
-      destination = opposite()
-    } else {
-      const closest = content.train.quadree.find(this, this.radius)
-
       destination = vector.distance(position) < vector.distance(closest)
-        ? opposite()
+        ? opposite(position)
+        : opposite(closest)
+    } else {
+      destination = vector.distance(position) < vector.distance(closest)
+        ? opposite(position)
         : closest
     }
 
@@ -165,18 +166,18 @@ content.prop.actor = engine.prop.base.invent({
   },
   onTrainAdd: function () {
     delete this.frequency
-    this.invincible()
+    this.invincible(5)
     this.isTrain = true
     return this
   },
   onTrainRemove: function () {
     delete this.frequency
-    this.invincible().run()
+    this.invincible().run(2)
     this.isTrain = false
     return this
   },
-  run: function () {
-    this.running = 1
+  run: function (time = 1) {
+    this.running = time
     return this
   },
   updateSynth: function () {
