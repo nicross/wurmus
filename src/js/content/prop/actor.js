@@ -29,7 +29,7 @@ content.prop.actor = engine.prop.base.invent({
     }
 
     this.frequency = this.calculateFrequency()
-    this.footstepper.parameters.color = this.isTrain ? 0.5 : 2
+    this.footstepper.parameters.color = this.isTrain ? 1/2 : 4
     this.footstepper.parameters.frequency = this.frequency
 
     this.footstepper.update({
@@ -134,9 +134,9 @@ content.prop.actor = engine.prop.base.invent({
         ? opposite(position)
         : opposite(closest)
     } else {
-      destination = vector.distance(position) < (vector.distance(closest) * 4)
+      destination = vector.distance(position) < 1
         ? opposite(position)
-        : closest
+        : engine.utility.vector3d.create(closest)
     }
 
     const velocity = destination.subtract(this).normalize().scale(4) // max velocity
@@ -164,6 +164,10 @@ content.prop.actor = engine.prop.base.invent({
     return this
   },
   needsSynth: function () {
+    if (this.invincibility) {
+      return false
+    }
+
     const angle = Math.atan2(this.relative.y, this.relative.x)
     return engine.utility.between(angle, -Math.PI/4, Math.PI/4)
   },
@@ -175,11 +179,11 @@ content.prop.actor = engine.prop.base.invent({
   },
   onTrainRemove: function () {
     delete this.frequency
-    this.invincible().run(2)
+    this.invincible().run()
     this.isTrain = false
     return this
   },
-  run: function (time = 1) {
+  run: function (time = 5) {
     this.running = time
     return this
   },

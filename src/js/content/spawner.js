@@ -57,6 +57,7 @@ content.spawner = (() => {
   }
 
   return {
+    difficulty: () => calculateDifficulty(),
     import: function () {
       initializeGame()
       return this

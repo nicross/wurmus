@@ -3,7 +3,7 @@ content.footsteps = (() => {
 
   const footstepper = content.utility.footstepper.create({
     parameters: {
-      color: 0.5,
+      color: 1/4,
       destination: bus,
       frequency: engine.utility.midiToFrequency(60),
     },
