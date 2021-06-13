@@ -12,7 +12,7 @@ content.spawner = (() => {
     for (let i = 0; i < count; i += 1) {
       const prop = engine.props.create(content.prop.actor, {
         difficulty: 0,
-        ...position.add({x: -(i + 1) * distance}),
+        ...position.add({x: -(count - i) * distance}),
       })
 
       content.train.add(prop)
