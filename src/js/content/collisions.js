@@ -30,7 +30,7 @@ content.collisions = (() => {
 
         if (nearest) {
           content.train.remove(nearest)
-          prop.run()
+          prop.invincible(1).run(1)
         }
       }
 

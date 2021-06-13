@@ -180,17 +180,17 @@ content.prop.actor = engine.prop.base.invent({
   },
   onTrainAdd: function () {
     delete this.frequency
-    this.invincible(5)
+    this.invincible(3)
     this.isTrain = true
     return this
   },
   onTrainRemove: function () {
     delete this.frequency
-    this.invincible().run()
+    this.invincible(1).run(engine.utility.lerpRandom([4,6], [1,2], this.difficulty))
     this.isTrain = false
     return this
   },
-  run: function (time = 5) {
+  run: function (time = 1) {
     this.running = time
     return this
   },
