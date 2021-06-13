@@ -54,10 +54,6 @@ content.prop.actor = engine.prop.base.invent({
     }
   },
   calculateFrequency: function () {
-    if (!this.isTrain) {
-      return this.frequency || engine.utility.midiToFrequency(engine.utility.random.float(48, 72))
-    }
-
     const notes = [
       71,
       69,
@@ -74,6 +70,10 @@ content.prop.actor = engine.prop.base.invent({
       50,
       48,
     ]
+
+    if (!this.isTrain) {
+      return this.frequency || engine.utility.midiToFrequency(engine.utility.choose(notes, Math.random()))
+    }
 
     const index = content.train.indexOf(this)
     const note = notes[index % notes.length]
@@ -167,8 +167,7 @@ content.prop.actor = engine.prop.base.invent({
     return this
   },
   needsSynth: function () {
-    const angle = Math.atan2(this.relative.y, this.relative.x)
-    return engine.utility.between(angle, -Math.PI/2, Math.PI/2)
+    return this.relative.x >= 0
   },
   onTrainAdd: function () {
     delete this.frequency
@@ -190,8 +189,13 @@ content.prop.actor = engine.prop.base.invent({
     const angle = Math.atan2(this.relative.y, this.relative.x),
       strength = engine.utility.scale(Math.abs(angle), 0, Math.PI/2, 1, 0)
 
-    const amodDepth = this.isTrain ? 1/2 : 0,
-      gain = (strength ** 2) * (this.invincibility ? engine.utility.clamp(1 - this.invincibility, 0, 1) : 1)
+    const amodDepth = this.isTrain ? 1/2 : 0
+
+    let gain = (strength ** 2) * (this.invincibility ? engine.utility.clamp(1 - this.invincibility, 0, 1) : 1)
+
+    if (!this.isTrain) {
+      gain *= engine.utility.clamp(1 / engine.utility.distanceToPower(this.distance), 1, engine.utility.fromDb(9))
+    }
 
     engine.audio.ramp.set(this.synth.param.carrierGain, 1 - amodDepth)
     engine.audio.ramp.set(this.synth.param.frequency, this.frequency)
