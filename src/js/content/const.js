@@ -4,4 +4,5 @@ content.const = {
   velocity: 5,
 }
 
+engine.const.distancePower = 1.5
 engine.prop.base.fadeOutDuration = 1/4

@@ -96,10 +96,10 @@ content.prop.actor = engine.prop.base.invent({
   createSynth: function () {
     this.synth = engine.audio.synth.createAm({
       carrierFrequency: this.frequency,
-      carrierType: this.isTrain ? 'sawtooth' : 'square',
+      carrierType: this.isTrain ? 'sawtooth' : 'triangle',
       modFrequency: engine.utility.random.float(7, 9),
     }).filtered({
-      frequency: this.frequency / 2,
+      frequency: this.frequencya,
     }).connect(this.output)
 
     return this
@@ -189,14 +189,12 @@ content.prop.actor = engine.prop.base.invent({
     const angle = Math.atan2(this.relative.y, this.relative.x),
       strength = engine.utility.scale(Math.abs(angle), 0, Math.PI/2, 1, 0)
 
-    const amodDepth = this.isTrain ? 1/2 : 0
+    const amodDepth = this.isTrain ? 1/2 : 0,
+      color = engine.utility.lerpExp(1, 4, strength)
 
-    let gain = (strength ** 2) * (this.invincibility ? engine.utility.clamp(1 - this.invincibility, 0, 1) : 1)
+    let gain = (strength ** 2) * (this.invincibility ? engine.utility.clamp(1 - this.invincibility, 0, 1) : 1) / 2
 
-    if (!this.isTrain) {
-      gain *= engine.utility.clamp(1 / engine.utility.distanceToPower(this.distance), 1, engine.utility.fromDb(9))
-    }
-
+    engine.audio.ramp.set(this.synth.filter.frequency, this.frequency * color)
     engine.audio.ramp.set(this.synth.param.carrierGain, 1 - amodDepth)
     engine.audio.ramp.set(this.synth.param.frequency, this.frequency)
     engine.audio.ramp.set(this.synth.param.gain, gain)
