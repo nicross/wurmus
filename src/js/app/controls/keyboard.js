@@ -42,6 +42,10 @@ app.controls.keyboard = {
       state.confirm = true
     }
 
+    if (keys.Escape) {
+      state.quit = true
+    }
+
     if (keys.Space) {
       state.space = true
     }
