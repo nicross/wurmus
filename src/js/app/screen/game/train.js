@@ -1,4 +1,4 @@
-app.screen.game = (() => {
+app.screen.game.train = (() => {
   let root,
     value
 
@@ -39,4 +39,6 @@ app.screen.game = (() => {
     value = length
     root.innerHTML = value
   }
+
+  return {}
 })()

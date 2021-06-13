@@ -155,7 +155,8 @@ function getAppJs() {
   const srcs = [
     'src/js/app.js',
     'src/js/app/*.js',
-    'src/js/app/**/*.js',
+    'src/js/app/*/*.js',
+    'src/js/app/*/*/*.js',
   ]
 
   return srcs

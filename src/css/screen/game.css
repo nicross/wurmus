@@ -1,6 +1,14 @@
 .a-game {
   position: relative;
 }
+  .a-game--canvas {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+  }
   .a-game--train {
     animation: a-game--train 8s linear 0s infinite;
     -webkit-background-clip: text;
@@ -17,6 +25,7 @@
     -webkit-text-fill-color: transparent;
     text-fill-color: transparent;
     width: 100%;
+    z-index: 2;
   }
   @keyframes a-game--train {
     0% {

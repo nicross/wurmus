@@ -52,4 +52,6 @@ app.screen.game = (() => {
 
     handleControls()
   }
+
+  return {}
 })()
