@@ -22,7 +22,7 @@ content.spawner = (() => {
   function shouldSpawn() {
     const difficulty = calculateDifficulty(),
       enemies = engine.props.get().filter((prop) => !prop.isTrain),
-      maxEnemies = engine.utility.lerpExp(1, 3, difficulty, 1.5)
+      maxEnemies = engine.utility.lerpExp(1, 3, difficulty, 1.25)
 
     if (!enemies.length) {
       return true
@@ -33,7 +33,7 @@ content.spawner = (() => {
     }
 
     const fps = engine.performance.fps()
-    const chance = engine.utility.lerp(1/8/fps, 1/fps, difficulty)
+    const chance = engine.utility.lerp(1/2/fps, 1/fps, difficulty)
 
     return Math.random() < chance
   }
