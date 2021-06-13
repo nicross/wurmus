@@ -19,8 +19,10 @@ content.sfx.createNote = function ({
 
   synth.param.gain.setValueAtTime(engine.const.zeroGain, when)
   synth.param.gain.exponentialRampToValueAtTime(gain, when + 1/32)
-  synth.param.gain.linearRampToValueAtTime(gain/4, off)
-  synth.param.gain.exponentialRampToValueAtTime(engine.const.zeroGain, off + 1/2)
+  synth.param.gain.exponentialRampToValueAtTime(gain/16, off)
+  synth.param.gain.linearRampToValueAtTime(engine.const.zeroGain, off + 1/2)
+
+  synth.param.detune.linearRampToValueAtTime(1200, off)
 
   synth.stop(off + 1/2)
 
@@ -101,9 +103,15 @@ content.sfx.trainRemove = function () {
   })
 
   this.createNote({
-    frequency: engine.utility.midiToFrequency(56),
+    frequency: engine.utility.midiToFrequency(57),
     when: now + 0.1875,
     off: now + 0.25,
+  })
+
+  this.createNote({
+    frequency: engine.utility.midiToFrequency(52),
+    when: now + 0.25,
+    off: now + 0.3125,
   })
 
   return this
