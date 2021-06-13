@@ -1,10 +1,7 @@
 content.movement = (() => {
   const angularAcceleration = Math.PI,
     angularDeceleration = Math.PI * 2,
-    angularMaxVelocity = Math.PI / 2,
-    lateralAcceleration = 2,
-    lateralDeceleration = 8,
-    lateralMaxVelocity = 4
+    angularMaxVelocity = Math.PI / 2
 
   let angularThrust = 0,
     lateralThrust = engine.utility.vector3d.create()
@@ -37,17 +34,17 @@ content.movement = (() => {
         content.utility.accelerate.vector(
           engine.position.getVelocity(),
           engine.utility.vector3d.create(),
-          lateralDeceleration
+          content.const.deceleration
         )
       )
     }
 
     const currentVelocity = engine.position.getVelocity(),
-      targetVelocity = lateralThrust.scale(lateralMaxVelocity).rotateQuaternion(engine.position.getQuaternion())
+      targetVelocity = lateralThrust.scale(content.const.velocity).rotateQuaternion(engine.position.getQuaternion())
 
     const rate = currentVelocity.distance() <= targetVelocity.distance()
-      ? lateralAcceleration
-      : lateralDeceleration
+      ? content.const.acceleration
+      : content.const.deceleration
 
     engine.position.setVelocity(
       content.utility.accelerate.vector(

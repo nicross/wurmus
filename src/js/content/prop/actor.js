@@ -86,7 +86,7 @@ content.prop.actor = engine.prop.base.invent({
     return engine.utility.midiToFrequency(note)
   },
   calculateStoppingDistance: function () {
-    const deceleration = 8,
+    const deceleration = content.const.deceleration,
       delta = engine.loop.delta(),
       minimum = this.radius * 4,
       velocity = this.velocity.distance()
@@ -142,8 +142,8 @@ content.prop.actor = engine.prop.base.invent({
         : engine.utility.vector3d.create(closest)
     }
 
-    const velocity = destination.subtract(this).normalize().scale(4) // max velocity
-    this.velocity = content.utility.accelerate.vector(this.velocity, velocity, 4) // accelerate
+    const velocity = destination.subtract(this).normalize().scale(content.const.velocity)
+    this.velocity = content.utility.accelerate.vector(this.velocity, velocity, content.const.acceleration)
 
     return this
   },
@@ -155,12 +155,12 @@ content.prop.actor = engine.prop.base.invent({
       : engine.position.getVector()
 
     const velocity = destination.distance(this) > this.calculateStoppingDistance()
-      ? destination.subtract(this).normalize().scale(4) // max velocity
-      : engine.utility.vector3d.create() // zero
+      ? destination.subtract(this).normalize().scale(content.const.velocity)
+      : engine.utility.vector3d.create()
 
     const rate = this.velocity.distance() > velocity.distance()
-      ? 4 // accelerate
-      : 8 // decelerate
+      ? content.const.acceleration
+      : content.const.deceleration
 
     this.velocity = content.utility.accelerate.vector(this.velocity, velocity, rate)
 
