@@ -1,2 +1,3 @@
 # TODO
-- Sound design improvements
+- Improve train link collision detection
+- Improve offensive AI
