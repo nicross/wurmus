@@ -85,10 +85,9 @@ content.prop.actor = engine.prop.base.invent({
     this.midiNote = note
     return engine.utility.midiToFrequency(note)
   },
-  calculateStoppingDistance: function () {
+  calculateStoppingDistance: function (minimum = this.radius) {
     const deceleration = content.const.deceleration,
       delta = engine.loop.delta(),
-      minimum = this.radius * 4,
       velocity = this.velocity.distance()
 
     return minimum + (velocity * delta) + ((velocity ** 2) / (2 * deceleration))
@@ -150,11 +149,21 @@ content.prop.actor = engine.prop.base.invent({
   moveTrain: function () {
     const index = content.train.indexOf(this)
 
-    const destination = index > 0
+    const target = index > 0
       ? content.train.get(index - 1).vector()
       : engine.position.getVector()
 
-    const velocity = destination.distance(this) > this.calculateStoppingDistance()
+    const destination = target.add(
+      index == 0
+        ? engine.utility.vector3d.create({x: -this.radius * 4}).rotateQuaternion(engine.position.getQuaternion())
+        : {}
+    )
+
+    const minimum = index == 0
+      ? 0
+      : this.radius * 4
+
+    const velocity = destination.distance(this) > this.calculateStoppingDistance(minimum)
       ? destination.subtract(this).normalize().scale(content.const.velocity)
       : engine.utility.vector3d.create()
 
