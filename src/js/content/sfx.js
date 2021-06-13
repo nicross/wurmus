@@ -57,6 +57,35 @@ content.sfx.footstep = function ({
   return this
 }
 
+content.sfx.gameOver = function () {
+  const frequency = engine.utility.midiToFrequency(36)
+
+  const synth = engine.audio.synth.createSimple({
+    detune: 1200 + engine.utility.random.float(-10, 10),
+    frequency,
+    type: 'square',
+  }).filtered({
+    frequency: frequency,
+  }).connect(this.bus)
+
+  const duration = 2,
+    gain = engine.utility.fromDb(-9),
+    now = engine.audio.time()
+
+  synth.param.gain.exponentialRampToValueAtTime(gain, now + 1/32)
+  synth.param.gain.exponentialRampToValueAtTime(gain/16, now + duration/4)
+  synth.param.gain.linearRampToValueAtTime(engine.const.zeroGain, now + duration)
+
+  synth.param.detune.linearRampToValueAtTime(0, now + duration/4)
+  synth.param.detune.linearRampToValueAtTime(-1200, now + duration)
+
+  synth.filter.frequency.exponentialRampToValueAtTime(frequency * 8, now + duration)
+
+  synth.stop(now + duration)
+
+  return this
+}
+
 content.sfx.trainAdd = function () {
   const now = engine.audio.time()
 

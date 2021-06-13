@@ -15,6 +15,7 @@ app.screen.game = (() => {
 
   function handleGameOver() {
     engine.loop.pause()
+    content.sfx.gameOver()
     app.state.screen.dispatch('gameOver')
   }
 
