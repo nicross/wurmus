@@ -15,8 +15,7 @@ content.score = (() => {
 })()
 
 engine.ready(() => {
-  content.train.on('add', () => content.score.increment(25))
-  content.train.on('remove', (props) => content.score.increment(-props.length))
+  content.train.on('add', () => content.score.increment(100))
 })
 
 engine.loop.on('frame', ({delta, paused}) => {
