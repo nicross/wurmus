@@ -5,7 +5,7 @@ content.sfx.bus.gain.value = engine.utility.fromDb(0)
 
 content.sfx.createNote = function ({
   frequency,
-  gain = engine.utility.fromDb(-18),
+  gain = engine.utility.fromDb(-12),
   off,
   when,
 } = {}) {
