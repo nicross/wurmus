@@ -20,3 +20,22 @@
   border-right-color: #FBE7C6;
   border-top-color: #FBE7C6;
 }
+
+.a-app--screen-inactive .c-button {
+  animation: c-button--inactive 1s ease 0s 1 normal both;
+}
+
+@keyframes c-button--inactive {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.25);
+  }
+}
+
+@media (prefers-reduced-motion: reduced) {
+  .a-app--screen-inactive .c-button {
+    animation: none;
+  }
+}
