@@ -87,6 +87,47 @@ content.sfx.gameOver = function () {
   return this
 }
 
+content.sfx.spawn = function (prop) {
+  const frequency = prop.frequency
+
+  const synth = engine.audio.synth.createSimple({
+    detune: engine.utility.random.float(-10, 10),
+    frequency,
+    type: 'sawtooth',
+  }).filtered({
+    frequency: frequency * 2,
+    type: 'highpass',
+  })
+
+  const binaural = engine.audio.binaural.create(
+    prop.relative.normalize()
+  ).from(synth).to(this.bus)
+
+  const duration = 1,
+    gain = engine.utility.fromDb(-9),
+    now = engine.audio.time()
+
+  synth.param.gain.exponentialRampToValueAtTime(gain, now + 1/32)
+  synth.param.gain.exponentialRampToValueAtTime(gain/16, now + duration/4)
+  synth.param.gain.linearRampToValueAtTime(engine.const.zeroGain, now + duration)
+
+  synth.param.detune.linearRampToValueAtTime(1200, now + duration/4)
+
+  synth.filter.frequency.exponentialRampToValueAtTime(engine.const.maxFrequency, now + duration)
+
+  synth.stop(now + duration)
+
+  engine.loop.on('frame', function update() {
+    if (engine.audio.time() > now + duration) {
+      return engine.loop.off('frame', update)
+    }
+
+    binaural.update(prop.relative.normalize())
+  })
+
+  return this
+}
+
 content.sfx.trainAdd = function () {
   const now = engine.audio.time()
 
@@ -148,6 +189,7 @@ content.sfx.trainRemove = function () {
 }
 
 engine.ready(() => {
+  content.spawner.on('spawn', (prop) => content.sfx.spawn(prop))
   content.train.on('add', () => content.sfx.trainAdd())
   content.train.on('remove', (props) => content.sfx.trainRemove(props.length))
 })
