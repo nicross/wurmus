@@ -32,7 +32,6 @@
   }
     .a-app--screen > * {
       flex: 1 1 auto;
-      max-width: 64rem;
     }
     .a-app--screen-active {
       opacity: 1;
