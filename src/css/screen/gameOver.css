@@ -6,6 +6,7 @@
     margin-top: 3rem;
   }
   .a-gameOver--success {
+    animation: a-gameOver--success 2s ease 0s infinite normal both;
     font-family: RobotoBold, serif;
     font-size: 0.75em;
     font-weight: 700;
@@ -27,9 +28,36 @@
   transform: scale(1);
 }
 
+@keyframes a-gameOver--success {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.0625);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduced) {
   .a-gameOver--title {
     transform: scale(1) !important;
     transition: none;
+  }
+
+  @keyframes a-gameOver--success {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.75;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 }
