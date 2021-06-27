@@ -11,6 +11,19 @@
   }
   .a-tutorial--title {
     font-family: ComicSharkRegular, fantasy;
-    font-size: 3em;
+    font-size: 6em;
     line-height: 1;
+    transform: scale(1.25);
+    transition: transform 1s ease;
   }
+
+.a-app--screen-active .a-tutorial--title {
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduced) {
+  .a-tutorial--title {
+    transform: scale(1) !important;
+    transition: none;
+  }
+}

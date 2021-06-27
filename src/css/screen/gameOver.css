@@ -19,4 +19,17 @@
     font-family: ComicSharkRegular, fantasy;
     font-size: 6em;
     line-height: 1;
+    transform: scale(1.25);
+    transition: transform 1s ease;
   }
+
+.a-app--screen-active .a-gameOver--title {
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduced) {
+  .a-gameOver--title {
+    transform: scale(1) !important;
+    transition: none;
+  }
+}
