@@ -26,10 +26,6 @@ content.spawner = (() => {
       enemies = engine.props.get().filter((prop) => !prop.isTrain),
       maxEnemies = engine.utility.lerpExp(1, 3, difficulty, 1.25)
 
-    if (!enemies.length) {
-      return true
-    }
-
     if (enemies.length >= Math.round(maxEnemies)) {
       return false
     }
