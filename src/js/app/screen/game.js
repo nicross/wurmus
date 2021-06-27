@@ -16,7 +16,8 @@ app.screen.game = (() => {
   function handleGameOver() {
     engine.loop.pause()
     content.sfx.gameOver()
-    app.state.screen.dispatch('gameOver')
+
+    setTimeout(() => app.state.screen.dispatch('gameOver'), 1000)
   }
 
   function handleControls() {

@@ -25,8 +25,6 @@ app.screen.game.canvas = (() => {
 
     app.state.screen.on('enter-game', onEnter)
     app.state.screen.on('exit-game', onExit)
-
-    engine.state.on('reset', onReset)
   })
 
   function clear() {
@@ -98,21 +96,18 @@ app.screen.game.canvas = (() => {
   }
 
   function onEnter() {
+    clear()
     engine.loop.on('frame', onFrame)
   }
 
   function onExit() {
     engine.loop.off('frame', onFrame)
+    particles = []
   }
 
   function onFrame() {
     updateParticles()
     draw()
-  }
-
-  function onReset() {
-    particles = []
-    clear()
   }
 
   function onResize() {
