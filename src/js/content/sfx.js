@@ -10,6 +10,7 @@ content.sfx.createNote = function ({
   when,
 } = {}) {
   const synth = engine.audio.synth.createSimple({
+    detune: engine.utility.random.float(-10, 10),
     frequency,
     type: 'square',
     when,
