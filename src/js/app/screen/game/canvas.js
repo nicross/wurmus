@@ -29,9 +29,12 @@ app.screen.game.canvas = (() => {
 
     // Props
     for (const prop of engine.props.get()) {
-      context.fillStyle = context.strokeStyle = prop.isTrain
-        ? '#B4F8C8'
-        : '#FFAEBC'
+      const color = prop.isTrain
+        ? {h: 138, s: 83, l: 84}
+        : {h: 350, s: 100, l: 84}
+
+      color.l = engine.utility.lerp(color.l, 100, engine.utility.clamp(prop.invincibility, 0, 1))
+      context.fillStyle = context.strokeStyle = `hsl(${color.h}deg, ${color.s}%, ${color.l}%)`
 
       const x = (width / 2) - (prop.relative.y * mToPx),
         y = (height / 2) - (prop.relative.x * mToPx)
