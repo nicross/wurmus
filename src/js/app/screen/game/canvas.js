@@ -1,7 +1,15 @@
 app.screen.game.canvas = (() => {
+  const particleColors = [
+    {r: 255, g: 174, b: 188},
+    {r: 160, g: 231, b: 229},
+    {r: 180, g: 248, b: 200},
+    {r: 251, g: 231, b: 198},
+  ]
+
   let context,
     height,
     mToPx,
+    particles = [],
     root,
     width
 
@@ -11,6 +19,9 @@ app.screen.game.canvas = (() => {
 
     window.addEventListener('resize', onResize)
     onResize()
+
+    content.train.on('add', onTrainAdd)
+    content.train.on('remove', onTrainRemove)
 
     app.state.screen.on('enter-game', onEnter)
     app.state.screen.on('exit-game', onExit)
@@ -26,6 +37,17 @@ app.screen.game.canvas = (() => {
     // Tracer effect
     context.fillStyle = 'rgba(0, 0, 0, 0.5)'
     context.fillRect(0, 0, width, height)
+
+    // Particles
+    for (const particle of particles) {
+      const radius = particle.radius * (1 - particle.life)
+
+      const x = (width / 2) - (particle.relative.y * mToPx),
+        y = (height / 2) - (particle.relative.x * mToPx)
+
+      context.fillStyle = `rgba(${particle.color.r}, ${particle.color.g}, ${particle.color.b}, ${particle.life})`
+      context.fillRect(x - radius, y - radius, radius * 2, radius * 2)
+    }
 
     // Props
     for (const prop of engine.props.get()) {
@@ -56,6 +78,25 @@ app.screen.game.canvas = (() => {
     context.fill()
   }
 
+  function generateParticles(prop) {
+    const count = engine.utility.random.float(8, 24)
+
+    for (let i = 0; i < count; i += 1) {
+      const velocity = engine.utility.vector2d.unitX()
+        .scale(engine.utility.random.float(1, 10))
+        .rotate(Math.PI * engine.utility.random.float(-1, 1))
+
+      particles.push({
+        color: engine.utility.choose(particleColors, Math.random()),
+        life: 1,
+        radius: engine.utility.random.float(1, 3),
+        rotate: Math.PI/8 * engine.utility.random.float(-1, 1),
+        vector: prop.vector(),
+        velocity,
+      })
+    }
+  }
+
   function onEnter() {
     engine.loop.on('frame', onFrame)
   }
@@ -64,7 +105,13 @@ app.screen.game.canvas = (() => {
     engine.loop.off('frame', onFrame)
   }
 
+  function onFrame() {
+    updateParticles()
+    draw()
+  }
+
   function onReset() {
+    particles = []
     clear()
   }
 
@@ -74,12 +121,38 @@ app.screen.game.canvas = (() => {
     mToPx = height / 100
   }
 
-  function onFrame({paused}) {
-    if (paused) {
-      return
-    }
+  function onTrainAdd(prop) {
+    generateParticles(prop)
+  }
 
-    draw()
+  function onTrainRemove(props) {
+    for (const prop of props) {
+      generateParticles(prop)
+    }
+  }
+
+  function updateParticles() {
+    const delta = engine.loop.delta(),
+      position = engine.position.getVector(),
+      quaternion = engine.position.getQuaternion().conjugate()
+
+    particles = particles.reduce((particles, particle) => {
+      particle.life -= delta
+
+      if (particle.life <= 0) {
+        return particles
+      }
+
+      particle.vector = particle.vector.add(
+        particle.velocity.scale(delta).rotate(particle.rotate)
+      )
+
+      particle.relative = position.subtract(particle.vector).inverse().rotateQuaternion(quaternion)
+
+      particles.push(particle)
+
+      return particles
+    }, [])
   }
 
   return {}
