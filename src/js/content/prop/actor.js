@@ -15,6 +15,8 @@ content.prop.actor = engine.prop.base.invent({
       },
       position: this.vector(),
     })
+
+    this.frequency = this.calculateFrequency()
   },
   onDestroy: function () {
     if (this.synth) {
