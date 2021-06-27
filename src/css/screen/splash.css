@@ -1,8 +1,8 @@
 .a-splash {
   overflow: hidden;
 }
-  .a-splash--highscore {
-    margin-top: 1em;
+  .a-splash--content {
+    animation: a-splash--content 2s ease 2s 1 normal both;
   }
   .a-splash--cycle-background {
     animation: a-splash--cycle-background 8s linear 0s infinite;
@@ -17,6 +17,9 @@
   .a-splash--cycle-color {
     animation: a-splash--cycle-color 8s linear 0s infinite;
   }
+  .a-splash--highscore {
+    margin-top: 1em;
+  }
   .a-splash--logo {
     align-items: stretch;
     display: flex;
@@ -26,16 +29,27 @@
     letter-spacing: 0;
   }
   .a-splash--row {
+    animation: a-splash--row 2s ease 1s 1 normal both;
     display: flex;
     font-family: FiraMonoRegular, monospace;
     justify-content: space-between;
     padding: 0 1em;
   }
   .a-splash--title {
+    animation: a-splash--title 2s ease 0s 1 normal both;
     font-family: ComicSharkRegular, fantasy;
     font-size: 12em;
     line-height: 1;
   }
+
+@keyframes a-splash--content {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 
 @keyframes a-splash--cycle-background {
   0% {
@@ -64,11 +78,37 @@
   }
 }
 
-@keyframes a-splash--title {
+@keyframes a-splash--row {
   0% {
     opacity: 0;
+    transform: scale(0.8);
   }
   100% {
     opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes a-splash--title {
+  0% {
+    transform: rotate(15deg) scale(2);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduced) {
+  .a-splash--title {
+    animation: none;
+  }
+
+  @keyframes a-splash--row {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 }
