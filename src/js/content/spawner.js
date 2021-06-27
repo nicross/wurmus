@@ -1,4 +1,6 @@
 content.spawner = (() => {
+  const pubsub = engine.utility.pubsub.create()
+
   function calculateDifficulty() {
     const trainLength = content.train.length()
     return engine.utility.clamp(trainLength / 8, 0, 1)
@@ -48,13 +50,15 @@ content.spawner = (() => {
       y: distance * Math.sin(angle),
     })
 
-    engine.props.create(content.prop.actor, {
+    const prop = engine.props.create(content.prop.actor, {
       difficulty: engine.utility.lerpRandom([0, 1/8], [7/8, 1], calculateDifficulty()),
       ...delta,
     })
+
+    pubsub.emit('spawn', prop)
   }
 
-  return {
+  return engine.utility.pubsub.decorate({
     difficulty: () => calculateDifficulty(),
     import: function () {
       initializeGame()
@@ -70,7 +74,7 @@ content.spawner = (() => {
 
       return this
     },
-  }
+  }, pubsub)
 })()
 
 engine.loop.on('frame', ({paused}) => {
