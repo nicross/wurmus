@@ -182,7 +182,7 @@ content.prop.actor = engine.prop.base.invent({
   },
   onTrainAdd: function () {
     delete this.frequency
-    this.invincible(3)
+    this.invincible(2)
     this.isTrain = true
     return this
   },
