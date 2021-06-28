@@ -104,11 +104,11 @@ content.sfx.spawn = function (prop) {
   ).from(synth).to(this.bus)
 
   const duration = 1,
-    gain = engine.utility.fromDb(-9),
+    gain = engine.utility.fromDb(-18),
     now = engine.audio.time()
 
   synth.param.gain.exponentialRampToValueAtTime(gain, now + 1/32)
-  synth.param.gain.exponentialRampToValueAtTime(gain/16, now + duration/4)
+  synth.param.gain.exponentialRampToValueAtTime(gain/2, now + duration/4)
   synth.param.gain.linearRampToValueAtTime(engine.const.zeroGain, now + duration)
 
   synth.param.detune.linearRampToValueAtTime(1200, now + duration/4)
