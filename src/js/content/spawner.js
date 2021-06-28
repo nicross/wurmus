@@ -1,5 +1,6 @@
 content.spawner = (() => {
-  const pubsub = engine.utility.pubsub.create()
+  const bus = engine.audio.mixer.createBus(),
+    pubsub = engine.utility.pubsub.create()
 
   function calculateDifficulty() {
     const trainLength = content.train.length()
@@ -13,6 +14,7 @@ content.spawner = (() => {
 
     for (let i = 0; i < count; i += 1) {
       const prop = engine.props.create(content.prop.actor, {
+        destination: bus,
         difficulty: 0,
         ...position.add({x: -(count - i) * distance}),
       })
@@ -47,6 +49,7 @@ content.spawner = (() => {
     })
 
     const prop = engine.props.create(content.prop.actor, {
+      destination: bus,
       difficulty: engine.utility.lerpRandom([0, 1/8], [7/8, 1], calculateDifficulty()),
       ...delta,
     })
@@ -55,9 +58,18 @@ content.spawner = (() => {
   }
 
   return engine.utility.pubsub.decorate({
+    bus: () => bus,
     difficulty: () => calculateDifficulty(),
     import: function () {
       initializeGame()
+      return this
+    },
+    onPause: function () {
+      engine.audio.ramp.exponential(bus.gain, engine.const.zeroGain, 1)
+      return this
+    },
+    onResume: function () {
+      engine.audio.ramp.set(bus.gain, 1)
       return this
     },
     reset: function () {
@@ -80,6 +92,10 @@ engine.loop.on('frame', ({paused}) => {
 
   content.spawner.update()
 })
+
+// XXX: Ride prop bus gain based on loop state (via app.screen.game)
+engine.loop.on('pause', () => content.spawner.onPause())
+engine.loop.on('resume', () => content.spawner.onResume())
 
 engine.state.on('import', () => content.spawner.import())
 engine.state.on('reset', () => content.spawner.reset())
