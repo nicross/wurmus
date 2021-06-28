@@ -97,10 +97,10 @@ content.prop.actor = engine.prop.base.invent({
   createSynth: function () {
     this.synth = engine.audio.synth.createAm({
       carrierFrequency: this.frequency,
-      carrierType: this.isTrain ? 'sawtooth' : 'triangle',
+      carrierType: 'sawtooth',
       modFrequency: engine.utility.random.float(7, 9),
     }).filtered({
-      frequency: this.frequencya,
+      frequency: this.frequency,
     }).connect(this.output)
 
     return this
@@ -201,7 +201,7 @@ content.prop.actor = engine.prop.base.invent({
       strength = engine.utility.scale(Math.abs(angle), 0, Math.PI/2, 1, 0)
 
     const amodDepth = this.isTrain ? 1/2 : 0,
-      color = engine.utility.lerpExp(1, 4, strength)
+      color = engine.utility.lerpExp(1, 4, strength, 3)
 
     let gain = (strength ** 2) * (this.invincibility ? engine.utility.clamp(1 - this.invincibility, 0, 1) : 1) / 2
 
