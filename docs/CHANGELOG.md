@@ -5,4 +5,5 @@
 - Added title theme song
 - Added visual particle effects to collisions
 - Added visual invincibility indicator for actors
+- Fixed escape key not exiting game in desktop builds
 - Fixed invincibility not applying to train members

@@ -50,11 +50,6 @@ app.controls = (() => {
       updateGame()
       updateUi()
 
-      // XXX: Global quit
-      if (uiDelta.quit && !document.pointerLockElement) {
-        app.quit()
-      }
-
       return this
     },
   }

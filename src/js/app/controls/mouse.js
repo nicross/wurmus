@@ -31,13 +31,7 @@ app.controls.mouse = (() => {
 
   function onEnterGame() {
     if (app.isElectron()) {
-      if (app.utility.escape.is()) {
-        // XXX: Eventually Chrome seems to ignore pointerlock requests if player cancels it 2 times without clicking mouse
-        // TODO: Look into better solution
-        app.utility.escape.once('up', requestPointerLock)
-      } else {
-        requestPointerLock()
-      }
+      requestPointerLock()
     }
   }
 
