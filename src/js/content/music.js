@@ -2,13 +2,16 @@ content.music = (() => {
   const bus = engine.audio.mixer.createBus(),
     reverb = engine.audio.mixer.send.reverb.create()
 
-  let centerLfo,
+  let centerLfoDetune,
+    centerLfoFilter,
     centerPhaser,
     centerSynth,
     leftBinaural,
+    leftLfo,
     leftSynth,
     kickSynth,
     rightBinaural,
+    rightLfo,
     rightSynth,
     subSynth
 
@@ -16,30 +19,37 @@ content.music = (() => {
   reverb.from(bus)
 
   function createSynths() {
+    destroySynths()
+
     centerSynth = engine.audio.synth.createSimple({
       detune: engine.utility.random.float(-5, 5),
       frequency: engine.utility.midiToFrequency(68),
-      gain: engine.utility.fromDb(-6),
+      gain: engine.utility.fromDb(-9),
       type: 'sawtooth',
     }).filtered({
-      frequency: engine.utility.midiToFrequency(68),
+      frequency: engine.utility.midiToFrequency(68) * 2,
     }).chainAssign('phaser', engine.audio.effect.createPhaser({
       depth: 0.005,
       dry: 0,
-      feedback: 0.825,
+      feedback: 0.5,
       frequency: 1/8,
       wet: 1,
     })).connect(bus)
 
-    centerLfo = engine.audio.synth.createLfo({
+    centerLfoDetune = engine.audio.synth.createLfo({
       depth: -100,
       frequency: 1/12,
     }).shaped(
       engine.audio.shape.distort()
     ).connect(centerSynth.param.detune)
 
+    centerLfoFilter = engine.audio.synth.createLfo({
+      depth: engine.utility.midiToFrequency(68) * 1,
+      frequency: 1/70,
+    }).connect(centerSynth.filter.frequency)
+
     kickSynth = engine.audio.synth.createAm({
-      carrierFrequency: engine.utility.midiToFrequency(24),
+      carrierFrequency: engine.utility.midiToFrequency(36),
       carrierGain: 0,
       carrierType: 'sawtooth',
       gain: engine.utility.fromDb(-3),
@@ -55,13 +65,18 @@ content.music = (() => {
       carrierFrequency: engine.utility.midiToFrequency(52),
       carrierGain: 3/4,
       carrierType: 'sawtooth',
-      gain: engine.utility.fromDb(-3),
+      gain: 2/3,
       modDepth: 1/4,
       modFrequency: 3,
       modType: 'triangle',
     }).filtered({
       frequency: engine.utility.midiToFrequency(60) * 2,
     })
+
+    leftLfo = engine.audio.synth.createLfo({
+      depth: 1/3,
+      frequency: 1/30,
+    }).connect(leftSynth.param.gain)
 
     leftBinaural = engine.audio.binaural.create({
       x: 0.5,
@@ -73,13 +88,18 @@ content.music = (() => {
       carrierFrequency: engine.utility.midiToFrequency(60),
       carrierGain: 3/4,
       carrierType: 'sawtooth',
-      gain: engine.utility.fromDb(-3),
+      gain: 2/3,
       modDepth: 1/4,
       modFrequency: 4,
       modType: 'triangle',
     }).filtered({
       frequency: engine.utility.midiToFrequency(60) * 2,
     })
+
+    rightLfo = engine.audio.synth.createLfo({
+      depth: 1/3,
+      frequency: 1/40,
+    }).connect(rightSynth.param.gain)
 
     rightBinaural = engine.audio.binaural.create({
       x: 0.5,
@@ -94,9 +114,14 @@ content.music = (() => {
   }
 
   function destroySynths() {
-    if (centerLfo) {
-      centerLfo.stop()
-      centerLfo = undefined
+    if (centerLfoDetune) {
+      centerLfoDetune.stop()
+      centerLfoDetune = undefined
+    }
+
+    if (centerLfoFilter) {
+      centerLfoFilter.stop()
+      centerLfoFilter = undefined
     }
 
     if (centerPhaser) {
@@ -119,6 +144,11 @@ content.music = (() => {
       leftBinaural = undefined
     }
 
+    if (leftLfo) {
+      leftLfo.stop()
+      leftLfo = undefined
+    }
+
     if (leftSynth) {
       leftSynth.stop()
       leftSynth = undefined
@@ -127,6 +157,11 @@ content.music = (() => {
     if (rightBinaural) {
       rightBinaural.destroy()
       rightBinaural = undefined
+    }
+
+    if (rightLfo) {
+      rightLfo.stop()
+      rightLfo = undefined
     }
 
     if (rightSynth) {
