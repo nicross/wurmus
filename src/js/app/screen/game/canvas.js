@@ -33,8 +33,10 @@ app.screen.game.canvas = (() => {
 
   function draw() {
     // Tracer effect
-    context.fillStyle = 'rgba(0, 0, 0, 0.5)'
-    context.fillRect(0, 0, width, height)
+    if (!engine.loop.isPaused()) {
+      context.fillStyle = 'rgba(0, 0, 0, 0.5)'
+      context.fillRect(0, 0, width, height)
+    }
 
     // Particles
     for (const particle of particles) {
