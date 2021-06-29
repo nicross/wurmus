@@ -182,7 +182,7 @@ content.prop.actor = engine.prop.base.invent({
   },
   onTrainAdd: function () {
     delete this.frequency
-    this.invincible(2)
+    this.invincible(1.25)
     this.isTrain = true
     return this
   },
@@ -203,7 +203,7 @@ content.prop.actor = engine.prop.base.invent({
     const amodDepth = this.isTrain ? 1/2 : 0,
       color = engine.utility.lerpExp(1, 4, strength, 3)
 
-    let gain = (strength ** 2) * (this.invincibility ? engine.utility.clamp(1 - this.invincibility, 0, 1) : 1) / 2
+    let gain = (strength ** 2) * (this.invincibility ? engine.utility.clamp(1 - this.invincibility, 0, 1) ** 2 : 1) / 2
 
     engine.audio.ramp.set(this.synth.filter.frequency, this.frequency * color)
     engine.audio.ramp.set(this.synth.param.carrierGain, 1 - amodDepth)
