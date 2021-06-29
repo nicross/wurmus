@@ -17,7 +17,7 @@ content.collisions = (() => {
           continue
         }
 
-        if (prop.distance < 0.5 && prop.isTrain) {
+        if (prop.distance < 0.5 && prop.isTrain && content.train.indexOf(prop) > 0) {
           content.train.remove(prop)
           continue
         }

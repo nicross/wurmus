@@ -6,4 +6,5 @@
 - Added visual particle effects to collisions
 - Added visual invincibility indicator for actors
 - Fixed escape key not exiting game in desktop builds
-- Fixed invincibility not applying to train members
+- Fixed invincibility not applying to new train members
+- Made first train member invincible to player collisions
