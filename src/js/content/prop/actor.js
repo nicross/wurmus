@@ -95,13 +95,20 @@ content.prop.actor = engine.prop.base.invent({
     return minimum + (velocity * delta) + ((velocity ** 2) / (2 * deceleration))
   },
   createSynth: function () {
-    this.synth = engine.audio.synth.createAm({
-      carrierFrequency: this.frequency,
-      carrierType: 'sawtooth',
-      modFrequency: engine.utility.random.float(7, 9),
-    }).filtered({
+    const context = engine.audio.context()
+
+    this.synth = engine.audio.synth.createSimple({
+      frequency: this.frequency,
+      type: 'sawtooth',
+    }).chainAssign('lfoTarget', context.createGain()).filtered({
       frequency: this.frequency,
     }).connect(this.output)
+
+    if (this.isTrain) {
+      this.synth.lfo = content.lfos.choose()
+      this.synth.lfo.connect(this.synth.lfoTarget.gain)
+      engine.audio.ramp.set(this.synth.lfoTarget.gain, 0.5)
+    }
 
     return this
   },
@@ -110,6 +117,10 @@ content.prop.actor = engine.prop.base.invent({
 
     this.synth.param.gain.linearRampToValueAtTime(engine.const.zeroGain, release)
     this.synth.stop(release)
+
+    if (this.synth.lfo) {
+      this.synth.lfo.disconnect(this.synth.lfoTarget.gain)
+    }
 
     delete this.synth
 
@@ -182,14 +193,28 @@ content.prop.actor = engine.prop.base.invent({
   },
   onTrainAdd: function () {
     delete this.frequency
-    this.invincible(1.25)
+    this.invincible(1.5)
     this.isTrain = true
+
+    if (this.synth && !this.synth.lfo) {
+      engine.audio.ramp.set(this.synth.lfoTarget.gain, 0.5)
+      this.synth.lfo = content.lfos.choose()
+      this.synth.lfo.connect(this.synth.lfoTarget.gain)
+    }
+
     return this
   },
   onTrainRemove: function () {
     delete this.frequency
     this.invincible(1).run(engine.utility.lerpRandom([4,6], [1,2], this.difficulty))
     this.isTrain = false
+
+    if (this.synth && this.synth.lfo) {
+      engine.audio.ramp.set(this.synth.lfoTarget.gain, 1)
+      this.synth.lfo.disconnect(this.synth.lfoTarget.gain)
+      delete this.synth.lfo
+    }
+
     return this
   },
   run: function (time = 1) {
@@ -200,16 +225,13 @@ content.prop.actor = engine.prop.base.invent({
     const angle = Math.atan2(this.relative.y, this.relative.x),
       strength = engine.utility.scale(Math.abs(angle), 0, Math.PI/2, 1, 0)
 
-    const amodDepth = this.isTrain ? 1/2 : 0,
-      color = engine.utility.lerpExp(1, 4, strength, 3)
+    const color = engine.utility.lerpExp(1, 4, strength, 3)
 
     let gain = (strength ** 2) * (this.invincibility ? engine.utility.clamp(1 - this.invincibility, 0, 1) ** 2 : 1) / 2
 
     engine.audio.ramp.set(this.synth.filter.frequency, this.frequency * color)
-    engine.audio.ramp.set(this.synth.param.carrierGain, 1 - amodDepth)
     engine.audio.ramp.set(this.synth.param.frequency, this.frequency)
     engine.audio.ramp.set(this.synth.param.gain, gain)
-    engine.audio.ramp.set(this.synth.param.mod.depth, amodDepth)
 
     return this
   },
