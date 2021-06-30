@@ -17,13 +17,18 @@ content.prop.actor = engine.prop.base.invent({
     })
 
     this.frequency = this.calculateFrequency()
+    this.time = 0
   },
   onDestroy: function () {
     if (this.synth) {
       this.synth.stop()
     }
   },
-  onUpdate: function () {
+  onUpdate: function ({delta, paused}) {
+    if (paused) {
+      return this
+    }
+
     if (this.isTrain) {
       this.moveTrain()
     } else {
@@ -33,6 +38,7 @@ content.prop.actor = engine.prop.base.invent({
     this.frequency = this.calculateFrequency()
     this.footstepper.parameters.color = this.isTrain ? 1/4 : 4
     this.footstepper.parameters.frequency = this.frequency
+    this.time += delta
 
     this.footstepper.update({
       position: this.vector(),
