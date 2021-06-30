@@ -4,7 +4,6 @@ content.sfx.bus = engine.audio.mixer.createBus()
 content.sfx.bus.gain.value = engine.utility.fromDb(0)
 
 content.sfx.concurrentFootsteps = 0
-content.sfx.maxConcurrentFootsteps = 50
 
 content.sfx.createNote = function ({
   frequency,
@@ -39,7 +38,7 @@ content.sfx.footstep = function ({
   frequency = 440,
   velocity = 1,
 } = {}) {
-  if (this.concurrentFootsteps >= this.maxConcurrentFootsteps) {
+  if (this.concurrentFootsteps >= content.const.maxConcurrentFootsteps) {
     return this
   }
 

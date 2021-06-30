@@ -36,7 +36,7 @@ content.prop.actor = engine.prop.base.invent({
     }
 
     this.frequency = this.calculateFrequency()
-    this.footstepper.isMuted = content.spawner.getIndexByDistance(this) > (this.isTrain ? 4 : 8)
+    this.footstepper.isMuted = content.spawner.getIndexByDistance(this) > (this.isTrain ? content.const.maxAllyFootsteps : content.const.maxEnemyFootsteps)
     this.footstepper.parameters.color = this.isTrain ? 1/4 : 4
     this.footstepper.parameters.frequency = this.frequency
     this.time += delta
