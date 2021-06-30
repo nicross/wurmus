@@ -15,6 +15,7 @@ content.utility.footstepper.prototype = {
     this.position = engine.utility.vector3d.create(position)
     return this
   },
+  isMuted: false,
   reset: function ({
     position = {},
   } = {}) {
@@ -28,9 +29,11 @@ content.utility.footstepper.prototype = {
       shouldTrigger = distance >= this.distance
 
     if (shouldTrigger) {
-      content.sfx.footstep({
-        ...this.parameters,
-      })
+      if (!this.isMuted) {
+        content.sfx.footstep({
+          ...this.parameters,
+        })
+      }
 
       this.position = engine.utility.vector3d.create(position)
     }
