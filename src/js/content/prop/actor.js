@@ -104,6 +104,7 @@ content.prop.actor = engine.prop.base.invent({
     const context = engine.audio.context()
 
     this.synth = engine.audio.synth.createSimple({
+      detune: engine.utility.random.float(-10, 10),
       frequency: this.frequency,
       type: 'sawtooth',
     }).chainAssign('lfoTarget', context.createGain()).filtered({
