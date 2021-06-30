@@ -1,1 +1,16 @@
 # TODO
+- Power-ups
+  - Newly spawned enemies occasionally contain power-ups
+  - Enemies with powerups emit aleotoric music
+  - Type is generated on pickup
+  - On pickup a unique sound plays with a toast notification in center of screen
+  - Types
+    - Fear
+      - All enemies run away for N seconds
+      - Scream sound
+    - Invincibility
+      - All allies are invincible for N seconds
+      - Traditional power-up sound
+    - Taunt
+      - All enemies target player for N seconds
+      - Whistle sound
