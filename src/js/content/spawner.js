@@ -2,13 +2,16 @@ content.spawner = (() => {
   const bus = engine.audio.mixer.createBus(),
     pubsub = engine.utility.pubsub.create()
 
+  const alliesByDistance = [],
+    enemiesByDistance = []
+
   function calculateDifficulty() {
     const trainLength = content.train.length()
     return engine.utility.clamp(trainLength / 8, 0, 1)
   }
 
   function initializeGame() {
-    const count = 10,
+    const count = 1,
       distance = content.prop.actor.radius * 4,
       position = engine.position.getVector()
 
@@ -57,9 +60,27 @@ content.spawner = (() => {
     pubsub.emit('spawn', prop)
   }
 
+  function updateDistances() {
+    const props = engine.props.get()
+
+    alliesByDistance.length = 0
+    enemiesByDistance.length = 0
+
+    for (const prop of props) {
+      const stack = prop.isTrain ? alliesByDistance : enemiesByDistance
+      stack.push(prop)
+    }
+
+    const sortByDistance = (a, b) => a.distance - b.distance
+
+    alliesByDistance.sort(sortByDistance)
+    enemiesByDistance.sort(sortByDistance)
+  }
+
   return engine.utility.pubsub.decorate({
     bus: () => bus,
     difficulty: () => calculateDifficulty(),
+    getIndexByDistance: (prop) => alliesByDistance.includes(prop) ? alliesByDistance.indexOf(prop) : enemiesByDistance.indexOf(prop),
     import: function () {
       initializeGame()
       return this
@@ -73,12 +94,17 @@ content.spawner = (() => {
       return this
     },
     reset: function () {
+      alliesByDistance.length = 0
+      enemiesByDistance.length = 0
+
       return this
     },
     update: function () {
       if (shouldSpawn()) {
         spawn()
       }
+
+      updateDistances()
 
       return this
     },
