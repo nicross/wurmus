@@ -1,5 +1,5 @@
 # Wurmus
-An endless snake-like game of tag submitted to [GMTK Jam 2021](https://itch.io/jam/gmtk-2021). Developed with [syngen](https://github.com/nicross/syngen).
+An endless snake-like game of tag submitted to [GMTK Jam 2021](https://itch.io/jam/gmtk-2021) and [BlindJam2](https://itch.io/jam/blindjam2). Developed with [syngen](https://github.com/nicross/syngen).
 
 ## Getting started
 To get started, please  use [npm](https://nodejs.org) to install the required dependencies:
