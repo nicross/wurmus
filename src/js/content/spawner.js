@@ -8,7 +8,7 @@ content.spawner = (() => {
   }
 
   function initializeGame() {
-    const count = 1,
+    const count = 10,
       distance = content.prop.actor.radius * 4,
       position = engine.position.getVector()
 

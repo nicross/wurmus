@@ -3,6 +3,9 @@ content.sfx = {}
 content.sfx.bus = engine.audio.mixer.createBus()
 content.sfx.bus.gain.value = engine.utility.fromDb(0)
 
+content.sfx.concurrentFootsteps = 0
+content.sfx.maxConcurrentFootsteps = 50
+
 content.sfx.createNote = function ({
   frequency,
   gain = engine.utility.fromDb(-12),
@@ -36,6 +39,10 @@ content.sfx.footstep = function ({
   frequency = 440,
   velocity = 1,
 } = {}) {
+  if (this.concurrentFootsteps >= this.maxConcurrentFootsteps) {
+    return this
+  }
+
   const synth = engine.audio.synth.createSimple({
     detune: engine.utility.random.float(-10, 10),
     frequency,
@@ -54,6 +61,9 @@ content.sfx.footstep = function ({
   synth.param.detune.linearRampToValueAtTime(1200, now + duration/2)
 
   synth.stop(now + duration)
+
+  this.concurrentFootsteps += 1
+  setTimeout(() => this.concurrentFootsteps -= 1, duration * 1000)
 
   return this
 }

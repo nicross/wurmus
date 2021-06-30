@@ -8,5 +8,6 @@
 - Added visual invincibility indicator for actors
 - Fixed escape key not exiting game in desktop builds
 - Fixed invincibility not applying to new train members
+- Limited maximum number of active footstep sounds
 - Improved performance by reusing certain oscillators
 - Made first train member invincible to player collisions
