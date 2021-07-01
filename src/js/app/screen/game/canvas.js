@@ -20,6 +20,7 @@ app.screen.game.canvas = (() => {
     window.addEventListener('resize', onResize)
     onResize()
 
+    content.powerups.on('apply', onPowerupsApply)
     content.train.on('add', onTrainAdd)
     content.train.on('remove', onTrainRemove)
 
@@ -32,8 +33,10 @@ app.screen.game.canvas = (() => {
   }
 
   function draw() {
+    const isPaused = engine.loop.isPaused()
+
     // Tracer effect
-    if (!engine.loop.isPaused()) {
+    if (!isPaused) {
       context.fillStyle = 'rgba(0, 0, 0, 0.5)'
       context.fillRect(0, 0, width, height)
     }
@@ -71,6 +74,10 @@ app.screen.game.canvas = (() => {
       } else {
         context.fill()
       }
+
+      if (!isPaused && prop.isPowerup && (Math.random() < 1/8)) {
+        generateParticle(prop.vector())
+      }
     }
 
     // Player
@@ -80,22 +87,24 @@ app.screen.game.canvas = (() => {
     context.fill()
   }
 
-  function generateParticles(prop) {
-    const count = engine.utility.random.float(8, 24)
+  function generateParticle(vector) {
+    const velocity = engine.utility.vector2d.unitX()
+      .scale(engine.utility.random.float(1, 10))
+      .rotate(Math.PI * engine.utility.random.float(-1, 1))
 
+    particles.push({
+      color: engine.utility.choose(particleColors, Math.random()),
+      life: 1,
+      radius: engine.utility.random.float(1, 3),
+      rotate: Math.PI/8 * engine.utility.random.float(-1, 1),
+      vector,
+      velocity,
+    })
+  }
+
+  function generateParticles(vector, count = 0) {
     for (let i = 0; i < count; i += 1) {
-      const velocity = engine.utility.vector2d.unitX()
-        .scale(engine.utility.random.float(1, 10))
-        .rotate(Math.PI * engine.utility.random.float(-1, 1))
-
-      particles.push({
-        color: engine.utility.choose(particleColors, Math.random()),
-        life: 1,
-        radius: engine.utility.random.float(1, 3),
-        rotate: Math.PI/8 * engine.utility.random.float(-1, 1),
-        vector: prop.vector(),
-        velocity,
-      })
+      generateParticle(vector)
     }
   }
 
@@ -114,6 +123,10 @@ app.screen.game.canvas = (() => {
     draw()
   }
 
+  function onPowerupsApply() {
+    generateParticles(engine.position.getVector(), 32)
+  }
+
   function onResize() {
     height = root.height = root.clientHeight
     width = root.width = root.clientWidth
@@ -121,12 +134,14 @@ app.screen.game.canvas = (() => {
   }
 
   function onTrainAdd(prop) {
-    generateParticles(prop)
+    const count = engine.utility.random.float(8, 24)
+    generateParticles(prop.vector(), count)
   }
 
   function onTrainRemove(props) {
     for (const prop of props) {
-      generateParticles(prop)
+      const count = engine.utility.random.float(8, 24)
+      generateParticles(prop.vector(), count)
     }
   }
 
