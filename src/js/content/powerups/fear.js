@@ -3,7 +3,7 @@ content.powerups.fear = content.powerups.register({
   apply: function () {
     const props = engine.props.get()
 
-    for (const props of prop) {
+    for (const prop of props) {
       if (!prop.isTrain) {
         prop.run(3)
       }

@@ -1,7 +1,7 @@
 content.powerups = (() => {
   const pubsub = engine.utility.pubsub.create(),
     registry = new Map(),
-    spawnChance = 1/8
+    spawnChance = 1/6
 
   function applyRandomPowerup() {
     const powerup = chooseRandomPowerup()
@@ -38,7 +38,7 @@ content.powerups = (() => {
 
       return this
     },
-    onTrainAdd: function () {
+    onTrainAdd: function (prop) {
       if (prop.isPowerup) {
         prop.isPowerup = false
         applyRandomPowerup()
@@ -61,7 +61,7 @@ content.powerups = (() => {
       return this
     },
     register: (definition) => {
-      powerups.set(definition.key, definition)
+      registry.set(definition.key, definition)
       return definition
     },
   }, pubsub)
