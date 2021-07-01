@@ -204,35 +204,6 @@ content.prop.actor = engine.prop.base.invent({
   needsSynth: function () {
     return this.relative.x >= 0
   },
-  powerupGrain: function () {
-    const fps = engine.performance.fps()
-
-    if (Math.random() > 1/fps*8) {
-      return this
-    }
-
-    const frequency = engine.utility.choose(this.frequencies, Math.random()) * 4
-
-    const synth = engine.audio.synth.createSimple({
-      frequency: frequency,
-      type: 'sawtooth',
-    }).filtered({
-      frequency: frequency * engine.utility.random.float(0.5, 3),
-    }).connect(this.output)
-
-    const duration = 1/8,
-      now = engine.audio.time()
-
-    synth.param.gain.exponentialRampToValueAtTime(engine.utility.fromDb(-6), now + 1/64)
-    synth.param.gain.linearRampToValueAtTime(engine.const.zeroGain, now + duration)
-    synth.stop(now + duration)
-
-    return this
-  },
-  taunt: function (time = 1) {
-    this.taunted = time
-    return this
-  },
   onTrainAdd: function () {
     delete this.frequency
     this.invincible(1.5)
@@ -264,8 +235,37 @@ content.prop.actor = engine.prop.base.invent({
 
     return this
   },
+  powerupGrain: function () {
+    const fps = engine.performance.fps()
+
+    if (Math.random() > 1/fps*8) {
+      return this
+    }
+
+    const frequency = engine.utility.choose(this.frequencies, Math.random()) * 4
+
+    const synth = engine.audio.synth.createSimple({
+      frequency: frequency,
+      type: 'sawtooth',
+    }).filtered({
+      frequency: frequency * engine.utility.random.float(0.5, 3),
+    }).connect(this.output)
+
+    const duration = 1/8,
+      now = engine.audio.time()
+
+    synth.param.gain.exponentialRampToValueAtTime(engine.utility.fromDb(-6), now + 1/64)
+    synth.param.gain.linearRampToValueAtTime(engine.const.zeroGain, now + duration)
+    synth.stop(now + duration)
+
+    return this
+  },
   run: function (time = 1) {
     this.running = time
+    return this
+  },
+  taunt: function (time = 1) {
+    this.taunted = time
     return this
   },
   updateSynth: function () {
