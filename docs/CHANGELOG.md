@@ -1,16 +1,22 @@
 # Wurmus changelog
 ## v1.1.0
+- Powerups
+  - Added powerups which are occasionally attached to enemies
+  - Added audio and visual cues for powerups
+  - Added fear powerup which makes all enemies run away from allies
+  - Added invincibility powerup which makes all allies invincible
+  - Added taunt powerup which makes enemies run toward the player
 - Audio
-  - Added directional audio cue to indicate new enemy spawns
+  - Added directional cues to indicate new enemy spawns
   - Added title theme song
   - Limited maximum number of active footstep sounds
   - Improved performance by reusing certain oscillators
 - Gameplay
-  - Fixed invincibility not applying to new train members
+  - Fixed invincibility not applying to newly captured allies
   - Made first train member invincible to player collisions
 - Graphics
   - Added animations to screens and transitions between them
-  - Added fade to new actor spawns
+  - Added fade in to new actor spawns
   - Added particle effects to collisions
   - Added invincibility indicator for actors
 - User interface
