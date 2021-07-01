@@ -1,9 +1,26 @@
 content.prop.actor = engine.prop.base.invent({
   name: 'actor',
+  frequencies: [
+    71,
+    69,
+    67,
+    65,
+    64,
+    62,
+    60,
+    59,
+    57,
+    55,
+    53,
+    52,
+    50,
+    48,
+  ].map(engine.utility.midiToFrequency),
   invincibility: 0,
   isTrain: false,
   radius: 0.5,
   running: 0,
+  taunted: 0,
   onConstruct: function ({
     difficulty = 0,
   } = {}) {
@@ -67,36 +84,12 @@ content.prop.actor = engine.prop.base.invent({
     }
   },
   calculateFrequency: function () {
-    const notes = [
-      71,
-      69,
-      67,
-      65,
-      64,
-      62,
-      60,
-      59,
-      57,
-      55,
-      53,
-      52,
-      50,
-      48,
-    ]
-
     if (!this.isTrain) {
-      return this.frequency || engine.utility.midiToFrequency(engine.utility.choose(notes, Math.random()))
+      return this.frequency || engine.utility.choose(this.frequencies, Math.random())
     }
 
     const index = content.train.indexOf(this)
-    const note = notes[index % notes.length]
-
-    if (this.midiNote == note) {
-      return this.frequency
-    }
-
-    this.midiNote = note
-    return engine.utility.midiToFrequency(note)
+    return this.frequencies[index % this.frequencies.length]
   },
   calculateStoppingDistance: function (minimum = this.radius) {
     const deceleration = content.const.deceleration,
