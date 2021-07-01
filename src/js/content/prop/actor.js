@@ -176,7 +176,7 @@ content.prop.actor = engine.prop.base.invent({
     const index = content.train.indexOf(this)
 
     const target = index > 0
-      ? content.train.get(index - 1).vector()
+      ? content.train.ahead(this).vector()
       : engine.position.getVector()
 
     const destination = target.add(
@@ -205,10 +205,12 @@ content.prop.actor = engine.prop.base.invent({
     return this.relative.x >= 0
   },
   onTrainAdd: function () {
-    delete this.frequency
-    this.invincible(1.5)
     this.isTrain = true
 
+    // Reset frequency
+    delete this.frequency
+
+    // Attach LFO
     if (this.synth && !this.synth.lfo) {
       engine.audio.ramp.set(this.synth.lfoTarget.gain, 0.5)
       this.synth.lfo = content.lfos.choose()
@@ -220,18 +222,29 @@ content.prop.actor = engine.prop.base.invent({
     engine.audio.ramp.set(this.output.gain, engine.const.zeroGain)
     this.output.gain.exponentialRampToValueAtTime(1, now + 1)
 
+    // Accumulate invincibility bonus from previous ally (can stack)
+    const invincibility = (content.train.behind(this) || {}).invincibility || 0
+    this.invincible(1 + invincibility)
+
     return this
   },
   onTrainRemove: function () {
-    delete this.frequency
-    this.invincible(1).run(engine.utility.lerpRandom([4,6], [1,2], this.difficulty))
     this.isTrain = false
 
+    // Reset frequency
+    delete this.frequency
+
+    // Detach LFO
     if (this.synth && this.synth.lfo) {
       engine.audio.ramp.set(this.synth.lfoTarget.gain, 1)
       this.synth.lfo.disconnect(this.synth.lfoTarget.gain)
       delete this.synth.lfo
     }
+
+    // Run away briefly
+    this.invincible(1).run(
+      engine.utility.lerpRandom([4,6], [1,2], this.difficulty)
+    )
 
     return this
   },

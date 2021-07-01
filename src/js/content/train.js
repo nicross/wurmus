@@ -14,6 +14,14 @@ content.train = (() => {
 
       return this
     },
+    ahead: (prop) => {
+      const index = train.indexOf(prop)
+      return train[index - 1]
+    },
+    behind: (prop) => {
+      const index = train.indexOf(prop)
+      return train[index + 1]
+    },
     get: (index) => train[index],
     has: (prop) => train.includes(prop),
     indexOf: (prop) => train.indexOf(prop),

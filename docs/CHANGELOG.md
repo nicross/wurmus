@@ -12,8 +12,9 @@
   - Limited maximum number of active footstep sounds
   - Improved performance by reusing certain oscillators
 - Gameplay
+  - Added invincibility bonuses to multiple captures
   - Fixed invincibility not applying to newly captured allies
-  - Made first train member invincible to player collisions
+  - Made first tail member always invincible to the player
 - Graphics
   - Added animations to screens and transitions between them
   - Added fade in to new actor spawns
