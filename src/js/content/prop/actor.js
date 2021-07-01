@@ -53,6 +53,10 @@ content.prop.actor = engine.prop.base.invent({
       this.running = content.utility.accelerate.value(this.running, 0, 1)
     }
 
+    if (this.taunted) {
+      this.taunted = content.utility.accelerate.value(this.taunted, 0, 1)
+    }
+
     if (this.needsSynth()) {
       if (!this.synth) {
         this.createSynth()
@@ -139,7 +143,9 @@ content.prop.actor = engine.prop.base.invent({
     return this
   },
   moveTag: function () {
-    const chance = engine.utility.lerp(1/12, 1/2, this.difficulty)
+    const chance = (this.running || this.taunted)
+      ? 1
+      : engine.utility.lerp(1/12, 1/2, this.difficulty)
 
     if (Math.random() > chance) {
       return this
@@ -149,13 +155,15 @@ content.prop.actor = engine.prop.base.invent({
       position = engine.position.getVector(),
       vector = this.vector()
 
+    const opposite = (from) => vector.subtract(from).normalize().add(vector)
     let destination = vector.clone()
-    let opposite = (from) => vector.subtract(from).normalize().add(vector)
 
     if (this.running) {
       destination = vector.distance(position) < vector.distance(closest)
         ? opposite(position)
         : opposite(closest)
+    } else if (this.taunted) {
+      destination = position.clone()
     } else {
       destination = vector.distance(position) < 1
         ? opposite(position)
@@ -198,6 +206,10 @@ content.prop.actor = engine.prop.base.invent({
   },
   needsSynth: function () {
     return this.relative.x >= 0
+  },
+  taunt: function (time = 1) {
+    this.taunted = time
+    return this
   },
   onTrainAdd: function () {
     delete this.frequency
