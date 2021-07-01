@@ -82,6 +82,10 @@ content.prop.actor = engine.prop.base.invent({
     } else if (this.synth) {
       this.destroySynth()
     }
+
+    if (this.isPowerup) {
+      this.powerupGrain()
+    }
   },
   calculateFrequency: function () {
     if (!this.isTrain) {
@@ -199,6 +203,31 @@ content.prop.actor = engine.prop.base.invent({
   },
   needsSynth: function () {
     return this.relative.x >= 0
+  },
+  powerupGrain: function () {
+    const fps = engine.performance.fps()
+
+    if (Math.random() > 1/fps*8) {
+      return this
+    }
+
+    const frequency = engine.utility.choose(this.frequencies, Math.random()) * 4
+
+    const synth = engine.audio.synth.createSimple({
+      frequency: frequency,
+      type: 'sawtooth',
+    }).filtered({
+      frequency: frequency * engine.utility.random.float(0.5, 3),
+    }).connect(this.output)
+
+    const duration = 1/8,
+      now = engine.audio.time()
+
+    synth.param.gain.exponentialRampToValueAtTime(engine.utility.fromDb(-6), now + 1/64)
+    synth.param.gain.linearRampToValueAtTime(engine.const.zeroGain, now + duration)
+    synth.stop(now + duration)
+
+    return this
   },
   taunt: function (time = 1) {
     this.taunted = time
