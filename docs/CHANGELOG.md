@@ -1,11 +1,11 @@
 # Wurmus changelog
 ## v1.1.0
-- Powerups
-  - Added powerups which are occasionally attached to enemies
-  - Added audio and visual cues for powerups
-  - Added fear powerup which makes all enemies run away from allies
-  - Added invincibility powerup which makes all allies invincible
-  - Added taunt powerup which makes enemies run toward the player
+- Power-ups
+  - Added power-ups which are occasionally attached to enemies
+  - Added audio and visual cues for power-ups
+  - Added fear power-up which makes all enemies run away from allies
+  - Added invincibility power-up which makes all allies invincible
+  - Added taunt power-up which makes enemies run toward the player
 - Audio
   - Added directional cues to indicate new enemy spawns
   - Added title theme song
@@ -18,7 +18,7 @@
 - Graphics
   - Added animations to screens and transitions between them
   - Added fade in to new actor spawns
-  - Added particle effects to collisions
+  - Added particle effects to collisions and power-ups
   - Added invincibility indicator for actors
 - User interface
   - Fixed escape key not exiting while in-game for desktop builds
