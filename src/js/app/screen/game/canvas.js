@@ -75,8 +75,12 @@ app.screen.game.canvas = (() => {
         context.fill()
       }
 
-      if (!isPaused && prop.isPowerup && (Math.random() < 1/8)) {
-        generateParticle(prop.vector())
+      if (!isPaused && prop.isPowerup) {
+        const fps = engine.performance.fps()
+
+        if (Math.random() < 1/fps*8) {
+          generateParticle(prop.vector())
+        }
       }
     }
 
