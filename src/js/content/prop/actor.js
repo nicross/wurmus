@@ -244,6 +244,11 @@ content.prop.actor = engine.prop.base.invent({
       this.synth.lfo.connect(this.synth.lfoTarget.gain)
     }
 
+    // Duck audio
+    const now = engine.audio.time()
+    engine.audio.ramp.set(this.output.gain, engine.const.zeroGain)
+    this.output.gain.exponentialRampToValueAtTime(1, now + 1)
+
     return this
   },
   onTrainRemove: function () {
@@ -269,7 +274,7 @@ content.prop.actor = engine.prop.base.invent({
 
     const color = engine.utility.lerpExp(1, 4, strength, 3)
 
-    let gain = (strength ** 2) * (this.invincibility ? engine.utility.clamp(1 - this.invincibility, 0, 1) ** 2 : 1) / 2
+    let gain = (strength ** 2) / 2
 
     engine.audio.ramp.set(this.synth.filter.frequency, this.frequency * color)
     engine.audio.ramp.set(this.synth.param.frequency, this.frequency)
