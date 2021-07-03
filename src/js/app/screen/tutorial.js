@@ -15,6 +15,7 @@ app.screen.tutorial = (() => {
   })
 
   function onEnter() {
+    app.toolbar.attachTo(root)
     app.utility.focus.set(root)
     engine.loop.on('frame', onFrame)
   }

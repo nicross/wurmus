@@ -1,0 +1,46 @@
+.a-toolbar {
+  align-items: flex-end;
+  animation: a-toolbar 2s ease 0s 1 normal both;
+  bottom: 0;
+  display: flex;
+  font-size: 0.75em;
+  justify-content: flex-end;
+  left: 0;
+  padding: 1rem;
+  position: absolute;
+  width: 100%;
+}
+  .a-toolbar--toggle {
+    border: 1px solid #FFFFFF;
+    border-radius: 1px;
+    padding: 0.5em 1em;
+    opacity: 0.5;
+    transition: opacity 0.25s ease;
+  }
+  .a-toolbar--toggle:active,
+  .a-toolbar--toggle:focus,
+  .a-toolbar--toggle:hover {
+    opacity: 1;
+  }
+
+@keyframes a-toolbar {
+  0% {
+    opacity: 0;
+    transform: translateY(-2em);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduced) {
+  @keyframes a-toolbar {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
