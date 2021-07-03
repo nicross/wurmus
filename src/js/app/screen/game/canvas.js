@@ -57,8 +57,8 @@ app.screen.game.canvas = (() => {
       const alpha = prop.time < 1 ? prop.time : 1
 
       const color = prop.isTrain
-        ? {h: 138, s: 83, l: 84}
-        : {h: 350, s: 100, l: 84}
+        ? {h: 138, s: 83, l: 75}
+        : {h: 350, s: 100, l: 75}
 
       color.l = engine.utility.lerp(color.l, 100, engine.utility.clamp(prop.invincibility, 0, 1))
       context.fillStyle = context.strokeStyle = `hsla(${color.h}deg, ${color.s}%, ${color.l}%, ${alpha})`

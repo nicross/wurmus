@@ -18,6 +18,7 @@
 - Gameplay
   - Added dodging enemies at higher difficulties
   - Added invincibility bonuses to multiple captures
+  - Improved accessibility of team colors
   - Fixed invincibility not applying to newly captured allies
   - Made first tail member always invincible to the player
 - Graphics
