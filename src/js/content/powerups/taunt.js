@@ -10,6 +10,13 @@ content.powerups.taunt = content.powerups.register({
       }
     }
 
+    this.sfx()
+
     return this
+  },
+  sfx: () => {
+    const bus = content.sfx.bus
+
+    // TODO: synth
   },
 })
