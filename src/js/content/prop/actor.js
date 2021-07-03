@@ -259,12 +259,12 @@ content.prop.actor = engine.prop.base.invent({
 
     const synth = engine.audio.synth.createSimple({
       frequency: frequency,
-      type: 'sawtooth',
+      type: 'triangle',
     }).filtered({
-      frequency: frequency * engine.utility.random.float(0.5, 3),
+      frequency: frequency * engine.utility.random.float(0.5, 4),
     }).connect(this.output)
 
-    const duration = 1/8,
+    const duration = 1/2,
       now = engine.audio.time()
 
     synth.param.gain.exponentialRampToValueAtTime(engine.utility.fromDb(-6), now + 1/64)
