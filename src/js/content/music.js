@@ -184,9 +184,9 @@ content.music = (() => {
   }
 
   function stop() {
-    const release = 1
+    const release = 1/8
 
-    engine.audio.ramp.exponential(bus.gain, engine.const.zeroGain, release)
+    engine.audio.ramp.linear(bus.gain, engine.const.zeroGain, release)
     setTimeout(destroySynths, release * 1000)
   }
 
@@ -202,7 +202,7 @@ content.music = (() => {
       if (isActive) {
         stop()
       }
-      
+
       return this
     },
     setActive: function (value) {
