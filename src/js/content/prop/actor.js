@@ -154,8 +154,8 @@ content.prop.actor = engine.prop.base.invent({
   },
   moveTag: function () {
     const chance = (this.running || this.taunted)
-      ? 1
-      : engine.utility.lerp(1/12, 1/2, this.difficulty)
+      ? engine.utility.lerp(1/8, 1, this.difficulty)
+      : engine.utility.lerp(1/16, 1/2, this.difficulty)
 
     if (Math.random() > chance) {
       return this
