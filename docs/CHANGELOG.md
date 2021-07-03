@@ -22,4 +22,5 @@
   - Added particle effects to collisions and power-ups
   - Added invincibility indicator for actors
 - User interface
+  - Added button to toggle music on title screens
   - Fixed escape key not exiting while in-game for desktop builds

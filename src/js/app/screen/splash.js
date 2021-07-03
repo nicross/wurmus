@@ -30,13 +30,24 @@ app.screen.splash = (() => {
   function onFrame() {
     const ui = app.controls.ui()
 
-    if ((ui.enter || ui.space) && app.utility.focus.is(start)) {
-      // Native button click
-      return
+    if (ui.start || (app.utility.focus.is(root) && (ui.confirm || ui.enter || ui.space))) {
+      onStartClick()
     }
 
-    if (ui.confirm || ui.enter || ui.space) {
-      onStartClick()
+    if (ui.confirm) {
+      const focused = app.utility.focus.get(root)
+
+      if (focused) {
+        return focused.click()
+      }
+    }
+
+    if (ui.up || ui.left) {
+      return app.utility.focus.setPreviousFocusable(root)
+    }
+
+    if (ui.down || ui.right) {
+      return app.utility.focus.setNextFocusable(root)
     }
   }
 
