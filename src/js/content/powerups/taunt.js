@@ -6,7 +6,7 @@ content.powerups.taunt = content.powerups.register({
 
     for (const prop of props) {
       if (!prop.isTrain) {
-        prop.taunt(3)
+        prop.taunt(5)
       }
     }
 

@@ -6,7 +6,7 @@ content.powerups.invincibility = content.powerups.register({
 
     for (const prop of props) {
       if (prop.isTrain) {
-        prop.invincible(3)
+        prop.invincible(5)
       }
     }
 

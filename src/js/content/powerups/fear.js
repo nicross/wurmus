@@ -6,7 +6,7 @@ content.powerups.fear = content.powerups.register({
 
     for (const prop of props) {
       if (!prop.isTrain) {
-        prop.run(3)
+        prop.run(5)
       }
     }
 
