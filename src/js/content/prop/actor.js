@@ -181,7 +181,7 @@ content.prop.actor = engine.prop.base.invent({
 
     const destination = target.add(
       index == 0
-        ? engine.utility.vector3d.create({x: -this.radius * 4}).rotateQuaternion(engine.position.getQuaternion())
+        ? engine.utility.vector3d.create({x: -this.radius * 5}).rotateQuaternion(engine.position.getQuaternion())
         : {}
     )
 
@@ -189,13 +189,15 @@ content.prop.actor = engine.prop.base.invent({
       ? 0
       : this.radius * 4
 
+    const bonus = 10
+
     const velocity = destination.distance(this) > this.calculateStoppingDistance(minimum)
-      ? destination.subtract(this).normalize().scale(content.const.velocity)
+      ? destination.subtract(this).normalize().scale(content.const.velocity * bonus)
       : engine.utility.vector3d.create()
 
     const rate = this.velocity.distance() > velocity.distance()
-      ? content.const.acceleration
-      : content.const.deceleration
+      ? content.const.acceleration * bonus
+      : content.const.deceleration * bonus
 
     this.velocity = content.utility.accelerate.vector(this.velocity, velocity, rate)
 
