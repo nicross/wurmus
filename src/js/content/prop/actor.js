@@ -109,7 +109,7 @@ content.prop.actor = engine.prop.base.invent({
       detune: engine.utility.random.float(-10, 10),
       frequency: this.frequency,
       type: 'sawtooth',
-    }).chainAssign('lfoTarget', context.createGain()).filtered({
+    }).chainAssign('ducker', context.createGain()).chainAssign('lfoTarget', context.createGain()).filtered({
       frequency: this.frequency,
     }).connect(this.output)
 
@@ -132,6 +132,19 @@ content.prop.actor = engine.prop.base.invent({
     }
 
     delete this.synth
+
+    return this
+  },
+  duck: function () {
+    if (!this.synth) {
+      return this
+    }
+
+    const now = engine.audio.time()
+
+    this.synth.ducker.gain.setValueAtTime(this.synth.ducker.gain.value, now)
+    this.synth.ducker.gain.linearRampToValueAtTime(engine.const.zeroGain, now + engine.loop.delta())
+    this.synth.ducker.gain.exponentialRampToValueAtTime(1, now + 1)
 
     return this
   },
@@ -219,15 +232,11 @@ content.prop.actor = engine.prop.base.invent({
       this.synth.lfo.connect(this.synth.lfoTarget.gain)
     }
 
-    // Duck audio temporarily
-    const now = engine.audio.time()
-    this.output.gain.setValueAtTime(this.output.gain.value, now)
-    this.output.gain.linearRampToValueAtTime(engine.const.zeroGain, now + engine.loop.delta())
-    this.output.gain.exponentialRampToValueAtTime(1, now + 1)
-
     // Accumulate invincibility bonus from previous ally (can stack)
     const invincibility = (content.train.behind(this) || {}).invincibility || 0
     this.invincible(1 + invincibility)
+
+    this.duck()
 
     return this
   },
@@ -250,7 +259,7 @@ content.prop.actor = engine.prop.base.invent({
     )
 
     // Unduck audio (just in case)
-    engine.audio.ramp.set(this.output.gain, 1)
+    this.duck()
 
     return this
   },
