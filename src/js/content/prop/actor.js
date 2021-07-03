@@ -219,9 +219,10 @@ content.prop.actor = engine.prop.base.invent({
       this.synth.lfo.connect(this.synth.lfoTarget.gain)
     }
 
-    // Duck audio
+    // Duck audio temporarily
     const now = engine.audio.time()
-    engine.audio.ramp.set(this.output.gain, engine.const.zeroGain)
+    this.output.gain.setValueAtTime(this.output.gain.value, now)
+    this.output.gain.linearRampToValueAtTime(engine.const.zeroGain, now + engine.loop.delta())
     this.output.gain.exponentialRampToValueAtTime(1, now + 1)
 
     // Accumulate invincibility bonus from previous ally (can stack)
@@ -247,6 +248,9 @@ content.prop.actor = engine.prop.base.invent({
     this.invincible(1).run(
       engine.utility.lerpRandom([4,6], [1,2], this.difficulty)
     )
+
+    // Unduck audio (just in case)
+    engine.audio.ramp.set(this.output.gain, 1)
 
     return this
   },
