@@ -6,6 +6,7 @@ content.music = (() => {
     centerLfoFilter,
     centerPhaser,
     centerSynth,
+    isActive,
     leftBinaural,
     leftLfo,
     leftSynth,
@@ -175,25 +176,50 @@ content.music = (() => {
     }
   }
 
-  return {
-    start: function () {
-      const attack = 4
+  function start() {
+    const attack = 4
 
-      createSynths()
-      engine.audio.ramp.linear(bus.gain, engine.utility.fromDb(-15), attack)
+    createSynths()
+    engine.audio.ramp.linear(bus.gain, engine.utility.fromDb(-15), attack)
+  }
+
+  function stop() {
+    const release = 1
+
+    engine.audio.ramp.exponential(bus.gain, engine.const.zeroGain, release)
+    setTimeout(destroySynths, release * 1000)
+  }
+
+  return {
+    onPause: function () {
+      if (isActive) {
+        start()
+      }
 
       return this
     },
-    stop: function () {
-      const release = 1
+    onResume: function () {
+      if (isActive) {
+        stop()
+      }
+      
+      return this
+    },
+    setActive: function (value) {
+      isActive = value
 
-      engine.audio.ramp.exponential(bus.gain, engine.const.zeroGain, release)
-      setTimeout(destroySynths, release * 1000)
+      if (engine.loop.isPaused()) {
+        if (isActive) {
+          start()
+        } else {
+          stop()
+        }
+      }
 
       return this
     },
   }
 })()
 
-engine.loop.on('pause', () => content.music.start())
-engine.loop.on('resume', () => content.music.stop())
+engine.loop.on('pause', () => content.music.onPause())
+engine.loop.on('resume', () => content.music.onResume())
