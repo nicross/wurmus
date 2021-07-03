@@ -165,7 +165,23 @@ content.prop.actor = engine.prop.base.invent({
       position = engine.position.getVector(),
       vector = this.vector()
 
+    const avoid = (from) => {
+      // Scale the dodge distance based on difficulty
+      const scale = content.const.velocity * (this.taunted ? 1 : engine.utility.lerp(1/8, 1, this.difficulty))
+
+      // Generate two points at right angles away
+      const base = vector.subtract(from).normalize().scale(scale),
+        v1 = base.rotateEuler({yaw: Math.PI/2}).add(from),
+        v2 = base.rotateEuler({yaw: -Math.PI/2}).add(from)
+
+      // Pick closest point to avoid crossing path
+      return v1.distance(vector) < v2.distance(vector)
+        ? v1
+        : v2
+    }
+
     const opposite = (from) => vector.subtract(from).normalize().add(vector)
+
     let destination = vector.clone()
 
     if (this.running) {
@@ -173,10 +189,12 @@ content.prop.actor = engine.prop.base.invent({
         ? opposite(position)
         : opposite(closest)
     } else if (this.taunted) {
-      destination = position.clone()
+      destination = vector.distance(position) < vector.distance(closest)
+        ? position
+        : avoid(closest)
     } else {
-      destination = vector.distance(position) < 1
-        ? opposite(position)
+      destination = vector.distance(position) < vector.distance(closest)
+        ? avoid(position)
         : engine.utility.vector3d.create(closest)
     }
 

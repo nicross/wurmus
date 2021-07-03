@@ -12,6 +12,7 @@
   - Limited maximum number of active footstep sounds
   - Improved performance by reusing certain oscillators
 - Gameplay
+  - Added dodging enemies at higher difficulties
   - Added invincibility bonuses to multiple captures
   - Fixed invincibility not applying to newly captured allies
   - Made first tail member always invincible to the player
