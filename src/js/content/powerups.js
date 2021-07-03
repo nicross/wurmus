@@ -3,6 +3,8 @@ content.powerups = (() => {
     registry = new Map(),
     spawnChance = 1/6
 
+  let bus = engine.audio.mixer.createBus()
+
   function applyRandomPowerup() {
     const powerup = chooseRandomPowerup()
     powerup.apply()
@@ -25,12 +27,22 @@ content.powerups = (() => {
     return false
   }
 
+  function killBus() {
+    engine.audio.ramp.exponential(bus.gain, engine.const.zeroGain, 1)
+    bus = engine.audio.mixer.createBus()
+  }
+
   function shouldSpawnPowerup() {
     return !hasSpawnedPowerups() && (Math.random() < spawnChance)
   }
 
   return engine.utility.pubsub.decorate({
+    bus: () => bus,
     choose: () => chooseRandomPowerup(),
+    onPause: function () {
+      killBus()
+      return this
+    },
     onSpawnerSpawn: function (prop) {
       if (shouldSpawnPowerup()) {
         prop.isPowerup = true
@@ -72,3 +84,5 @@ engine.ready(() => {
   content.train.on('add', (prop) => content.powerups.onTrainAdd(prop))
   content.train.on('remove', (prop) => content.powerups.onTrainRemove(prop))
 })
+
+engine.loop.on('pause', () => content.powerups.onPause())

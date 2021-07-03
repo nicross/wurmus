@@ -32,7 +32,7 @@ content.powerups.invincibility = content.powerups.register({
     }).filtered({
       detune: 0,
       frequency,
-    }).connect(content.sfx.bus)
+    }).connect(content.powerups.bus())
 
     synth.filter.detune.linearRampToValueAtTime(2400, now + this.duration)
     synth.param.detune.linearRampToValueAtTime(9600, now + this.duration)

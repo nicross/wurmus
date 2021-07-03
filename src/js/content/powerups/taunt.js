@@ -34,7 +34,7 @@ content.powerups.taunt = content.powerups.register({
     }).filtered({
       detune: 0,
       frequency,
-    }).connect(content.sfx.bus)
+    }).connect(content.powerups.bus())
 
     synth.filter.detune.linearRampToValueAtTime(2400, now + this.duration)
     synth.param.detune.linearRampToValueAtTime(-1200, now + this.duration)

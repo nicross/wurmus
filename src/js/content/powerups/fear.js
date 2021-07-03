@@ -32,7 +32,7 @@ content.powerups.fear = content.powerups.register({
       fmodType: 'sawtooth',
     }).filtered({
       frequency: frequency,
-    }).connect(content.sfx.bus)
+    }).connect(content.powerups.bus())
 
     synth.filter.detune.linearRampToValueAtTime(12000, now + this.duration)
     synth.param.detune.linearRampToValueAtTime(-600, now + this.duration)
