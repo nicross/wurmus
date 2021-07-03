@@ -12,6 +12,7 @@
   - Added title theme song
   - Limited maximum number of active footstep sounds
   - Improved performance by reusing certain oscillators
+  - Reworked various sounds and levels for clarity
 - Controls
   - Increased mouse sensitivity
 - Gameplay
