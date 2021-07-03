@@ -12,6 +12,8 @@
   - Added title theme song
   - Limited maximum number of active footstep sounds
   - Improved performance by reusing certain oscillators
+- Controls
+  - Increased mouse sensitivity
 - Gameplay
   - Added dodging enemies at higher difficulties
   - Added invincibility bonuses to multiple captures
