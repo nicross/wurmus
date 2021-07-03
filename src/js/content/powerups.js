@@ -10,7 +10,7 @@ content.powerups = (() => {
   }
 
   function chooseRandomPowerup() {
-    return engine.utility.choose([...registry.values()], Math.random())
+    return engine.utility.chooseWeighted([...registry.values()], Math.random())
   }
 
   function hasSpawnedPowerups() {

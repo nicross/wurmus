@@ -1,5 +1,6 @@
 content.powerups.fear = content.powerups.register({
   key: 'fear',
+  weight: 2,
   apply: function () {
     const props = engine.props.get()
 
