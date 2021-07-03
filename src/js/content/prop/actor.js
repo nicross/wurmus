@@ -300,7 +300,7 @@ content.prop.actor = engine.prop.base.invent({
     const duration = 1/2,
       now = engine.audio.time()
 
-    synth.param.gain.exponentialRampToValueAtTime(engine.utility.fromDb(-10.5), now + 1/64)
+    synth.param.gain.linearRampToValueAtTime(engine.utility.fromDb(-10.5), now + duration/2)
     synth.param.gain.linearRampToValueAtTime(engine.const.zeroGain, now + duration)
     synth.stop(now + duration)
 
