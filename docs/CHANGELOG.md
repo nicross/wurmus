@@ -6,6 +6,7 @@
   - Added fear power-up which makes all enemies run away from allies
   - Added invincibility power-up which makes all allies invincible
   - Added taunt power-up which makes enemies run toward the player
+  - Added point bonuses for collecting power-ups
 - Audio
   - Added directional cues to indicate new enemy spawns
   - Added title theme song

@@ -15,6 +15,7 @@ content.score = (() => {
 })()
 
 engine.ready(() => {
+  content.powerups.on('apply', () => content.score.increment(100))
   content.train.on('add', () => content.score.increment(100))
 })
 
