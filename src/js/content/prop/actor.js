@@ -184,14 +184,14 @@ content.prop.actor = engine.prop.base.invent({
 
     let destination = vector.clone()
 
-    if (this.running) {
-      destination = vector.distance(position) < vector.distance(closest)
-        ? opposite(position)
-        : opposite(closest)
-    } else if (this.taunted) {
+    if (this.taunted) {
       destination = vector.distance(position) < vector.distance(closest)
         ? position
         : avoid(closest)
+    } else if (this.running) {
+      destination = vector.distance(position) < vector.distance(closest)
+        ? opposite(position)
+        : opposite(closest)
     } else {
       destination = vector.distance(position) < vector.distance(closest)
         ? avoid(position)
