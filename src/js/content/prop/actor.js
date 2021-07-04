@@ -144,7 +144,8 @@ content.prop.actor = engine.prop.base.invent({
 
     this.ducker.gain.setValueAtTime(this.ducker.gain.value, now)
     this.ducker.gain.linearRampToValueAtTime(engine.const.zeroGain, now + 1/64)
-    this.ducker.gain.exponentialRampToValueAtTime(1, now + 1)
+    this.ducker.gain.setValueAtTime(engine.const.zeroGain, now + 1/2)
+    this.ducker.gain.linearRampToValueAtTime(1, now + 1)
 
     return this
   },
