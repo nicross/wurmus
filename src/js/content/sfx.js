@@ -51,7 +51,7 @@ content.sfx.footstep = function ({
   }).connect(destination)
 
   const duration = 0.5,
-    gain = engine.utility.fromDb(engine.utility.lerp(-13.5, -7.5, velocity)),
+    gain = engine.utility.fromDb(engine.utility.lerp(-14, -8, velocity)),
     now = engine.audio.time()
 
   synth.param.gain.exponentialRampToValueAtTime(gain, now + 1/32)
