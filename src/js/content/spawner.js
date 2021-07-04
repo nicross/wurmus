@@ -7,7 +7,7 @@ content.spawner = (() => {
 
   function calculateDifficulty() {
     const trainLength = content.train.length()
-    return engine.utility.clamp(trainLength / 8, 0, 1)
+    return engine.utility.clamp(trainLength / 10, 0, 1)
   }
 
   function initializeGame() {
