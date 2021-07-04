@@ -204,31 +204,41 @@ content.prop.actor = engine.prop.base.invent({
     return this
   },
   moveTrain: function () {
-    const index = content.train.indexOf(this)
+    const index = content.train.indexOf(this),
+      position = engine.position.getVector(),
+      vector = this.vector()
 
-    const target = index > 0
+    let destination = index > 0
       ? content.train.ahead(this).vector()
-      : engine.position.getVector()
+      : position
 
-    const destination = target.add(
-      index == 0
-        ? engine.utility.vector3d.create({x: -this.radius * 5}).rotateQuaternion(engine.position.getQuaternion())
-        : {}
-    )
-
-    const minimum = index == 0
+    let minStoppingDistance = index == 0
       ? 0
       : this.radius * 4
 
-    const bonus = 10
+    if (index == 0) {
+      // Point 180 degrees behind player
+      destination = destination.add(
+        engine.utility.vector3d.create({x: -this.radius * 5})
+          .rotateQuaternion(engine.position.getQuaternion())
+      )
+    } else if (vector.distance(position) < this.radius * 4) {
+      // Centroid between opposite point away from player and destination
+      destination = vector.subtract(position).normalize().scale(this.radius * 4).add(vector)
+        .add(destination).scale(1/2)
 
-    const velocity = destination.distance(this) > this.calculateStoppingDistance(minimum)
-      ? destination.subtract(this).normalize().scale(content.const.velocity * bonus)
+      minStoppingDistance = this.radius
+    }
+
+    const movementBonus = engine.utility.lerp(1, 10, this.difficulty)
+
+    const velocity = destination.distance(this) > this.calculateStoppingDistance(minStoppingDistance)
+      ? destination.subtract(this).normalize().scale(content.const.velocity * movementBonus)
       : engine.utility.vector3d.create()
 
     const rate = this.velocity.distance() > velocity.distance()
-      ? content.const.acceleration * bonus
-      : content.const.deceleration * bonus
+      ? content.const.acceleration * movementBonus
+      : content.const.deceleration * movementBonus
 
     this.velocity = content.utility.accelerate.vector(this.velocity, velocity, rate)
 

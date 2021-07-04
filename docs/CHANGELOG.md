@@ -9,16 +9,16 @@
   - Added point bonuses for collecting power-ups
 - Audio
   - Added directional cues to indicate new enemy spawns
-  - Added title theme song
+  - Added title theme music
   - Limited maximum number of active footstep sounds
   - Improved performance by reusing certain oscillators
   - Reworked various sounds and levels for clarity
 - Controls
   - Increased mouse sensitivity
 - Gameplay
-  - Added dodging enemies at higher difficulties
+  - Added evasive ally behaviors to reduce player collisions
+  - Added evasive enemy behaviors at higher difficulties
   - Added invincibility bonuses to multiple captures
-  - Improved accessibility of team colors
   - Fixed invincibility not applying to newly captured allies
   - Made first tail member always invincible to the player
 - Graphics
@@ -26,6 +26,7 @@
   - Added fade in to new actor spawns
   - Added particle effects to collisions and power-ups
   - Added invincibility indicator for actors
+  - Improved accessibility of team colors
 - User interface
   - Added button to toggle music on title screens
   - Fixed escape key not exiting while in-game for desktop builds
