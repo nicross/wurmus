@@ -9,6 +9,12 @@ app.screen.game.train = (() => {
   })
 
   function onEnter() {
+    if (app.settings.computed.graphicsOn) {
+      root.classList.remove('a-game--train-graphicsOff')
+    } else {
+      root.classList.add('a-game--train-graphicsOff')
+    }
+
     root.innerHTML = ''
     root.setAttribute('aria-live', 'assertive')
     root.removeAttribute('aria-hidden')
@@ -22,7 +28,7 @@ app.screen.game.train = (() => {
   }
 
   function onFrame({paused}) {
-    if (paused || !app.settings.computed.graphicsOn) {
+    if (paused) {
       return
     }
 

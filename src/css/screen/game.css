@@ -27,11 +27,15 @@
     width: 100%;
     z-index: 2;
   }
-  @keyframes a-game--train {
-    0% {
-      background-position: center 0%;
+    .a-game--train-graphicsOff {
+      visibility: hidden;
     }
-    100% {
-      background-position: center 200%;
-    }
+
+@keyframes a-game--train {
+  0% {
+    background-position: center 0%;
   }
+  100% {
+    background-position: center 200%;
+  }
+}
