@@ -24,17 +24,21 @@ content.prop.actor = engine.prop.base.invent({
   onConstruct: function ({
     difficulty = 0,
   } = {}) {
+    const context = engine.audio.context()
+
     this.difficulty = difficulty
+    this.frequency = this.calculateFrequency()
+    this.time = 0
+
+    this.ducker = context.createGain()
+    this.ducker.connect(this.output)
 
     this.footstepper = content.utility.footstepper.create({
       parameters: {
-        destination: this.output,
+        destination: this.ducker,
       },
       position: this.vector(),
     })
-
-    this.frequency = this.calculateFrequency()
-    this.time = 0
   },
   onDestroy: function () {
     if (this.synth) {
@@ -109,9 +113,9 @@ content.prop.actor = engine.prop.base.invent({
       detune: engine.utility.random.float(-10, 10),
       frequency: this.frequency,
       type: 'sawtooth',
-    }).chainAssign('ducker', context.createGain()).chainAssign('lfoTarget', context.createGain()).filtered({
+    }).chainAssign('lfoTarget', context.createGain()).filtered({
       frequency: this.frequency,
-    }).connect(this.output)
+    }).connect(this.ducker)
 
     if (this.isTrain) {
       this.synth.lfo = content.lfos.choose()
@@ -136,15 +140,11 @@ content.prop.actor = engine.prop.base.invent({
     return this
   },
   duck: function () {
-    if (!this.synth) {
-      return this
-    }
-
     const now = engine.audio.time()
 
-    this.synth.ducker.gain.setValueAtTime(this.synth.ducker.gain.value, now)
-    this.synth.ducker.gain.linearRampToValueAtTime(engine.const.zeroGain, now + engine.loop.delta())
-    this.synth.ducker.gain.exponentialRampToValueAtTime(1, now + 1)
+    this.ducker.gain.setValueAtTime(this.ducker.gain.value, now)
+    this.ducker.gain.linearRampToValueAtTime(engine.const.zeroGain, now + 1/64)
+    this.ducker.gain.exponentialRampToValueAtTime(1, now + 1)
 
     return this
   },
@@ -285,6 +285,9 @@ content.prop.actor = engine.prop.base.invent({
       engine.utility.lerpRandom([4,6], [1,2], this.difficulty)
     )
 
+    // Unduck (obscure bug)
+    engine.audio.ramp.set(this.ducker.gain, 1)
+
     return this
   },
   powerupGrain: function () {
@@ -301,7 +304,7 @@ content.prop.actor = engine.prop.base.invent({
       type: 'triangle',
     }).filtered({
       frequency: frequency * engine.utility.random.float(0.5, 4),
-    }).connect(this.output)
+    }).connect(this.ducker)
 
     const duration = 1/2,
       now = engine.audio.time()
