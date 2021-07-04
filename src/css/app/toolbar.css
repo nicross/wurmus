@@ -22,6 +22,12 @@
   .a-toolbar--toggle:hover {
     opacity: 1;
   }
+  .a-toolbar--toggle[aria-checked="false"] {
+    text-decoration: line-through;
+  }
+  .a-toolbar--toggle + .a-toolbar--toggle {
+    margin-left: 0.5em;
+  }
 
 @keyframes a-toolbar {
   0% {

@@ -123,6 +123,10 @@ app.screen.game.canvas = (() => {
   }
 
   function onFrame() {
+    if (!app.settings.computed.graphicsOn) {
+      return
+    }
+
     updateParticles()
     draw()
   }

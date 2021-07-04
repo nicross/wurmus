@@ -28,5 +28,6 @@
   - Added invincibility indicator for actors
   - Improved accessibility of team colors
 - User interface
+  - Added button to toggle in-game graphics
   - Added button to toggle music on title screens
   - Fixed escape key not exiting while in-game for desktop builds

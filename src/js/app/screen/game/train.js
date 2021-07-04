@@ -9,7 +9,7 @@ app.screen.game.train = (() => {
   })
 
   function onEnter() {
-    update()
+    root.innerHTML = ''
     root.setAttribute('aria-live', 'assertive')
     root.removeAttribute('aria-hidden')
     engine.loop.on('frame', onFrame)
@@ -22,7 +22,7 @@ app.screen.game.train = (() => {
   }
 
   function onFrame({paused}) {
-    if (paused) {
+    if (paused || !app.settings.computed.graphicsOn) {
       return
     }
 

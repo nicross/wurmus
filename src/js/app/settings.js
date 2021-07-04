@@ -1,5 +1,9 @@
 app.settings = (() => {
   const settings = {
+    graphicsOn: {
+      compute: Boolean,
+      default: true,
+    },
     musicOn: {
       compute: Boolean,
       default: true,
