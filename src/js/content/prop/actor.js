@@ -286,9 +286,6 @@ content.prop.actor = engine.prop.base.invent({
       engine.utility.lerpRandom([4,6], [1,2], this.difficulty)
     )
 
-    // Unduck audio (just in case)
-    this.duck()
-
     return this
   },
   powerupGrain: function () {
