@@ -13,8 +13,6 @@
   - Limited maximum number of active footstep sounds
   - Improved performance by reusing certain oscillators
   - Reworked various sounds and levels for clarity
-- Controls
-  - Increased mouse sensitivity
 - Gameplay
   - Added evasive ally behaviors to reduce player collisions
   - Added evasive enemy behaviors at higher difficulties
@@ -31,3 +29,5 @@
   - Added button to toggle in-game graphics
   - Added button to toggle music on title screens
   - Fixed escape key not exiting while in-game for desktop builds
+  - Increased mouse sensitivity
+  - Updated documentation to reflect changes
