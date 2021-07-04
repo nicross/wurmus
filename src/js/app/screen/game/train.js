@@ -37,7 +37,7 @@ app.screen.game.train = (() => {
     }
 
     value = length
-    root.innerHTML = value
+    root.innerHTML = value || ''
   }
 
   return {}
