@@ -230,7 +230,7 @@ content.prop.actor = engine.prop.base.invent({
       minStoppingDistance = this.radius
     }
 
-    const movementBonus = engine.utility.lerp(1, 10, this.difficulty)
+    const movementBonus = engine.utility.scale(Math.min(index, 10), 0, 10, 10, 1)
 
     const velocity = destination.distance(this) > this.calculateStoppingDistance(minStoppingDistance)
       ? destination.subtract(this).normalize().scale(content.const.velocity * movementBonus)
