@@ -199,7 +199,12 @@ content.prop.actor = engine.prop.base.invent({
     }
 
     const velocity = destination.subtract(this).normalize().scale(content.const.velocity)
-    this.velocity = content.utility.accelerate.vector(this.velocity, velocity, content.const.acceleration)
+
+    const rate = this.velocity.distance() > velocity.distance()
+      ? content.const.acceleration
+      : content.const.deceleration
+
+    this.velocity = content.utility.accelerate.vector(this.velocity, velocity, rate)
 
     return this
   },
