@@ -151,7 +151,7 @@ content.prop.actor = engine.prop.base.invent({
   moveTag: function () {
     const chance = (this.running || this.taunted)
       ? engine.utility.lerp(1/8, 1, this.difficulty)
-      : engine.utility.lerp(1/12, 3/4, this.difficulty)
+      : engine.utility.lerp(1/16, 1/2, this.difficulty)
 
     if (Math.random() > chance) {
       return this
@@ -163,7 +163,7 @@ content.prop.actor = engine.prop.base.invent({
 
     const avoid = (from, target) => {
       // Scale the dodge distance based on difficulty
-      const scale = content.const.velocity * (this.taunted ? 1 : engine.utility.lerp(1/8, 1, this.difficulty))
+      const scale = content.const.velocity * engine.utility.lerpExp(0, 1, this.difficulty, 2)
 
       // Generate two points at right angles away
       const base = vector.subtract(from).normalize().scale(scale),
@@ -171,9 +171,7 @@ content.prop.actor = engine.prop.base.invent({
         v2 = base.rotateEuler({yaw: -Math.PI/2}).add(from)
 
       // Pick closest point to avoid crossing path
-      return v1.distance(target) <= v2.distance(target)
-        ? v1
-        : v2
+      return v1.distance(target) <= v2.distance(target) ? v1 : v2
     }
 
     const opposite = (from) => vector.subtract(from).normalize().add(vector)
@@ -183,14 +181,14 @@ content.prop.actor = engine.prop.base.invent({
     if (this.taunted) {
       destination = vector.distance(position) < vector.distance(closest)
         ? position
-        : avoid(closest, position)
+        : opposite(closest).add(position).scale(0.5) // centroid
     } else if (this.running) {
       destination = vector.distance(position) < vector.distance(closest)
         ? opposite(position)
         : opposite(closest)
     } else {
       destination = vector.distance(position) < vector.distance(closest)
-        ? avoid(position, closest)
+        ? avoid(position, closest).add(closest).scale(0.5) // centroid
         : engine.utility.vector3d.create(closest)
     }
 
