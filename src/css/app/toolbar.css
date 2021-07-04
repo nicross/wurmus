@@ -10,6 +10,13 @@
   position: absolute;
   width: 100%;
 }
+  .a-toolbar--options {
+    display: flex;
+    list-style-type: none;
+  }
+  .a-toolbar--option + .a-toolbar--option {
+    margin-left: 0.5em;
+  }
   .a-toolbar--toggle {
     border: 1px solid #FFFFFF;
     border-radius: 1px;
@@ -22,11 +29,11 @@
   .a-toolbar--toggle:hover {
     opacity: 1;
   }
-  .a-toolbar--toggle[aria-checked="false"] {
-    text-decoration: line-through;
+  [aria-checked="false"] .a-toolbar--toggleOn {
+    display: none;
   }
-  .a-toolbar--toggle + .a-toolbar--toggle {
-    margin-left: 0.5em;
+  [aria-checked="true"] .a-toolbar--toggleOff {
+    display: none;
   }
 
 @keyframes a-toolbar {

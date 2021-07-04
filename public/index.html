@@ -64,9 +64,23 @@
         </section>
       </div>
 
-      <aside class="a-toolbar" aria-label="Settings">
-        <button class="a-toolbar--graphicsOn a-toolbar--toggle" type="button" aria-checked="true">Graphics</button>
-        <button class="a-toolbar--musicOn a-toolbar--toggle" type="button" aria-checked="true">Music</button>
+      <aside class="a-toolbar">
+        <ul class="a-toolbar--options" aria-label="Settings">
+          <li class="a-toolbar--option">
+            <button class="a-toolbar--graphicsOn a-toolbar--toggle" type="button" aria-checked="true" role="switch">
+              <span class="a-toolbar--toggleOff" aria-hidden="true" role="presentation">☐</span>
+              <span class="a-toolbar--toggleOn" aria-hidden="true" role="presentation">☒</span>
+              Graphics
+            </button>
+          </li>
+          <li class="a-toolbar--option">
+            <button class="a-toolbar--musicOn a-toolbar--toggle" type="button" aria-checked="true" role="switch">
+              <span class="a-toolbar--toggleOff" aria-hidden="true" role="presentation">☐</span>
+              <span class="a-toolbar--toggleOn" aria-hidden="true" role="presentation">☒</span>
+              Music
+            </button>
+          </li>
+        </ul>
       </aside>
     </main>
     <script src="./scripts.min.js"></script>
