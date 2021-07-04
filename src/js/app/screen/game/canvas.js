@@ -177,5 +177,20 @@ app.screen.game.canvas = (() => {
     }, [])
   }
 
-  return {}
+  return {
+    debug: function (vector, radius = 8, style = '#FFFF00') {
+      const position = engine.position.getVector(),
+        quaternion = engine.position.getQuaternion().conjugate()
+
+      const relative = position.subtract(vector).inverse().rotateQuaternion(quaternion)
+
+      const x = (width / 2) - (relative.y * mToPx),
+        y = (height / 2) - (relative.x * mToPx)
+
+      context.strokeStyle = style
+      context.strokeRect(x - radius, y - radius, radius * 2, radius * 2)
+
+      return this
+    },
+  }
 })()
