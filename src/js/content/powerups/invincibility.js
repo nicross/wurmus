@@ -1,5 +1,5 @@
-content.powerups.invincibility = content.powerups.register({
-  key: 'invincibility',
+content.powerups.stability = content.powerups.register({
+  key: 'stability',
   duration: 5,
   weight: 3,
   apply: function () {
@@ -7,7 +7,7 @@ content.powerups.invincibility = content.powerups.register({
 
     for (const prop of props) {
       if (prop.isTrain) {
-        prop.invincible(this.duration)
+        prop.stable(this.duration)
       }
     }
 

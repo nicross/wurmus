@@ -1,12 +1,13 @@
 # Wurmus changelog
 ## v1.1.0
 - Power-ups
-  - Added power-ups which are occasionally attached to enemies
+  - Added power-ups which are occasionally attached to opponents
   - Added audio and visual cues for power-ups
-  - Added fear power-up which makes all enemies run away from allies
-  - Added invincibility power-up which makes all allies invincible
-  - Added taunt power-up which makes enemies run toward the player
+  - Added power-up which grants stability to all allies
+  - Added power-up which inflicts fear on all opponents
+  - Added power-up which taunts all opponents
   - Added point bonuses for collecting power-ups
+  - Added taunt status effect that makes opponents chase the head
 - Audio
   - Added directional cues to indicate new enemy spawns
   - Added title theme music
@@ -16,14 +17,14 @@
 - Gameplay
   - Added evasive ally behaviors to reduce player collisions
   - Added evasive enemy behaviors at higher difficulties
-  - Added invincibility bonuses to multiple captures
-  - Fixed invincibility not applying to newly captured allies
+  - Added stability bonuses to multiple captures
+  - Fixed stability not applying to newly captured allies
   - Made first tail member always invincible to the player
 - Graphics
   - Added animations to screens and transitions between them
   - Added fade in to new actor spawns
   - Added particle effects to collisions and power-ups
-  - Added invincibility indicator for actors
+  - Added stability indicator for actors
   - Improved accessibility of team colors
 - User interface
   - Added button to toggle in-game graphics

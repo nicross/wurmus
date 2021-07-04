@@ -16,10 +16,10 @@ content.prop.actor = engine.prop.base.invent({
     50,
     48,
   ].map(engine.utility.midiToFrequency),
-  invincibility: 0,
   isTrain: false,
   radius: 0.5,
   running: 0,
+  stability: 0,
   taunted: 0,
   onConstruct: function ({
     difficulty = 0,
@@ -62,8 +62,8 @@ content.prop.actor = engine.prop.base.invent({
       position: this.vector(),
     })
 
-    if (this.invincibility) {
-      this.invincibility = content.utility.accelerate.value(this.invincibility, 0, 1)
+    if (this.stability) {
+      this.stability = content.utility.accelerate.value(this.stability, 0, 1)
     }
 
     if (this.running) {
@@ -146,10 +146,6 @@ content.prop.actor = engine.prop.base.invent({
     this.synth.ducker.gain.linearRampToValueAtTime(engine.const.zeroGain, now + engine.loop.delta())
     this.synth.ducker.gain.exponentialRampToValueAtTime(1, now + 1)
 
-    return this
-  },
-  invincible: function (time = 1) {
-    this.invincibility = time
     return this
   },
   moveTag: function () {
@@ -265,9 +261,9 @@ content.prop.actor = engine.prop.base.invent({
       this.synth.lfo.connect(this.synth.lfoTarget.gain)
     }
 
-    // Accumulate invincibility bonus from previous ally (can stack)
-    const invincibility = (content.train.behind(this) || {}).invincibility || 0
-    this.invincible(1 + invincibility)
+    // Accumulate stability bonus from previous ally (can stack)
+    const stability = (content.train.behind(this) || {}).stability || 0
+    this.stable(1 + stability)
 
     this.duck()
 
@@ -287,7 +283,7 @@ content.prop.actor = engine.prop.base.invent({
     }
 
     // Run away briefly
-    this.invincible(1).run(
+    this.stable(1).run(
       engine.utility.lerpRandom([4,6], [1,2], this.difficulty)
     )
 
@@ -320,6 +316,10 @@ content.prop.actor = engine.prop.base.invent({
   },
   run: function (time = 1) {
     this.running = time
+    return this
+  },
+  stable: function (time = 1) {
+    this.stability = time
     return this
   },
   taunt: function (time = 1) {

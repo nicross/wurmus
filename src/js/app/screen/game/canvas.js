@@ -60,7 +60,7 @@ app.screen.game.canvas = (() => {
         ? {h: 138, s: 83, l: 75}
         : {h: 350, s: 100, l: 75}
 
-      color.l = engine.utility.lerp(color.l, 100, engine.utility.clamp(prop.invincibility, 0, 1))
+      color.l = engine.utility.lerp(color.l, 100, engine.utility.clamp(prop.stability, 0, 1))
       context.fillStyle = context.strokeStyle = `hsla(${color.h}deg, ${color.s}%, ${color.l}%, ${alpha})`
 
       const x = (width / 2) - (prop.relative.y * mToPx),

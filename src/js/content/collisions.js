@@ -8,7 +8,7 @@ content.collisions = (() => {
         radius = content.prop.actor.radius
 
       for (const prop of props) {
-        if (prop.invincibility) {
+        if (prop.stability) {
           continue
         }
 
@@ -28,9 +28,9 @@ content.collisions = (() => {
 
         const nearest = quadtreeTrain.find(prop, radius)
 
-        if (nearest && !nearest.invincibility) {
+        if (nearest && !nearest.stability) {
           content.train.remove(nearest)
-          prop.invincible(1).run(1)
+          prop.stable(1).run(1)
         }
       }
 
