@@ -29,9 +29,9 @@ content.spawner = (() => {
   function shouldSpawn() {
     const difficulty = calculateDifficulty(),
       enemies = engine.props.get().filter((prop) => !prop.isTrain),
-      maxEnemies = engine.utility.lerpExp(1, 3, difficulty, 1.25)
+      maxEnemies = Math.round(engine.utility.lerpExp(1, 3, difficulty, 1))
 
-    if (enemies.length >= Math.round(maxEnemies)) {
+    if (enemies.length >= maxEnemies) {
       return false
     }
 
