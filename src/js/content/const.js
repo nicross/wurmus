@@ -3,7 +3,7 @@ content.const = {
   deceleration: 10,
   maxAllyFootsteps: 4,
   maxEnemyFootsteps: 8,
-  maxConcurrentFootsteps: 50,
+  maxConcurrentFootsteps: 75,
   velocity: 5,
 }
 
