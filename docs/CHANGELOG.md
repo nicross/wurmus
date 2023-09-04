@@ -1,4 +1,8 @@
 # Wurmus changelog
+## v1.2.0
+- Interface
+  - Added new application icon
+
 ## v1.1.0
 - Power-ups
   - Added power-ups which are occasionally attached to opponents
