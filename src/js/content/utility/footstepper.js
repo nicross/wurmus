@@ -13,6 +13,10 @@ content.utility.footstepper.prototype = {
     this.distance = distance
     this.parameters = parameters
     this.position = engine.utility.vector3d.create(position)
+
+    this.pubsub = engine.utility.pubsub.create()
+    engine.utility.pubsub.decorate(this, this.pubsub)
+
     return this
   },
   isMuted: false,
@@ -33,6 +37,8 @@ content.utility.footstepper.prototype = {
         content.sfx.footstep({
           ...this.parameters,
         })
+
+        this.emit('step')
       }
 
       this.position = engine.utility.vector3d.create(position)

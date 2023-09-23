@@ -9,7 +9,7 @@ content.footsteps = (() => {
     },
   })
 
-  return {
+  return engine.utility.pubsub.decorate({
     import: function () {
       footstepper.reset({
         position: engine.position.getVector(),
@@ -24,7 +24,7 @@ content.footsteps = (() => {
 
       return this
     },
-  }
+  }, footstepper.pubsub)
 })()
 
 engine.loop.on('frame', ({paused}) => {

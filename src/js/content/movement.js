@@ -89,6 +89,7 @@ content.movement = (() => {
 
       return this
     },
+    velocityNormal: () => lateralThrust.distance() / content.const.velocity,
   }
 })()
 

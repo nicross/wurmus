@@ -1,6 +1,7 @@
 # Wurmus changelog
 ## v1.2.0
 - User interface
+  - Added haptic feedback
   - Added ability to pause the game
   - Paused game automatically when window loses focus
   - Improved mouse cursor lock behavior
