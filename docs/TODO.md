@@ -3,5 +3,3 @@
 - Haptics
 - Improve AI to prevent bunching
 - Optimize audio / limit number of audible enemies
-- Only quit when escape is pressed on menus
-- Upgrade electron

@@ -7,6 +7,7 @@ content.music = (() => {
     centerPhaser,
     centerSynth,
     isActive,
+    isPlaying,
     leftBinaural,
     leftLfo,
     leftSynth,
@@ -181,6 +182,8 @@ content.music = (() => {
 
     createSynths()
     engine.audio.ramp.linear(bus.gain, engine.utility.fromDb(-15), attack)
+
+    isPlaying = true
   }
 
   function stop() {
@@ -188,38 +191,29 @@ content.music = (() => {
 
     engine.audio.ramp.linear(bus.gain, engine.const.zeroGain, release)
     setTimeout(destroySynths, release * 1000)
+
+    isPlaying = false
   }
 
   return {
-    onPause: function () {
-      if (isActive) {
+    setActive: function (value) {
+      isActive = value
+
+      return this
+    },
+    start: function () {
+      if (isActive && !isPlaying) {
         start()
       }
 
       return this
     },
-    onResume: function () {
-      if (isActive) {
+    stop: function () {
+      if (isPlaying) {
         stop()
-      }
-
-      return this
-    },
-    setActive: function (value) {
-      isActive = value
-
-      if (engine.loop.isPaused()) {
-        if (isActive) {
-          start()
-        } else {
-          stop()
-        }
       }
 
       return this
     },
   }
 })()
-
-engine.loop.on('pause', () => content.music.onPause())
-engine.loop.on('resume', () => content.music.onResume())

@@ -2,6 +2,7 @@ app.controls.mouse = (() => {
   const sensitivity = 100
 
   let gameScreen,
+    isPointerLocked = false,
     rotate = 0
 
   // XXX: syngen hack
@@ -12,11 +13,15 @@ app.controls.mouse = (() => {
     gameScreen.addEventListener('click', onClick)
 
     app.state.screen.on('exit-game', onExitGame)
-    app.state.screen.on('enter-game', onEnterGame)
   })
 
   function exitPointerLock() {
+    if (!isPointerLock()) {
+      return
+    }
+
     document.exitPointerLock()
+    isPointerLocked = false
   }
 
   function isPointerLock() {
@@ -24,21 +29,15 @@ app.controls.mouse = (() => {
   }
 
   function onClick() {
-    if (!isPointerLock()) {
-      requestPointerLock()
+    if (engine.loop.isPaused()) {
+      return
     }
-  }
 
-  function onEnterGame() {
-    if (app.isElectron()) {
-      requestPointerLock()
-    }
+    requestPointerLock()
   }
 
   function onExitGame() {
-    if (isPointerLock()) {
-      exitPointerLock()
-    }
+    exitPointerLock()
 
     rotate = 0
 
@@ -48,10 +47,19 @@ app.controls.mouse = (() => {
   }
 
   function requestPointerLock() {
+    if (isPointerLock()) {
+      return
+    }
+
     gameScreen.requestPointerLock()
   }
 
   return {
+    exitPointerLock: function () {
+      exitPointerLock()
+      return this
+    },
+    isPointerLock,
     game: function () {
       if (!isPointerLock()) {
         return {}
@@ -86,8 +94,21 @@ app.controls.mouse = (() => {
 
       return state
     },
+    requestPointerLock: function () {
+      requestPointerLock()
+      return this
+    },
     ui: function () {
-      return {}
+      const state = {}
+
+      if (!isPointerLock() && isPointerLocked) {
+        state.isPointerLockExit = true
+        console.log('exit')
+      }
+
+      isPointerLocked = isPointerLock()
+
+      return state
     },
   }
 })()

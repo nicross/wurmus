@@ -33,10 +33,10 @@ app.screen.game.canvas = (() => {
   }
 
   function draw() {
-    const isPaused = engine.loop.isPaused()
+    const isGameOver = !content.train.length()
 
     // Tracer effect
-    if (!isPaused) {
+    if (!isGameOver) {
       context.fillStyle = 'rgba(0, 0, 0, 0.5)'
       context.fillRect(0, 0, width, height)
     }
@@ -75,7 +75,7 @@ app.screen.game.canvas = (() => {
         context.fill()
       }
 
-      if (!isPaused && prop.isPowerup) {
+      if (prop.isPowerup && !isGameOver) {
         const fps = engine.performance.fps()
 
         if (Math.random() < 1/fps*8) {

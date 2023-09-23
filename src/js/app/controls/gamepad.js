@@ -55,8 +55,16 @@ app.controls.gamepad = {
     let x = engine.input.gamepad.getAxis(0),
       y = engine.input.gamepad.getAxis(1, true)
 
-    if (engine.input.gamepad.isDigital(0) || engine.input.gamepad.isDigital(8) || engine.input.gamepad.isDigital(9)) {
+    if (engine.input.gamepad.isDigital(0)) {
       state.confirm = true
+    }
+
+    if (engine.input.gamepad.isDigital(1)) {
+      state.cancel = true
+    }
+
+    if (engine.input.gamepad.isDigital(8) || engine.input.gamepad.isDigital(9)) {
+      state.pause = true
     }
 
     if (engine.input.gamepad.isDigital(12)) {

@@ -38,12 +38,16 @@ app.controls.keyboard = {
     const keys = engine.input.keyboard.get(),
       state = {}
 
-    if (keys.Enter || keys.NumpadEnter) {
+    if (keys.Enter || keys.NumpadEnter || keys.Space) {
       state.confirm = true
     }
 
-    if (keys.Escape) {
-      state.quit = true
+    if (keys.Escape || keys.Backspace || keys.Delete) {
+      state.cancel = true
+    }
+
+    if (keys.Escape || keys.Pause) {
+      state.pause = true
     }
 
     if (keys.Space) {

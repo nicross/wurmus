@@ -1,9 +1,16 @@
 # Wurmus changelog
 ## v1.2.0
-- Interface
-  - Added new application icon
-- Miscellaneous
+- User interface
+  - Added ability to pause the game
+  - Paused game automatically when window loses focus
+  - Improved mouse cursor lock behavior
+  - Escape only quits application on menu screens
+- Documentation
+  - Updated manual to reflect changes
+  - Improved accessibility of tables in manual
+- Application
   - Updated desktop builds to Electron 26
+  - Redesigned application icon
 
 ## v1.1.0
 - Power-ups

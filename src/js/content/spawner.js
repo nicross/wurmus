@@ -80,23 +80,23 @@ content.spawner = (() => {
   return engine.utility.pubsub.decorate({
     bus: () => bus,
     difficulty: () => calculateDifficulty(),
-    getIndexByDistance: (prop) => alliesByDistance.includes(prop) ? alliesByDistance.indexOf(prop) : enemiesByDistance.indexOf(prop),
-    import: function () {
-      initializeGame()
-      return this
-    },
-    onPause: function () {
+    duck: function () {
       engine.audio.ramp.exponential(bus.gain, engine.const.zeroGain, 1)
       return this
     },
-    onResume: function () {
-      engine.audio.ramp.set(bus.gain, 1)
+    getIndexByDistance: (prop) => alliesByDistance.includes(prop) ? alliesByDistance.indexOf(prop) : enemiesByDistance.indexOf(prop),
+    import: function () {
+      initializeGame()
       return this
     },
     reset: function () {
       alliesByDistance.length = 0
       enemiesByDistance.length = 0
 
+      return this
+    },
+    unduck: function () {
+      engine.audio.ramp.linear(bus.gain, 1, 1/16)
       return this
     },
     update: function () {
@@ -118,10 +118,6 @@ engine.loop.on('frame', ({paused}) => {
 
   content.spawner.update()
 })
-
-// XXX: Ride prop bus gain based on loop state (via app.screen.game)
-engine.loop.on('pause', () => content.spawner.onPause())
-engine.loop.on('resume', () => content.spawner.onResume())
 
 engine.state.on('import', () => content.spawner.import())
 engine.state.on('reset', () => content.spawner.reset())

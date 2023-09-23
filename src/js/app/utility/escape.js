@@ -20,11 +20,3 @@ app.utility.escape = (() => {
     is: () => state,
   }, pubsub)
 })()
-
-app.utility.escape.on('up', () => {
-  if (document.pointerLockElement) {
-    document.exitPointerLock()
-  } else {
-    app.quit()
-  }
-})

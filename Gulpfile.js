@@ -135,6 +135,7 @@ function getCss() {
   const srcs = [
     'src/css/reset.css',
     'src/css/main.css',
+    'src/css/utility/*.css',
     'src/css/*.css',
     'src/css/**/*.css',
   ]

@@ -15,17 +15,19 @@ app.screen.game = (() => {
 
   function handleGameOver() {
     engine.loop.pause()
+    content.spawner.duck()
     content.sfx.gameOver()
 
     setTimeout(() => app.state.screen.dispatch('gameOver'), 1000)
   }
 
-  function handleControls() {
-    const game = app.controls.game()
-    content.movement.update(game)
-  }
-
   function onEnter() {
+    if (app.settings.computed.graphicsOn) {
+      root.classList.remove('a-game-graphicsOff')
+    } else {
+      root.classList.add('a-game-graphicsOff')
+    }
+
     app.utility.focus.set(root)
     engine.loop.on('frame', onFrame)
 
@@ -36,23 +38,44 @@ app.screen.game = (() => {
       },
     })
 
+    content.music.stop()
+    content.spawner.unduck()
+
     engine.loop.resume()
+
+    if (app.isElectron()) {
+      app.controls.mouse.requestPointerLock()
+    }
   }
 
   function onExit() {
     engine.loop.off('frame', onFrame)
+    content.music.start()
   }
 
   function onFrame({paused}) {
+    const game = app.controls.game(),
+      ui = app.controls.ui()
+
+    if (paused && (ui.confirm || ui.pause)) {
+      app.screen.game.paused.deactivate()
+      engine.loop.resume()
+      paused = false
+    } else if (!paused && (ui.cancel || ui.pause || ui.isPointerLockExit || !document.hasFocus())) {
+      app.screen.game.paused.activate()
+      engine.loop.pause()
+      paused = true
+    }
+
     if (paused) {
       return
     }
 
-    if (checkGameOver()) {
-      return handleGameOver()
-    }
+    content.movement.update(game)
 
-    handleControls()
+    if (checkGameOver()) {
+      handleGameOver()
+    }
   }
 
   return {}

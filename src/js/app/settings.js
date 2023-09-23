@@ -9,6 +9,16 @@ app.settings = (() => {
       default: true,
       update: (computedValue) => {
         content.music.setActive(computedValue)
+
+        if (app.state.screen.state == 'game') {
+          return
+        }
+
+        if (computedValue) {
+          content.music.start()
+        } else {
+          content.music.stop()
+        }
       },
     },
   }

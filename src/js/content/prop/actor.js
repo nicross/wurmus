@@ -46,6 +46,10 @@ content.prop.actor = engine.prop.base.invent({
     }
   },
   onUpdate: function ({delta, paused}) {
+    if (this.isPowerup) {
+      this.powerupGrain()
+    }
+
     if (paused) {
       return this
     }
@@ -85,10 +89,6 @@ content.prop.actor = engine.prop.base.invent({
       this.updateSynth()
     } else if (this.synth) {
       this.destroySynth()
-    }
-
-    if (this.isPowerup) {
-      this.powerupGrain()
     }
   },
   calculateFrequency: function () {
