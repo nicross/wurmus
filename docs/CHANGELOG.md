@@ -2,6 +2,8 @@
 ## v1.2.0
 - Interface
   - Added new application icon
+- Miscellaneous
+  - Updated desktop builds to Electron 26
 
 ## v1.1.0
 - Power-ups
