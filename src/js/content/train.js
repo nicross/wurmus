@@ -26,7 +26,10 @@ content.train = (() => {
     has: (prop) => train.includes(prop),
     indexOf: (prop) => train.indexOf(prop),
     length: () => train.length,
-    quadtree: () => engine.utility.quadtree.from(train),
+    quadtreeEnemy: () => engine.utility.quadtree.from(
+      engine.props.get().filter((prop) => !prop.isTrain)
+    ),
+    quadtreeFriendly: () => engine.utility.quadtree.from(train),
     remove: function (prop) {
       const index = train.indexOf(prop)
 

@@ -158,7 +158,7 @@ content.prop.actor = engine.prop.base.invent({
       return this
     }
 
-    const closest = content.train.quadtree().find(this),
+    const closest = content.train.quadtreeFriendly().find(this),
       position = engine.position.getVector(),
       vector = this.vector()
 

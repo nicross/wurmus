@@ -4,7 +4,7 @@ content.collisions = (() => {
     update: function () {
       const props = engine.props.get()
 
-      const quadtreeTrain = content.train.quadtree(),
+      const quadtreeTrain = content.train.quadtreeFriendly(),
         radius = content.prop.actor.radius
 
       for (const prop of props) {
