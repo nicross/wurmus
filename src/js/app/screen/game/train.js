@@ -9,7 +9,8 @@ app.screen.game.train = (() => {
   })
 
   function onEnter() {
-    root.innerHTML = ''
+    value = 1
+    root.innerHTML = value
     root.setAttribute('aria-live', 'assertive')
     root.removeAttribute('aria-hidden')
     engine.loop.on('frame', onFrame)
@@ -37,7 +38,15 @@ app.screen.game.train = (() => {
     }
 
     value = length
-    root.innerHTML = value || ''
+
+    // Mute on zero
+    if (value == 0) {
+      root.setAttribute('aria-hidden', 'true')
+      root.removeAttribute('aria-live')
+      window.requestAnimationFrame(() => root.innerHTML = value)
+    } else {
+      root.innerHTML = value
+    }
   }
 
   return {}

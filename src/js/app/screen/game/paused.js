@@ -1,4 +1,12 @@
 app.screen.game.paused = (() => {
+  const pausedText = document.createElement('div')
+  pausedText.classList.add('a-game--pausedText')
+  pausedText.innerHTML = 'Game Paused'
+
+  const resumedText = document.createElement('div')
+  resumedText.classList.add('u-screenReader')
+  resumedText.innerHTML = 'Game Resumed'
+
   let root,
     text
 
@@ -21,16 +29,17 @@ app.screen.game.paused = (() => {
 
   return {
     activate: function () {
-      root.classList.add('a-game--paused-active')
-      root.innerHTML = `<div class="a-game--pausedText">Game Paused</div>`
+      root.appendChild(pausedText)
+      window.requestAnimationFrame(() => root.classList.add('a-game--paused-active'))
     },
     deactivate: function () {
+      root.appendChild(resumedText)
       root.classList.remove('a-game--paused-active')
 
-      root.innerHTML = `
-        <div class="a-game--pausedText" aria-hidden="true">Game Paused</div>
-        <div class="a-game--pausedText u-screenReader">Game Resumed</div>
-      `
+      root.ontransitionend = () => {
+        root.innerHTML = ''
+        root.ontransitionend = undefined
+      }
     },
   }
 })()

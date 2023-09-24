@@ -1,5 +1,6 @@
 .a-game {
   position: relative;
+  overflow: hidden;
 }
   .a-game * {
     pointer-events: none;
@@ -13,12 +14,12 @@
     z-index: 1;
   }
   .a-game--paused {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.666);
     height: 100%;
     left: 0;
     position: absolute;
     opacity: 0;
-    transition: opacity 0.25s ease;
+    transition: opacity 0.5s ease;
     top: 0;
     width: 100%;
     z-index: 2;
@@ -30,7 +31,12 @@
     animation: a-game--pausedText 1s ease 0s infinite alternate;
     line-height: 4;
     text-transform: uppercase;
+    transition: transform 0.5s ease;
+    transform: translateY(-100%);
   }
+    .a-game--paused-active .a-game--pausedText {
+      transform: translateY(0);
+    }
   .a-game--train {
     animation: a-game--train 8s linear 0s infinite;
     -webkit-background-clip: text;
@@ -46,9 +52,14 @@
     text-align: center;
     -webkit-text-fill-color: transparent;
     text-fill-color: transparent;
+    transition: transform 0.5s ease;
+    transform: translateY(100%);
     width: 100%;
     z-index: 3;
   }
+    .a-app--screen-active .a-game--train {
+      transform: translateY(0);
+    }
 
 .a-game-graphicsOff::after {
   background-color: #000000;
