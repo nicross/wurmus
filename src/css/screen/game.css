@@ -38,20 +38,13 @@
       transform: translateY(0);
     }
   .a-game--train {
-    animation: a-game--train 8s linear 0s infinite;
-    -webkit-background-clip: text;
-    background-clip: text;
-    background-color: #FFAEBC;
-    background-image: linear-gradient(0deg, #FFAEBC, #A0E7E5, #B4F8C8, #FBE7C6, #FFAEBC);
-    background-size: 200% 200%;
+    animation: a-game--backgroundRotate 8s linear 0s infinite;
     bottom: 0;
     font-family: ComicSharkRegular, fantasy;
     font-size: 4em;
     left: 0;
     position: absolute;
     text-align: center;
-    -webkit-text-fill-color: transparent;
-    text-fill-color: transparent;
     transition: transform 0.5s ease;
     transform: translateY(100%);
     width: 100%;
@@ -60,6 +53,31 @@
     .a-app--screen-active .a-game--train {
       transform: translateY(0);
     }
+
+  .a-game--toast {
+    animation: a-game--toast--in 0.5s linear 0s 1 normal both;
+    bottom: 0;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%) translateY(0);
+  }
+  .a-game--toast[aria-hidden="true"] {
+    animation: a-game--toast--out 1.5s linear 0s 1 normal both;
+  }
+  .a-game--toast span {
+    animation: a-game--backgroundRotate 0.5s linear 0s infinite;
+    font-family: RobotoBold;
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .a-game--toasts {
+    left: 0;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    z-index: 3;
+  }
 
 .a-game-graphicsOff::after {
   background-color: #000000;
@@ -72,6 +90,26 @@
   z-index: 999;
 }
 
+.a-game--toast span,
+.a-game--train {
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-color: #FFAEBC;
+  background-image: linear-gradient(0deg, #FFAEBC, #A0E7E5, #B4F8C8, #FBE7C6, #FFAEBC);
+  background-size: 200% 200%;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+}
+
+@keyframes a-game--backgroundRotate {
+  0% {
+    background-position: center 0%;
+  }
+  100% {
+    background-position: center 200%;
+  }
+}
+
 @keyframes a-game--pausedText {
   0% {
     text-shadow: 0 0 0em rgba(255, 255, 255, 0);
@@ -81,11 +119,24 @@
   }
 }
 
-@keyframes a-game--train {
+@keyframes a-game--toast--in {
   0% {
-    background-position: center 0%;
+    opacity: 0;
+    transform: translateX(-50%) translateY(0%);
   }
   100% {
-    background-position: center 200%;
+    opacity: 1;
+    transform: translateX(-50%) translateY(-50%);
+  }
+}
+
+@keyframes a-game--toast--out {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-50%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-150%);
   }
 }

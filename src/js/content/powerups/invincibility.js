@@ -1,5 +1,6 @@
 content.powerups.stability = content.powerups.register({
   key: 'stability',
+  name: 'Stability',
   duration: 5,
   weight: 3,
   apply: function () {

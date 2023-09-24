@@ -1,5 +1,6 @@
 content.powerups.taunt = content.powerups.register({
   key: 'taunt',
+  name: 'Taunt',
   duration: 5,
   weight: 2,
   apply: function () {

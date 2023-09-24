@@ -5,6 +5,8 @@ app.screen.game = (() => {
     root = document.querySelector('.a-game')
     app.utility.focus.trap(root)
 
+    app.screen.game.toasts.ready()
+
     app.state.screen.on('enter-game', onEnter)
     app.state.screen.on('exit-game', onExit)
   })
@@ -41,6 +43,8 @@ app.screen.game = (() => {
     content.music.stop()
     content.spawner.unduck()
 
+    app.screen.game.toasts.enter()
+
     engine.loop.resume()
 
     if (app.isElectron()) {
@@ -51,6 +55,7 @@ app.screen.game = (() => {
   function onExit() {
     engine.loop.off('frame', onFrame)
     content.music.start()
+    app.screen.game.toasts.exit()
   }
 
   function onFrame({paused}) {
@@ -72,6 +77,7 @@ app.screen.game = (() => {
     }
 
     content.movement.update(game)
+    app.screen.game.toasts.update()
 
     if (checkGameOver()) {
       handleGameOver()

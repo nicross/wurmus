@@ -1,5 +1,6 @@
 content.powerups.fear = content.powerups.register({
   key: 'fear',
+  name: 'Fear',
   duration: 5,
   weight: 2,
   apply: function () {
