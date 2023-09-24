@@ -3,4 +3,3 @@
 - Powerup toasts
 - AI improvements
 - Optimize audio / limit number of audible props
-- Remove tutorial
