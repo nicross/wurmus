@@ -33,7 +33,15 @@ content.powerups = (() => {
   }
 
   function shouldSpawnPowerup() {
-    return !hasSpawnedPowerups() && (Math.random() < spawnChance)
+    if (hasSpawnedPowerups()) {
+      return false
+    }
+
+    if (engine.props.get().length < content.train.length() + 2) {
+      return false
+    }
+
+    return Math.random() < spawnChance
   }
 
   return engine.utility.pubsub.decorate({
