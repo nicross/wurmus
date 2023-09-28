@@ -65,6 +65,7 @@ content.prop.actor = engine.prop.base.invent({
     this.footstepper.parameters.color = this.isTrain ? 1/4 : 4
     this.footstepper.parameters.frequency = this.frequency
     this.time += delta
+    this.z = 0
 
     this.footstepper.update({
       position: this.vector(),
@@ -204,43 +205,39 @@ content.prop.actor = engine.prop.base.invent({
     return this
   },
   moveTrain: function () {
-    const index = content.train.indexOf(this),
+    const ahead = content.train.ahead(this),
+      index = content.train.indexOf(this),
       position = engine.position.getVector(),
       vector = this.vector()
 
-    let destination = index > 0
-      ? content.train.ahead(this).vector()
-      : position
+    let destination
 
-    let minStoppingDistance = index == 0
-      ? 0
-      : this.radius * 4
+    this.heading = index == 0
+      ? engine.position.getQuaternion().forward()
+      : ahead.vector().subtract(vector).normalize()
 
     if (index == 0) {
-      // Point 180 degrees behind player
-      destination = destination.add(
-        engine.utility.vector3d.create({x: -this.radius * 5})
-          .rotateQuaternion(engine.position.getQuaternion())
+      destination = position.subtract(
+        engine.utility.vector2d.create(
+          engine.position.getQuaternion().forward()
+        ).scale(this.radius * 3)
       )
-    } else if (vector.distance(position) < this.radius * 4) {
-      // Centroid between opposite point away from player and destination
-      destination = vector.subtract(position).normalize().scale(this.radius * 4).add(vector)
-        .add(destination).scale(1/2)
+    } else {
+      /*
+      const behind = ahead.vector().subtract(ahead.heading ? ahead.heading.scale(this.radius * 2) : {}),
+        near = vector.subtract(ahead.vector()).normalize().scale(this.radius * 2).add(ahead.vector())
 
-      minStoppingDistance = this.radius
+      destination = vector.distance(behind) <= vector.distance(near) + (this.radius * 2)
+        ? behind
+        : behind.add(near).scale(0.5)
+      */
+
+      destination = ahead.vector().subtract(ahead.heading ? ahead.heading.scale(this.radius * 2) : {})
     }
 
-    const movementBonus = engine.utility.scale(Math.min(index, 10), 0, 10, 10, 1)
-
-    const velocity = destination.distance(this) > this.calculateStoppingDistance(minStoppingDistance)
-      ? destination.subtract(this).normalize().scale(content.const.velocity * movementBonus)
-      : engine.utility.vector3d.create()
-
-    const rate = this.velocity.distance() > velocity.distance()
-      ? content.const.acceleration * movementBonus
-      : content.const.deceleration * movementBonus
-
-    this.velocity = content.utility.accelerate.vector(this.velocity, velocity, rate)
+    this.velocity = destination.subtract(vector).normalize().scale(
+      Math.max(destination.subtract(vector).distance(), content.const.velocity)
+    )
 
     return this
   },
@@ -284,6 +281,11 @@ content.prop.actor = engine.prop.base.invent({
     // Run away briefly
     this.stable(1).run(
       engine.utility.lerpRandom([4,6], [1,2], this.difficulty)
+    )
+
+    // Normalize velocity
+    this.velocity = this.velocity.normalize().scale(
+      Math.min(this.velocity.distance(), content.const.velocity)
     )
 
     // Unduck (obscure bug)

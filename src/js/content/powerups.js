@@ -1,7 +1,7 @@
 content.powerups = (() => {
   const pubsub = engine.utility.pubsub.create(),
     registry = new Map(),
-    spawnChance = 1/6
+    spawnChance = 1/4
 
   let bus = engine.audio.mixer.createBus()
 
