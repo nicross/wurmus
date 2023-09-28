@@ -5,6 +5,8 @@ content.spawner = (() => {
   const alliesByDistance = [],
     enemiesByDistance = []
 
+  let timer = 0
+
   function calculateDifficulty() {
     const trainLength = content.train.length()
     return engine.utility.clamp(trainLength / 10, 0, 1)
@@ -24,6 +26,8 @@ content.spawner = (() => {
 
       content.train.add(prop)
     }
+
+    timer = 2
   }
 
   function shouldSpawn() {
@@ -35,10 +39,9 @@ content.spawner = (() => {
       return false
     }
 
-    const fps = engine.performance.fps()
-    const chance = engine.utility.lerp(1/2/fps, 1/fps, difficulty)
+    timer -= engine.loop.delta()
 
-    return Math.random() < chance
+    return timer <= 0
   }
 
   function spawn() {
@@ -58,6 +61,8 @@ content.spawner = (() => {
     })
 
     pubsub.emit('spawn', prop)
+
+    timer = engine.utility.random.float(1, 3)
   }
 
   function updateDistances() {
