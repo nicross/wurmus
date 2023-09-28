@@ -121,10 +121,12 @@
 
 @keyframes a-game--toast--in {
   0% {
+    font-size: 0.5em;
     opacity: 0;
     transform: translateX(-50%) translateY(0%);
   }
   100% {
+    font-size: 1em;
     opacity: 1;
     transform: translateX(-50%) translateY(-50%);
   }
@@ -132,10 +134,12 @@
 
 @keyframes a-game--toast--out {
   0% {
+    font-size: 1em;
     opacity: 1;
     transform: translateX(-50%) translateY(-50%);
   }
   100% {
+    font-size: 1.5em;
     opacity: 0;
     transform: translateX(-50%) translateY(-150%);
   }
