@@ -151,21 +151,15 @@ content.prop.actor = engine.prop.base.invent({
     return this
   },
   moveTag: function () {
-    const chance = (this.running || this.taunted)
-      ? engine.utility.lerp(1/8, 1, this.difficulty)
-      : engine.utility.lerp(1/16, 1/2, this.difficulty)
-
-    if (Math.random() > chance) {
-      return this
-    }
-
-    const closest = content.train.quadtreeFriendly().find(this),
+    // Determine destination
+    const closestEnemy = content.train.quadtreeEnemy().find(this),
+      closestFriendly = content.train.quadtreeFriendly().find(this),
       position = engine.position.getVector(),
       vector = this.vector()
 
     const avoid = (from, target) => {
       // Scale the dodge distance based on difficulty
-      const scale = content.const.velocity * engine.utility.lerpExp(0, 1, this.difficulty, 2)
+      const scale = content.const.velocity * engine.utility.lerp(0, 1, this.difficulty)
 
       // Generate two points at right angles away
       const base = vector.subtract(from).normalize().scale(scale),
@@ -181,26 +175,39 @@ content.prop.actor = engine.prop.base.invent({
     let destination = vector.clone()
 
     if (this.taunted) {
-      destination = vector.distance(position) < vector.distance(closest)
+      destination = vector.distance(position) <= vector.distance(closestFriendly)
         ? position
-        : opposite(closest).add(position).scale(0.5) // centroid
+        : avoid(closestFriendly, position)
     } else if (this.running) {
-      destination = vector.distance(position) < vector.distance(closest)
+      destination = vector.distance(position) <= vector.distance(closestFriendly)
         ? opposite(position)
-        : opposite(closest)
+        : opposite(closestFriendly)
     } else {
-      destination = vector.distance(position) < vector.distance(closest)
-        ? avoid(position, closest).add(closest).scale(0.5) // centroid
-        : engine.utility.vector3d.create(closest)
+      destination = vector.distance(position) <= vector.distance(closestFriendly)
+        ? avoid(position, closestFriendly)
+        : engine.utility.vector3d.create(closestFriendly)
     }
 
-    const velocity = destination.subtract(this).normalize().scale(content.const.velocity)
+    destination = vector.distance(destination) <= vector.distance(closestEnemy) || vector.distance(closestEnemy) > this.radius * 2
+      ? destination
+      : opposite(closestEnemy)
 
-    const rate = this.velocity.distance() > velocity.distance()
-      ? content.const.acceleration
-      : content.const.deceleration
+    // Roll the dice to apply the new target destination
+    const fps = engine.performance.fps()
 
-    this.velocity = content.utility.accelerate.vector(this.velocity, velocity, rate)
+    const chance = (this.running || this.taunted)
+      ? engine.utility.lerp(1/8, 1, this.difficulty)
+      : engine.utility.lerp(1/16, 1/2, this.difficulty)
+
+    if (Math.random() > chance / fps) {
+      const velocity = destination.subtract(this).normalize().scale(content.const.velocity)
+
+      const rate = this.velocity.distance() > velocity.distance()
+        ? content.const.acceleration
+        : content.const.deceleration
+
+      this.velocity = content.utility.accelerate.vector(this.velocity, velocity, rate)
+    }
 
     return this
   },

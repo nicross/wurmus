@@ -2,7 +2,8 @@
 ## v1.2.0
 - Gameplay
   - Adjusted enemy and power-up spawn chances and timings
-  - Improved friendly player behavior
+  - Improved consistency of friendly player behaviors
+  - Increased difficulty of enemy player behaviors
 - User interface
   - Added haptic feedback
   - Added notifications when power-ups are granted
