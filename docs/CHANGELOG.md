@@ -4,6 +4,7 @@
   - Adjusted enemy and power-up spawn chances and timings
   - Improved consistency of friendly player behaviors
   - Increased difficulty of enemy player behaviors
+  - Protected three closest friendlies from self-collisions
 - User interface
   - Added haptic feedback
   - Added notifications when power-ups are granted

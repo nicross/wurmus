@@ -12,12 +12,12 @@ content.collisions = (() => {
           continue
         }
 
-        if (prop.distance < 0.5 && !prop.isTrain) {
+        if (prop.distance <= 0.5 && !prop.isTrain) {
           content.train.add(prop)
           continue
         }
 
-        if (prop.distance < 0.5 && prop.isTrain && content.train.indexOf(prop) > 0) {
+        if (prop.distance <= 0.5 && prop.isTrain && content.train.indexOf(prop) > 2) {
           content.train.remove(prop)
           continue
         }
