@@ -6,6 +6,8 @@
   - Increased difficulty of enemy player behaviors
   - Protected three closest friendlies from self-collisions
   - Increased score gained from power-ups slightly
+- Graphics
+  - Tightened camera distance slightly
 - User interface
   - Added haptic feedback
   - Added notifications when power-ups are granted

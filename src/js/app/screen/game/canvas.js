@@ -138,7 +138,7 @@ app.screen.game.canvas = (() => {
   function onResize() {
     height = root.height = root.clientHeight
     width = root.width = root.clientWidth
-    mToPx = height / 100
+    mToPx = height / 75
   }
 
   function onTrainAdd(prop) {
