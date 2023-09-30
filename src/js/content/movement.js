@@ -11,7 +11,7 @@ content.movement = (() => {
 
     if (!angularThrust) {
       return engine.position.setAngularVelocityEuler({
-        yaw: content.utility.accelerate.value(
+        yaw: content.utility.accelerateValue(
           yaw,
           0,
           angularDeceleration
@@ -20,7 +20,7 @@ content.movement = (() => {
     }
 
     engine.position.setAngularVelocityEuler({
-      yaw: content.utility.accelerate.value(
+      yaw: content.utility.accelerateValue(
         yaw,
         angularThrust * angularMaxVelocity,
         angularAcceleration
@@ -31,7 +31,7 @@ content.movement = (() => {
   function applyLateralThrust() {
     if (lateralThrust.isZero()) {
       return engine.position.setVelocity(
-        content.utility.accelerate.vector(
+        content.utility.accelerateVector(
           engine.position.getVelocity(),
           engine.utility.vector3d.create(),
           content.const.deceleration
@@ -47,7 +47,7 @@ content.movement = (() => {
       : content.const.deceleration
 
     engine.position.setVelocity(
-      content.utility.accelerate.vector(
+      content.utility.accelerateVector(
         currentVelocity,
         targetVelocity,
         rate

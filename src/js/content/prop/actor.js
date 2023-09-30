@@ -72,15 +72,15 @@ content.prop.actor = engine.prop.base.invent({
     })
 
     if (this.stability) {
-      this.stability = content.utility.accelerate.value(this.stability, 0, 1)
+      this.stability = content.utility.accelerateValue(this.stability, 0, 1)
     }
 
     if (this.running) {
-      this.running = content.utility.accelerate.value(this.running, 0, 1)
+      this.running = content.utility.accelerateValue(this.running, 0, 1)
     }
 
     if (this.taunted) {
-      this.taunted = content.utility.accelerate.value(this.taunted, 0, 1)
+      this.taunted = content.utility.accelerateValue(this.taunted, 0, 1)
     }
 
     if (this.needsSynth()) {
@@ -206,7 +206,7 @@ content.prop.actor = engine.prop.base.invent({
         ? content.const.acceleration
         : content.const.deceleration
 
-      this.velocity = content.utility.accelerate.vector(this.velocity, velocity, rate)
+      this.velocity = content.utility.accelerateVector(this.velocity, velocity, rate)
     }
 
     return this

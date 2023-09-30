@@ -7,7 +7,7 @@
   - Protected three closest friendlies from self-collisions
   - Increased score gained from power-ups slightly
 - Graphics
-  - Tightened camera distance slightly
+  - Added dynamic camera zooming
 - User interface
   - Added haptic feedback
   - Added notifications when power-ups are granted

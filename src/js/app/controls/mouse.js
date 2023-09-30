@@ -89,7 +89,7 @@ app.controls.mouse = (() => {
       if (rotate) {
         // Apply and decelerate rotation to zero
         state.rotate = rotate
-        rotate = content.utility.accelerate.value(rotate, 0, 32)
+        rotate = content.utility.accelerateValue(rotate, 0, 32)
       }
 
       return state

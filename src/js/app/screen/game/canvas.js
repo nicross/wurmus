@@ -1,4 +1,7 @@
 app.screen.game.canvas = (() => {
+  const maxCameraDistance = 100,
+    minCameraDistance = 25
+
   const particleColors = [
     {r: 255, g: 174, b: 188},
     {r: 160, g: 231, b: 229},
@@ -6,7 +9,8 @@ app.screen.game.canvas = (() => {
     {r: 251, g: 231, b: 198},
   ]
 
-  let context,
+  let cameraDistance,
+    context,
     height,
     mToPx,
     particles = [],
@@ -43,7 +47,7 @@ app.screen.game.canvas = (() => {
 
     // Particles
     for (const particle of particles) {
-      const radius = particle.radius * (1 - particle.life)
+      const radius = particle.radius * (1 - particle.life) * mToPx
 
       const x = (width / 2) - (particle.relative.y * mToPx),
         y = (height / 2) - (particle.relative.x * mToPx)
@@ -99,7 +103,7 @@ app.screen.game.canvas = (() => {
     particles.push({
       color: engine.utility.choose(particleColors, Math.random()),
       life: 1,
-      radius: engine.utility.random.float(1, 3),
+      radius: engine.utility.random.float(1/32, 1/8),
       rotate: Math.PI/8 * engine.utility.random.float(-1, 1),
       vector,
       velocity,
@@ -113,6 +117,7 @@ app.screen.game.canvas = (() => {
   }
 
   function onEnter() {
+    resetCamera()
     clear()
     engine.loop.on('frame', onFrame)
   }
@@ -127,6 +132,7 @@ app.screen.game.canvas = (() => {
       return
     }
 
+    updateCamera()
     updateParticles()
     draw()
   }
@@ -138,7 +144,6 @@ app.screen.game.canvas = (() => {
   function onResize() {
     height = root.height = root.clientHeight
     width = root.width = root.clientWidth
-    mToPx = height / 75
   }
 
   function onTrainAdd(prop) {
@@ -151,6 +156,34 @@ app.screen.game.canvas = (() => {
       const count = engine.utility.random.float(8, 24)
       generateParticles(prop.vector(), count)
     }
+  }
+
+  function resetCamera() {
+    cameraDistance = minCameraDistance
+  }
+
+  function updateCamera() {
+    if (engine.loop.isPaused() && content.train.length()) {
+      return
+    }
+
+    const enemies = content.spawner.enemiesByDistance()
+
+    const target = enemies.length
+      ? engine.utility.clamp(
+          enemies[enemies.length - 1].distance + 25,
+          minCameraDistance,
+          maxCameraDistance,
+        )
+      : maxCameraDistance
+
+    cameraDistance = content.utility.accelerateValue(
+      cameraDistance,
+      target,
+      5
+    )
+
+    mToPx = height / cameraDistance
   }
 
   function updateParticles() {
