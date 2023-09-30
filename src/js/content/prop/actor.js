@@ -153,7 +153,7 @@ content.prop.actor = engine.prop.base.invent({
   moveTag: function () {
     // Determine destination
     const closestEnemy = content.train.quadtreeEnemy().find(this),
-      closestFriendly = content.train.quadtreeFriendly().find(this),
+      closestFriendly = content.train.quadtreeFriendlyNoStability().find(this),
       position = engine.position.getVector(),
       vector = this.vector()
 
@@ -182,15 +182,19 @@ content.prop.actor = engine.prop.base.invent({
       destination = vector.distance(position) <= vector.distance(closestFriendly)
         ? opposite(position)
         : opposite(closestFriendly)
-    } else {
+    } else if (closestFriendly) {
       destination = vector.distance(position) <= vector.distance(closestFriendly)
         ? avoid(position, closestFriendly)
-        : engine.utility.vector3d.create(closestFriendly)
+        : engine.utility.vector3d.create(closestFriendly || {})
     }
 
     destination = vector.distance(destination) <= vector.distance(closestEnemy) || vector.distance(closestEnemy) > this.radius * 2
       ? destination
       : opposite(closestEnemy)
+
+    destination = closestFriendly && vector.distance(closestFriendly) < this.radius * 2
+      ? opposite(closestFriendly)
+      : destination
 
     // Roll the dice to apply the new target destination
     const fps = engine.performance.fps()

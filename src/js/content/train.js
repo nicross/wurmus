@@ -30,6 +30,7 @@ content.train = (() => {
       engine.props.get().filter((prop) => !prop.isTrain)
     ),
     quadtreeFriendly: () => engine.utility.quadtree.from(train),
+    quadtreeFriendlyNoStability: () => engine.utility.quadtree.from(train.filter((prop) => !prop.stability)),
     remove: function (prop) {
       const index = train.indexOf(prop)
 
