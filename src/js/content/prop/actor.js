@@ -223,9 +223,13 @@ content.prop.actor = engine.prop.base.invent({
 
     let destination
 
-    this.heading = index == 0
+    const nextHeading = index == 0
       ? engine.position.getQuaternion().forward()
       : ahead.vector().subtract(vector).normalize()
+
+    this.heading = this.heading !== undefined
+      ? content.utility.accelerateVector(this.heading, nextHeading, 8)
+      : nextHeading
 
     if (index == 0) {
       destination = position.subtract(
@@ -247,7 +251,7 @@ content.prop.actor = engine.prop.base.invent({
     }
 
     this.velocity = destination.subtract(vector).normalize().scale(
-      Math.max(destination.subtract(vector).distance(), content.const.velocity)
+      destination.subtract(vector).distance() * content.const.velocity
     )
 
     return this
