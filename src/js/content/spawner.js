@@ -9,7 +9,7 @@ content.spawner = (() => {
 
   function calculateDifficulty() {
     const trainLength = content.train.length()
-    return engine.utility.clamp(trainLength / 10, 0, 1)
+    return engine.utility.clamp(trainLength / 16, 0, 1)
   }
 
   function initializeGame() {
@@ -20,7 +20,7 @@ content.spawner = (() => {
     for (let i = 0; i < count; i += 1) {
       const prop = engine.props.create(content.prop.actor, {
         destination: bus,
-        difficulty: 0,
+        difficulty: calculateDifficulty(),
         ...position.add({x: -(count - i) * distance}),
       })
 
@@ -33,7 +33,7 @@ content.spawner = (() => {
   function shouldSpawn() {
     const difficulty = calculateDifficulty(),
       enemies = engine.props.get().filter((prop) => !prop.isTrain),
-      maxEnemies = Math.round(engine.utility.lerpExp(1, 3, difficulty, 1))
+      maxEnemies = Math.floor(engine.utility.lerpExp(1, 4, difficulty, 0.5))
 
     if (enemies.length >= maxEnemies) {
       return false
@@ -89,6 +89,7 @@ content.spawner = (() => {
       engine.audio.ramp.exponential(bus.gain, engine.const.zeroGain, 1)
       return this
     },
+    enemiesByDistance: () => [...enemiesByDistance],
     getIndexByDistance: (prop) => alliesByDistance.includes(prop) ? alliesByDistance.indexOf(prop) : enemiesByDistance.indexOf(prop),
     import: function () {
       initializeGame()
