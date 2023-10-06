@@ -18,16 +18,15 @@
     margin-left: 0.5em;
   }
   .a-toolbar--toggle {
-    border: 1px solid #FFFFFF;
-    border-radius: 1px;
+    border: 0.25em solid rgba(255, 255, 255, 0.25);
+    border-radius: 0.125em;
     padding: 0.5em 1em;
-    opacity: 0.5;
     transition: opacity 0.25s ease;
   }
   .a-toolbar--toggle:active,
   .a-toolbar--toggle:focus,
   .a-toolbar--toggle:hover {
-    opacity: 1;
+    border-color: #FFFFFF;
   }
   [aria-checked="false"] .a-toolbar--toggleOn {
     display: none;

@@ -14,11 +14,12 @@
 .c-button:active,
 .c-button:focus,
 .c-button:hover {
-  background-color: #111111;
+  background-color: #181818;
   border-bottom-color: #A0E7E5;
   border-left-color: #A0E7E5;
   border-right-color: #FBE7C6;
   border-top-color: #FBE7C6;
+  outline: 0.25em solid #FFFFFF;
 }
 
 .a-app--screen-inactive .c-button {

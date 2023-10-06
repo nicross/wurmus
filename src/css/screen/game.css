@@ -144,3 +144,9 @@
     transform: translateX(-50%) translateY(-150%);
   }
 }
+
+@media (prefers-reduced-motion: reduced) {
+  .a-game--train {
+    transform: translateY(0) !important;
+  }
+}

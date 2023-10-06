@@ -16,6 +16,7 @@
   - Paused game automatically when window loses focus
   - Improved mouse cursor lock behavior
   - Escape only quits application on menu screens
+  - Improved visual contrast of focused menu buttons
   - Animated more interface elements
   - Removed interstitial screen for first-time players
 - Documentation
