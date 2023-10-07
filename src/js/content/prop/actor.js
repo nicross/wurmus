@@ -39,6 +39,8 @@ content.prop.actor = engine.prop.base.invent({
       },
       position: this.vector(),
     })
+
+    this.applyGlobalPowerups()
   },
   onDestroy: function () {
     if (this.synth) {
@@ -91,6 +93,21 @@ content.prop.actor = engine.prop.base.invent({
     } else if (this.synth) {
       this.destroySynth()
     }
+  },
+  applyGlobalPowerups: function () {
+    if (this.isTrain) {
+      return
+    }
+
+    this.run(Math.max(0,
+      content.powerups.fear.duration - (engine.audio.time() - content.powerups.fear.lastApplication)
+    ))
+
+    this.taunt(Math.max(0,
+      content.powerups.taunt.duration - (engine.audio.time() - content.powerups.taunt.lastApplication)
+    ))
+
+    return this
   },
   calculateFrequency: function () {
     if (!this.isTrain) {
@@ -174,14 +191,14 @@ content.prop.actor = engine.prop.base.invent({
 
     let destination = vector.clone()
 
-    if (this.taunted) {
-      destination = vector.distance(position) <= vector.distance(closestFriendly)
-        ? position
-        : avoid(closestFriendly, position)
-    } else if (this.running) {
+    if (this.running) {
       destination = vector.distance(position) <= vector.distance(closestFriendly)
         ? opposite(position)
         : opposite(closestFriendly)
+    } else if (this.taunted) {
+      destination = vector.distance(position) <= vector.distance(closestFriendly)
+        ? position
+        : avoid(closestFriendly, position)
     } else if (closestFriendly) {
       destination = vector.distance(position) <= vector.distance(closestFriendly)
         ? avoid(position, closestFriendly)
@@ -262,11 +279,16 @@ content.prop.actor = engine.prop.base.invent({
       this.synth.lfo.connect(this.synth.lfoTarget.gain)
     }
 
-    // Accumulate stability bonus from previous ally (can stack)
-    const stability = (content.train.behind(this) || {}).stability || 0
-    this.stable(1 + stability)
-
     this.duck()
+
+    // Accumulate stability bonus from previous ally
+    this.stable(
+      1 + (content.train.behind(this)?.stability || 0)
+    )
+
+    // Reset other bonuses
+    this.running = 0
+    this.taunted = 0
 
     return this
   },
@@ -284,9 +306,8 @@ content.prop.actor = engine.prop.base.invent({
     }
 
     // Run away briefly
-    this.stable(1).run(
-      engine.utility.lerpRandom([4,6], [1,2], this.difficulty)
-    )
+    this.applyGlobalPowerups().stable(1)
+    this.running = Math.max(this.running, engine.utility.lerpRandom([4,6], [1,2], this.difficulty))
 
     // Normalize velocity
     this.velocity = this.velocity.normalize().scale(
@@ -324,15 +345,15 @@ content.prop.actor = engine.prop.base.invent({
     return this
   },
   run: function (time = 1) {
-    this.running = time
+    this.running = Math.max(0, this.running || 0) + time
     return this
   },
   stable: function (time = 1) {
-    this.stability = time
+    this.stability = Math.max(0, this.stability || 0) + time
     return this
   },
   taunt: function (time = 1) {
-    this.taunted = time
+    this.taunted = Math.max(0, this.taunted || 0) + time
     return this
   },
   updateSynth: function () {

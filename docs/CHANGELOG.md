@@ -7,6 +7,7 @@
   - Protected three closest friendlies from self-collisions
   - Increased score gained from power-ups slightly
   - Slowed difficulty scaling for generally longer games
+  - Applied remaining power-up durations to new enemies
 - Graphics
   - Added dynamic camera zooming
 - User interface

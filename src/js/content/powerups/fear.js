@@ -14,6 +14,8 @@ content.powerups.fear = content.powerups.register({
 
     this.sfx()
 
+    this.lastApplication = engine.audio.time()
+
     return this
   },
   sfx: function () {
