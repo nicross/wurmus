@@ -216,43 +216,11 @@ content.prop.actor = engine.prop.base.invent({
     return this
   },
   moveTrain: function () {
-    const ahead = content.train.ahead(this),
-      index = content.train.indexOf(this),
-      position = engine.position.getVector(),
-      vector = this.vector()
+    const position = content.train.positionOf(this)
 
-    let destination
-
-    const nextHeading = index == 0
-      ? engine.position.getQuaternion().forward()
-      : ahead.vector().subtract(vector).normalize()
-
-    this.heading = this.heading !== undefined
-      ? content.utility.accelerateVector(this.heading, nextHeading, 8)
-      : nextHeading
-
-    if (index == 0) {
-      destination = position.subtract(
-        engine.utility.vector2d.create(
-          engine.position.getQuaternion().forward()
-        ).scale(this.radius * 3)
-      )
-    } else {
-      /*
-      const behind = ahead.vector().subtract(ahead.heading ? ahead.heading.scale(this.radius * 2) : {}),
-        near = vector.subtract(ahead.vector()).normalize().scale(this.radius * 2).add(ahead.vector())
-
-      destination = vector.distance(behind) <= vector.distance(near) + (this.radius * 2)
-        ? behind
-        : behind.add(near).scale(0.5)
-      */
-
-      destination = ahead.vector().subtract(ahead.heading ? ahead.heading.scale(this.radius * 2) : {})
-    }
-
-    this.velocity = destination.subtract(vector).normalize().scale(
-      destination.subtract(vector).distance() * content.const.velocity
-    )
+    this.velocity = position.velocity
+    this.x = position.vector.x
+    this.y = position.vector.y
 
     return this
   },
