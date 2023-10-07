@@ -216,11 +216,30 @@ content.prop.actor = engine.prop.base.invent({
     return this
   },
   moveTrain: function () {
-    const position = content.train.positionOf(this)
+    /*
+     * Smoothly transition between indices on capture.
+     * Prop keeps track of their currentIndex which is a float.
+     * We accelerate the float to the target index every frame.
+     * The resulting position is the interpolated value of the positions the float lies between.
+     */
+    const nextIndex = content.train.indexOf(this),
+      previousIndex = nextIndex - 1
 
-    this.velocity = position.velocity
-    this.x = position.vector.x
-    this.y = position.vector.y
+    const previousVector = nextIndex == 0
+      ? this.captureVector
+      : content.train.positionAt(previousIndex).vector
+
+    const nextPosition = content.train.positionAt(nextIndex)
+
+    this.currentIndex = content.utility.accelerateValue(this.currentIndex, nextIndex, 4)
+
+    const delta = engine.utility.clamp(engine.utility.scale(this.currentIndex, previousIndex, nextIndex, 0, 1)),
+      x = engine.utility.lerp(previousVector.x, nextPosition.vector.x, delta),
+      y = engine.utility.lerp(previousVector.y, nextPosition.vector.y, delta)
+
+    this.velocity = nextPosition.velocity
+    this.x = x
+    this.y = y
 
     return this
   },
@@ -229,6 +248,9 @@ content.prop.actor = engine.prop.base.invent({
   },
   onTrainAdd: function () {
     this.isTrain = true
+
+    this.captureVector = this.vector()
+    this.currentIndex = -1
 
     // Reset frequency
     delete this.frequency

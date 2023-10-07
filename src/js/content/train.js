@@ -27,8 +27,6 @@ content.train = (() => {
           : engine.position.getVelocity()
       ),
     })
-
-    positions[0].vector = prop.vector()
   }
 
   function updatePositions() {
@@ -51,7 +49,7 @@ content.train = (() => {
         : ahead.vector.subtract(ahead.heading.scale(content.prop.actor.radius * 2))
 
       current.velocity = destination.subtract(current.vector).normalize().scale(
-        destination.subtract(current.vector).distance() * content.const.velocity
+        destination.subtract(current.vector).distance() * content.const.velocity * 2
       )
 
       current.vector = current.vector.add(
@@ -86,7 +84,7 @@ content.train = (() => {
     get: (index) => train[index],
     has: (prop) => train.includes(prop),
     indexOf: (prop) => train.indexOf(prop),
-    positionOf: (prop) => positions[train.indexOf(prop)],
+    positionAt: (index) => positions[index],
     length: () => train.length,
     quadtreeEnemy: () => engine.utility.quadtree.from(
       engine.props.get().filter((prop) => !prop.isTrain)
