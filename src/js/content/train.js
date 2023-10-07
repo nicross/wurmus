@@ -49,7 +49,7 @@ content.train = (() => {
         : ahead.vector.subtract(ahead.heading.scale(content.prop.actor.radius * 2))
 
       current.velocity = destination.subtract(current.vector).normalize().scale(
-        destination.subtract(current.vector).distance() * content.const.velocity * 2
+        destination.subtract(current.vector).distance() * content.const.velocity * 1.5
       )
 
       current.vector = current.vector.add(

@@ -85,13 +85,8 @@ content.prop.actor = engine.prop.base.invent({
       this.taunted = content.utility.accelerateValue(this.taunted, 0, 1)
     }
 
-    if (this.needsSynth()) {
-      if (!this.synth) {
-        this.createSynth()
-      }
+    if (this.synth) {
       this.updateSynth()
-    } else if (this.synth) {
-      this.destroySynth()
     }
   },
   applyGlobalPowerups: function () {
@@ -260,9 +255,6 @@ content.prop.actor = engine.prop.base.invent({
 
     return this
   },
-  needsSynth: function () {
-    return this.relative.x >= 0
-  },
   onTrainAdd: function () {
     this.isTrain = true
 
@@ -346,6 +338,15 @@ content.prop.actor = engine.prop.base.invent({
   },
   run: function (time = 1) {
     this.running = Math.max(0, this.running || 0) + time
+    return this
+  },
+  setAudibility: function (value) {
+    if (value && !this.synth) {
+      this.createSynth()
+    } else if (!value && this.synth) {
+      this.destroySynth()
+    }
+
     return this
   },
   stable: function (time = 1) {

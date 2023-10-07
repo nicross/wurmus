@@ -83,6 +83,7 @@ content.spawner = (() => {
   }
 
   return engine.utility.pubsub.decorate({
+    alliesByDistance: () => [...alliesByDistance],
     bus: () => bus,
     difficulty: () => calculateDifficulty(),
     duck: function () {

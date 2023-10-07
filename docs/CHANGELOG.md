@@ -8,6 +8,8 @@
   - Increased score gained from power-ups slightly
   - Slowed difficulty scaling for generally longer games
   - Applied remaining power-up durations to new enemies
+- Audio
+  - Limited maximum audible players to prevent stuttering
 - Graphics
   - Added dynamic camera zooming
 - User interface
