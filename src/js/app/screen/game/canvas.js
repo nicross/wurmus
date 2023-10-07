@@ -1,6 +1,6 @@
 app.screen.game.canvas = (() => {
-  const maxCameraDistance = 100,
-    minCameraDistance = 25
+  const maxCameraDistance = 37.5,
+    minCameraDistance = 12.5
 
   const particleColors = [
     {r: 255, g: 174, b: 188},
@@ -171,7 +171,7 @@ app.screen.game.canvas = (() => {
 
     const target = enemies.length
       ? engine.utility.clamp(
-          enemies[enemies.length - 1].distance + 25,
+          ((enemies[enemies.length - 1].distance + enemies[0].distance) * 0.5) + 1,
           minCameraDistance,
           maxCameraDistance,
         )
@@ -180,10 +180,10 @@ app.screen.game.canvas = (() => {
     cameraDistance = content.utility.accelerateValue(
       cameraDistance,
       target,
-      5
+      maxCameraDistance / 8
     )
 
-    mToPx = height / cameraDistance
+    mToPx = height / 2 / cameraDistance
   }
 
   function updateParticles() {
