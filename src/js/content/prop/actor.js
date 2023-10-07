@@ -273,13 +273,9 @@ content.prop.actor = engine.prop.base.invent({
 
     this.duck()
 
-    // Accumulate stability bonus from previous ally
-    this.stable(
-      1 + (content.train.behind(this)?.stability || 0)
-    )
-
     // Reset other bonuses
     this.running = 0
+    this.stability = Math.max(1, content.powerups.stability.duration - (engine.audio.time() - content.powerups.stability.lastApplication))
     this.taunted = 0
 
     return this
@@ -298,8 +294,9 @@ content.prop.actor = engine.prop.base.invent({
     }
 
     // Run away briefly
-    this.applyGlobalPowerups().stable(1)
+    this.applyGlobalPowerups()
     this.running = Math.max(this.running, engine.utility.lerpRandom([4,6], [1,2], this.difficulty))
+    this.stability = 1
 
     // Normalize velocity
     this.velocity = this.velocity.normalize().scale(

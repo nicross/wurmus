@@ -3,6 +3,7 @@ content.powerups.fear = content.powerups.register({
   name: 'Fear',
   duration: 5,
   weight: 2,
+  lastApplication: 0,
   apply: function () {
     const props = engine.props.get()
 

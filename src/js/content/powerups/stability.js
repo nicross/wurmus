@@ -3,6 +3,7 @@ content.powerups.stability = content.powerups.register({
   name: 'Stability',
   duration: 5,
   weight: 3,
+  lastApplication: 0,
   apply: function () {
     const props = engine.props.get()
 

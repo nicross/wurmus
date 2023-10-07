@@ -1,13 +1,13 @@
 # Wurmus changelog
 ## v1.2.0
 - Gameplay
-  - Adjusted enemy and power-up spawn chances and timings
+  - Tightened enemy and power-up spawn chances and timings
   - Improved consistency of friendly player behaviors
   - Increased difficulty of enemy player behaviors
-  - Protected three closest friendlies from self-collisions
   - Increased score gained from power-ups slightly
   - Slowed difficulty scaling for generally longer games
-  - Applied remaining power-up durations to new enemies
+  - Applied power-ups when players spawn or switch teams
+  - Removed stacking stability bonuses for new allies
 - Audio
   - Limited maximum audible players to prevent stuttering
 - Graphics

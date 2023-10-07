@@ -3,6 +3,7 @@ content.powerups.taunt = content.powerups.register({
   name: 'Taunt',
   duration: 5,
   weight: 2,
+  lastApplication: 0,
   apply: function () {
     const props = engine.props.get()
 
