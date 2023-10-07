@@ -29,12 +29,14 @@ app.screen.game.paused = (() => {
 
   return {
     activate: function () {
-      root.appendChild(pausedText)
-
       root.innerHTML = ''
       root.ontransitionend = undefined
 
-      window.requestAnimationFrame(() => root.classList.add('a-game--paused-active'))
+      root.appendChild(pausedText)
+
+      window.requestAnimationFrame(() => {
+        root.classList.add('a-game--paused-active')
+      })
     },
     deactivate: function () {
       root.appendChild(resumedText)
