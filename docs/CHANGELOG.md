@@ -1,14 +1,14 @@
 # Wurmus changelog
 ## v1.2.0
 - Gameplay
-  - Tightened enemy and power-up spawn chances and timings
-  - Improved consistency of friendly player behaviors
-  - Increased difficulty of enemy player behaviors
-  - Increased score gained from power-ups slightly
+  - Added ability to pause the game
   - Increased tag radius for all players
-  - Slowed difficulty scaling for generally longer games
-  - Applied power-ups when players spawn or switch teams
-  - Removed stacking stability bonuses for new allies
+  - Tightened enemy and power-up spawn chances and timings
+  - Improved friendly player physics and behavior
+  - Improved enemy player tactics and difficulty scaling
+  - Increased score gained from collecting power-ups
+  - Applied existing power-ups to players on spawn or team switch
+  - Removed stacking stability bonuses
 - Audio
   - Limited maximum audible players to prevent stuttering
 - Graphics
@@ -17,13 +17,13 @@
 - User interface
   - Added haptic feedback
   - Added notifications when power-ups are granted
-  - Added ability to pause the game
-  - Paused game automatically when window loses focus
+  - Added automatic pause when window loses focus
+  - Added button to exit to desktop on menu screens
+  - Removed escape hotkey for exiting to desktop
   - Improved mouse cursor lock behavior
-  - Escape only quits application on menu screens
   - Improved visual contrast of focused menu buttons
   - Animated more interface elements
-  - Removed interstitial screen for first-time players
+  - Removed lore screen for first-time players
 - Documentation
   - Updated manual to reflect changes
   - Improved accessibility of tables in manual

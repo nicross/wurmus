@@ -42,10 +42,6 @@ app.screen.splash = (() => {
       }
     }
 
-    if (ui.cancel) {
-      return app.quit()
-    }
-
     if (ui.up || ui.left) {
       return app.utility.focus.setPreviousFocusable(root)
     }

@@ -1,6 +1,7 @@
 app.toolbar = (() => {
   let graphicsOn,
     musicOn,
+    quit,
     root
 
   engine.ready(() => {
@@ -13,6 +14,10 @@ app.toolbar = (() => {
     musicOn = root.querySelector('.a-toolbar--musicOn')
     musicOn.addEventListener('click', onMusicOnClick)
     setTimeout(() => renderMusicOn(), 0)
+
+    quit = root.querySelector('.a-toolbar--quit')
+    quit.addEventListener('click', onQuitClick)
+    quit.parentNode.hidden = !app.isElectron()
   })
 
   function onGraphicsOnClick() {
@@ -30,6 +35,10 @@ app.toolbar = (() => {
     const state = musicOn.getAttribute('aria-checked') != 'true'
     app.settings.setMusicOn(state).save()
     renderMusicOn()
+  }
+
+  function onQuitClick() {
+    app.quit()
   }
 
   function renderMusicOn() {
