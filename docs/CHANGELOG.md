@@ -5,6 +5,7 @@
   - Improved consistency of friendly player behaviors
   - Increased difficulty of enemy player behaviors
   - Increased score gained from power-ups slightly
+  - Increased tag radius for all players
   - Slowed difficulty scaling for generally longer games
   - Applied power-ups when players spawn or switch teams
   - Removed stacking stability bonuses for new allies

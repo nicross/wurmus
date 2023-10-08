@@ -3,6 +3,9 @@ content.train = (() => {
     pubsub = engine.utility.pubsub.create(),
     train = []
 
+  let quadtreeEnemy = engine.utility.quadtree.create(),
+    quadtreeFriendly = engine.utility.quadtree.create()
+
   function pushPosition(prop) {
     const last = positions[positions.length - 1]
 
@@ -86,10 +89,8 @@ content.train = (() => {
     indexOf: (prop) => train.indexOf(prop),
     positionAt: (index) => positions[index],
     length: () => train.length,
-    quadtreeEnemy: () => engine.utility.quadtree.from(
-      engine.props.get().filter((prop) => !prop.isTrain)
-    ),
-    quadtreeFriendly: () => engine.utility.quadtree.from(train),
+    quadtreeEnemy: () => quadtreeEnemy,
+    quadtreeFriendly: () => quadtreeFriendly,
     quadtreeFriendlyNoStability: () => engine.utility.quadtree.from(train.filter((prop) => !prop.stability)),
     remove: function (prop) {
       const index = train.indexOf(prop)
@@ -118,10 +119,22 @@ content.train = (() => {
     update: function () {
       updatePositions()
 
+      quadtreeEnemy = engine.utility.quadtree.from(
+        engine.props.get().filter((prop) => !prop.isTrain)
+      )
+
+      quadtreeFriendly = engine.utility.quadtree.from(train)
+
       return this
     },
   }, pubsub)
 })()
 
-engine.loop.on('frame', () => content.train.update())
+engine.loop.on('frame', ({paused}) => {
+  if (paused) {
+    return
+  }
+
+  content.train.update()
+})
 engine.state.on('reset', () => content.train.reset())

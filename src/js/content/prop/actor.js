@@ -168,7 +168,7 @@ content.prop.actor = engine.prop.base.invent({
 
     const avoid = (from, target) => {
       // Scale the dodge distance based on difficulty
-      const scale = content.const.velocity * engine.utility.lerp(0, 1, this.difficulty)
+      const scale = content.const.velocity * engine.utility.lerp(0, 2, this.difficulty)
 
       // Generate two points at right angles away
       const base = vector.subtract(from).normalize().scale(scale),
@@ -209,17 +209,19 @@ content.prop.actor = engine.prop.base.invent({
     const fps = engine.performance.fps()
 
     const chance = (this.running || this.taunted)
-      ? engine.utility.lerp(1/8, 1, this.difficulty)
-      : engine.utility.lerp(1/16, 1/2, this.difficulty)
+      ? 1
+      : engine.utility.lerp(1, 8, this.difficulty) / fps
 
-    if (Math.random() > chance / fps) {
-      const velocity = destination.subtract(this).normalize().scale(content.const.velocity)
+    if (Math.random() <= chance) {
+      this.targetVelocity = destination.subtract(this).normalize().scale(content.const.velocity - (1 - this.difficulty))
+    }
 
-      const rate = this.velocity.distance() > velocity.distance()
+    if (this.targetVelocity) {
+      const rate = this.velocity.distance() > this.targetVelocity.distance()
         ? content.const.acceleration
         : content.const.deceleration
 
-      this.velocity = content.utility.accelerateVector(this.velocity, velocity, rate)
+      this.velocity = content.utility.accelerateVector(this.velocity, this.targetVelocity, rate)
     }
 
     return this
