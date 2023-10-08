@@ -53,7 +53,9 @@ app.screen.game.canvas = (() => {
         y = (height / 2) - (particle.relative.x * mToPx)
 
       context.fillStyle = `rgba(${particle.color.r}, ${particle.color.g}, ${particle.color.b}, ${particle.life})`
-      context.fillRect(x - radius, y - radius, radius * 2, radius * 2)
+      context.beginPath()
+      context.arc(x, y, radius, 0, Math.PI * 2)
+      context.fill()
     }
 
     // Props
@@ -103,7 +105,7 @@ app.screen.game.canvas = (() => {
     particles.push({
       color: engine.utility.choose(particleColors, Math.random()),
       life: 1,
-      radius: engine.utility.random.float(1/32, 1/8),
+      radius: engine.utility.random.float(1/24, 1/6),
       rotate: Math.PI/8 * engine.utility.random.float(-1, 1),
       vector,
       velocity,
@@ -138,7 +140,7 @@ app.screen.game.canvas = (() => {
   }
 
   function onPowerupsApply() {
-    generateParticles(engine.position.getVector(), 32)
+    generateParticles(engine.position.getVector(), 64)
   }
 
   function onResize() {
@@ -147,13 +149,13 @@ app.screen.game.canvas = (() => {
   }
 
   function onTrainAdd(prop) {
-    const count = engine.utility.random.float(8, 24)
+    const count = engine.utility.random.float(24, 48)
     generateParticles(prop.vector(), count)
   }
 
   function onTrainRemove(props) {
     for (const prop of props) {
-      const count = engine.utility.random.float(8, 24)
+      const count = engine.utility.random.float(24, 48)
       generateParticles(prop.vector(), count)
     }
   }

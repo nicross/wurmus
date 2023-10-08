@@ -12,6 +12,7 @@
   - Limited maximum audible players to prevent stuttering
 - Graphics
   - Added dynamic camera zooming
+  - Increased particle effects
 - User interface
   - Added haptic feedback
   - Added notifications when power-ups are granted
