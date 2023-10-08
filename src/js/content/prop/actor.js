@@ -1,5 +1,7 @@
 content.prop.actor = engine.prop.base.invent({
   name: 'actor',
+  fadeInDuration: 1/4,
+  fadeOutDuration: 1/4,
   frequencies: [
     71,
     69,

@@ -6,7 +6,7 @@
  * This does not affect footsteps or power-up sounds.
  */
 content.audibility = (() => {
-  const maxAudible = 10
+  const maxAudible = 8
 
   const audible = new Set(),
     possible = new Set()
