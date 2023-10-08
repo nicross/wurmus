@@ -3,7 +3,7 @@ content.powerups.taunt = content.powerups.register({
   name: 'Taunt',
   duration: 5,
   weight: 2,
-  lastApplication: 0,
+  value: 0,
   apply: function () {
     const props = engine.props.get()
 
@@ -15,7 +15,7 @@ content.powerups.taunt = content.powerups.register({
 
     this.sfx()
 
-    this.lastApplication = engine.audio.time()
+    this.value = this.duration
 
     return this
   },
@@ -51,6 +51,11 @@ content.powerups.taunt = content.powerups.register({
     synth.param.gain.linearRampToValueAtTime(engine.const.zeroGain, now + this.duration)
 
     synth.stop(now + this.duration)
+
+    return this
+  },
+  update: function () {
+    this.value = content.utility.accelerateValue(this.value, 0, 1)
 
     return this
   },

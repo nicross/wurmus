@@ -16,6 +16,8 @@ app.screen.game = (() => {
   }
 
   function handleGameOver() {
+    engine.loop.off('frame', onFrame)
+
     engine.loop.pause()
     content.spawner.duck()
     content.sfx.gameOver()

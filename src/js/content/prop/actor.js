@@ -96,13 +96,8 @@ content.prop.actor = engine.prop.base.invent({
       return
     }
 
-    this.run(Math.max(0,
-      content.powerups.fear.duration - (engine.audio.time() - content.powerups.fear.lastApplication)
-    ))
-
-    this.taunt(Math.max(0,
-      content.powerups.taunt.duration - (engine.audio.time() - content.powerups.taunt.lastApplication)
-    ))
+    this.run(content.powerups.fear.value)
+    this.taunt(content.powerups.taunt.value)
 
     return this
   },
@@ -277,7 +272,7 @@ content.prop.actor = engine.prop.base.invent({
 
     // Reset other bonuses
     this.running = 0
-    this.stability = Math.max(1, content.powerups.stability.duration - (engine.audio.time() - content.powerups.stability.lastApplication))
+    this.stability = 1 + content.powerups.stability.value
     this.taunted = 0
 
     return this

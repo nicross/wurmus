@@ -48,7 +48,10 @@ content.powerups = (() => {
     bus: () => bus,
     choose: () => chooseRandomPowerup(),
     onPause: function () {
-      killBus()
+      if (!content.train.length()) {
+        killBus()
+      }
+
       return this
     },
     onSpawnerSpawn: function (prop) {
@@ -84,6 +87,13 @@ content.powerups = (() => {
       registry.set(definition.key, definition)
       return definition
     },
+    update: function () {
+      for (const powerup of registry.values()) {
+        powerup.update()
+      }
+
+      return this
+    },
   }, pubsub)
 })()
 
@@ -93,4 +103,5 @@ engine.ready(() => {
   content.train.on('remove', (prop) => content.powerups.onTrainRemove(prop))
 })
 
+engine.loop.on('frame', () => content.powerups.update())
 engine.loop.on('pause', () => content.powerups.onPause())
