@@ -167,8 +167,10 @@ content.prop.actor = engine.prop.base.invent({
       vector = this.vector()
 
     const avoid = (from, target) => {
-      // Scale the dodge distance based on difficulty
-      const scale = content.const.velocity * engine.utility.lerp(0, 2, this.difficulty)
+      // Scale the dodge distance based on difficulty and behavior
+      const scale = content.const.velocity * (
+        engine.utility.lerp(0, 2, (this.running || this.taunted) ? 1 : this.difficulty)
+      )
 
       // Generate two points at right angles away
       const base = vector.subtract(from).normalize().scale(scale),
@@ -181,6 +183,7 @@ content.prop.actor = engine.prop.base.invent({
 
     const opposite = (from) => vector.subtract(from).normalize().add(vector)
 
+    // Determine best destination for current behavior
     let destination = vector.clone()
 
     if (this.running) {
@@ -194,21 +197,29 @@ content.prop.actor = engine.prop.base.invent({
     } else if (closestFriendly) {
       destination = vector.distance(position) <= vector.distance(closestFriendly)
         ? avoid(position, closestFriendly)
-        : engine.utility.vector3d.create(closestFriendly || {})
-
-      destination = closestFriendly.stability && vector.distance(closestFriendly) < this.radius * 2
-        ? opposite(closestFriendly)
-        : destination
+        : engine.utility.vector3d.create(closestFriendly)
     }
 
-    destination = vector.distance(destination) <= vector.distance(closestEnemy) || vector.distance(closestEnemy) > this.radius * 2
-      ? destination
-      : opposite(closestEnemy)
+    // Avoid stable friendlies that are too close
+    const friendlyTooClose = closestFriendly && closestFriendly.stability
+      && vector.distance(closestFriendly) < this.radius * 3
+
+    if (friendlyTooClose) {
+      destination = opposite(closestFriendly)
+    }
+
+    // Avoid enemies that are too close
+    const enemyTooClose = closestEnemy
+      && vector.distance(closestEnemy) < this.radius * 2
+
+    if (enemyTooClose) {
+      destination = opposite(closestEnemy)
+    }
 
     // Roll the dice to apply the new target destination
     const fps = engine.performance.fps()
 
-    const chance = (this.running || this.taunted)
+    const chance = (this.running || this.taunted || enemyTooClose || friendlyTooClose)
       ? 1
       : engine.utility.lerp(1, 8, this.difficulty) / fps
 
