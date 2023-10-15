@@ -1,32 +1,30 @@
 # Wurmus changelog
 ## v1.2.0
 - Gameplay
-  - Added ability to pause the game
-  - Increased tag radius for all players
-  - Tightened enemy and power-up spawn chances and timings
-  - Improved friendly player physics and behavior
-  - Improved enemy player tactics and difficulty scaling
-  - Increased score gained from collecting power-ups
-  - Applied existing power-ups to players on spawn or team switch
-  - Removed stacking stability bonuses
-- Audio
-  - Limited maximum audible players to prevent stuttering
+  - Friends behave more orderly
+  - Enemies behave more strategically
+  - Enemies spawn more quickly
+  - Enemy difficulty scales more slowly
+  - Power-ups spawn more frequently
+  - Power-ups behave more consistently
+  - Power-ups apply more score
 - Graphics
-  - Added dynamic camera zooming
-  - Increased particle effects
+  - Camera dynamically zooms to fit most action
+  - Particle effects are more intense
+  - Power-up names appear when collected
+  - Interface elements are more animated
+  - Menu buttons have better focus states
 - User interface
-  - Added haptic feedback
-  - Added notifications when power-ups are granted
-  - Added automatic pause when window loses focus
-  - Added button to exit to desktop on menu screens
-  - Removed escape hotkey for exiting to desktop
-  - Improved mouse cursor lock behavior
-  - Improved visual contrast of focused menu buttons
-  - Animated more interface elements
-  - Removed lore screen for first-time players
+  - Supported controllers now vibrate
+  - The game can be paused
+  - The game automatically pauses when it loses focus
+  - The game can quit to desktop from the menu
+  - Mouse cursor lock behaves more consistently
+- Audio
+  - Limited maximum number of audible sounds
 - Documentation
-  - Updated manual to reflect changes
-  - Improved accessibility of tables in manual
+  - Manual reflects the new changes
+  - Tables have better accessibility
 - Application
   - Updated desktop builds to Electron 26
   - Redesigned application icon
